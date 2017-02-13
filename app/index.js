@@ -68,7 +68,7 @@ class Starter {
 				y: .2,
 				width: .8,
 				height: .6,
-				texture: 0.0,
+				texture: 1.0,
 				scale: 1.1
 			},
 			cameraSpeed : {

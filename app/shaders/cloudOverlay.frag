@@ -34,7 +34,7 @@ void main() {
 			finalColor = texture2D(uTextureReverse, scaledUV);
 		} else if (boxOverlayTexture == 1.0) {
 			vec2 scaledUV = vUv * vec2(boxOverlayScale, boxOverlayScale);
-			finalColor = texture2D(uTextureGirl, scaledUV);
+			finalColor = texture2D(uTextureGirl, flippedUv);
 		}
 	} 
 	else {

@@ -76,7 +76,6 @@ export default class SceneMain {
 		this.sceneImport = new SceneImport(this.FBO);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
-		console.log(sceneVals.overlay);
 		this.start_time = Date.now();
 
 		this.windowHalfX;
@@ -100,7 +99,7 @@ export default class SceneMain {
 		this.reverseCamera.position.y = -40;
 		
 		this.importCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
-		this.importCamera.position.z = 6;
+		this.importCamera.position.z = 10;
 		this.importCamera.position.y = 14;
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
@@ -163,6 +162,8 @@ export default class SceneMain {
 				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
+				vals.flipX = sceneItem[t].flipX;
+				vals.flipY = sceneItem[t].flipY;
 
 				currentX += vals.w;
 				if (currentX >= 1.0) {
@@ -182,6 +183,8 @@ export default class SceneMain {
 				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
+				vals.flipX = sceneItem[t].flipX;
+				vals.flipY = sceneItem[t].flipY;
 
 				ret.overlay[t] = vals;
 			}

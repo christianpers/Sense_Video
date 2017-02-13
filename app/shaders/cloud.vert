@@ -1,6 +1,8 @@
 varying vec2 vUv;
 varying vec2 flippedUv;
-uniform float uTopLeft;
+uniform float xFlip;
+uniform float yFlip;
+
 
 void main() {
 

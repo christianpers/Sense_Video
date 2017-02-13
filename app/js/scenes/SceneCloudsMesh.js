@@ -17,6 +17,7 @@ export default class SceneCloudsMesh{
 
 		const uniformsObj = Object.assign({}, boxUniforms, textureUniforms);
 
+
 	
 		var material = new THREE.ShaderMaterial({
 			uniforms: uniformsObj,
@@ -56,7 +57,9 @@ export default class SceneCloudsMesh{
 
 			const strScale = t + 'Scale';
 			uniforms[strScale] = {value: sceneVals[t].scale};
-		
+
+
+	
 		});
 
 		return uniforms;
