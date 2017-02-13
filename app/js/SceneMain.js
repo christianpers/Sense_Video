@@ -12,11 +12,12 @@ export default class SceneMain {
 		this.mouseX = 0;
 		this.mouseY = 0;
 
-		this.rotation = 0;
+		this.normalRotation = 0;
+		this.reverseRotation = 0;
 
 		this.sceneSelector = sceneSelector;
 
-		this.currentSceneSettings = {renderOverlay: false};
+		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
 		this.FBO = new THREE.WebGLRenderTarget(
 							window.innerWidth, 
@@ -184,6 +185,13 @@ export default class SceneMain {
 
 				ret.overlay[t] = vals;
 			}
+
+			if (t === 'cameraSpeed') {
+				this.currentSceneSettings.cameraSpeed = sceneItem[t];
+			}
+			if (t === 'cameraRotation') {
+				this.currentSceneSettings.cameraRotation = sceneItem[t];
+			}
 		});
 
 		return ret;
@@ -213,17 +221,26 @@ export default class SceneMain {
 	render() {
 
 		if (!this.doRender) return;
+
+		const now = Date.now();
 		
-		var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
+		var position = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudNormal ) % this.sceneClouds.totDepth;
 
 		this.camera.position.z = - position + this.sceneClouds.totDepth;
-		// this.camera.rotation.y = this.rotation += .01;
+		if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation){
+			this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
+		}
 		
-		var reversePos = position;
+		var reversePos = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudReverse ) % this.sceneClouds.totDepth;
+
+		var reversePos = reversePos;
 		if (reversePos > this.sceneClouds.totDepth) {
 			reversePos = 0;
 		}
 		this.reverseCamera.position.z = reversePos;
+		if (this.currentSceneSettings.cameraRotation.cloudReverse.rotation){
+			this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudReverse.axis] = this.reverseRotation += this.currentSceneSettings.cameraRotation.cloudReverse.speed;
+		}
 
 		if (!this.sceneImport.render) return;
 

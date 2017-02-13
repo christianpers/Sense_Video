@@ -65,11 +65,27 @@ class Starter {
 			},
 			boxOverlay: {
 				x: .1,
-				y: .1,
+				y: .2,
 				width: .8,
-				height: .8,
-				texture: .5,
+				height: .6,
+				texture: 0.0,
 				scale: 1.1
+			},
+			cameraSpeed : {
+				cloudNormal: .03,
+				cloudReverse: .03
+			},
+			cameraRotation: {
+				cloudNormal: {
+					rotation: true,
+					axis: 'z',
+					speed: .01
+				},
+				cloudReverse: {
+					rotation: false,
+					axis: 'z',
+					speed: .01
+				}
 			}
 		}
 
@@ -93,11 +109,21 @@ class Starter {
 				texture: 1.0,
 				scale: 1.1
 			},
-			boxFour: {
-				width: 0,
-				height: 0,
-				texture: 0,
-				scale: 1.1
+			cameraSpeed : {
+				cloudNormal: .2,
+				cloudReverse: .1
+			},
+			cameraRotation: {
+				cloudNormal: {
+					rotation: true,
+					axis: 'z',
+					speed: -.01
+				},
+				cloudReverse: {
+					rotation: false,
+					axis: 'z',
+					speed: .01
+				}
 			}
 		}
 		
