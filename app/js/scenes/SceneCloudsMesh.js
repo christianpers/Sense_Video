@@ -58,6 +58,9 @@ export default class SceneCloudsMesh{
 			const strScale = t + 'Scale';
 			uniforms[strScale] = {value: sceneVals[t].scale};
 
+			const strTextureFlip = t + 'UVToUse';
+			uniforms[strTextureFlip] = {value: sceneVals[t].textureFlip};
+
 
 	
 		});

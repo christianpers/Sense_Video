@@ -43,33 +43,29 @@ class Starter {
 				width: .5,
 				height: .5,
 				texture: 1.0,
-				scale: 1.4
+				scale: 1.0,
+				textureFlip: 0.5
 			},
 			boxTwo: {
 				width: .5,
 				height: .5,
 				texture: 1.0,
-				scale: .7
+				scale: 1.0,
+				textureFlip: .0
 			},
 			boxThree: {
 				width: .5,
 				height: .5,
-				texture: .5,
-				scale: 1.2
+				texture: 1.0,
+				scale: 1.0,
+				textureFlip: 1.0
 			},
 			boxFour: {
 				width: .5,
 				height: .5,
 				texture: 1.0,
-				scale: 1.1
-			},
-			boxOverlay: {
-				x: .1,
-				y: .2,
-				width: .8,
-				height: .6,
-				texture: 1.0,
-				scale: 1.1
+				scale: 1.0,
+				textureFlip: 0.0
 			},
 			cameraSpeed : {
 				cloudNormal: .03,
@@ -95,19 +91,22 @@ class Starter {
 				width: 1,
 				height: .5,
 				texture: 0.0,
-				scale: 1.0
+				scale: 1.0,
+				textureFlip: 0.0
 			},
 			boxTwo: {
 				width: .5,
 				height: .5,
 				texture: .5,
-				scale: 1.0
+				scale: 1.0,
+				textureFlip: 0.0
 			},
 			boxThree: {
 				width: .5,
 				height: .5,
 				texture: 1.0,
-				scale: 1.1
+				scale: 1.1,
+				textureFlip: 0.0
 			},
 			cameraSpeed : {
 				cloudNormal: .2,
