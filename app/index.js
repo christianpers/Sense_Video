@@ -44,7 +44,7 @@ class Starter {
 				height: .5,
 				texture: 1.0,
 				scale: 1.0,
-				textureFlip: 0.5
+				textureFlip: 1.5
 			},
 			boxTwo: {
 				width: .5,

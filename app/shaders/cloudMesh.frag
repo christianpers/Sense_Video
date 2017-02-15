@@ -38,8 +38,6 @@ uniform float boxFourTexture;
 uniform float boxFourScale;
 uniform float boxFourUVToUse;
 
-
-
 void main() {
 
 	vec4 finalColor;
