@@ -38,12 +38,18 @@ uniform float boxFourTexture;
 uniform float boxFourScale;
 uniform float boxFourUVToUse;
 
+float degreeToRadian(float degree){
+	return degree * (3.14159265359 / 180.0);
+}
+
 void main() {
 
 	vec4 finalColor;
 	vec4 textureColor = texture2D( uTexture, vUv );
 	vec4 textureReverseColor = texture2D( uTextureReverse, vUv );
 	vec4 textureGirlColor = texture2D( uTextureGirl, vUv );
+
+	vec2 iRes = vec2(1083.0, 805.0);
 
 	
 	if ((vUv.x >= boxOneX && vUv.x <= (boxOneX + boxOneW)) && (vUv.y >= boxOneY && vUv.y <= (boxOneY + boxOneH))){
@@ -61,8 +67,26 @@ void main() {
 				finalColor = texture2D(uTexture, scaledUV);
 			}
 			else if (boxOneUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTexture, scaledUV);
+
+				vec2 uv = gl_FragCoord.xy / iRes.xy;
+    
+			    //Angle you want to rotate the texture to
+			    //float rot = radians(45.0);
+			    
+			    float rot = 4.71239;
+			    
+			    uv = uv - vec2(.5, .5);
+			    
+			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+			   	uv  = m * uv;
+			    
+			    uv = uv + vec2(.5, .5);
+
+			    uv = vec2(.5,.5) * uv;
+			    // finalColor = texture2D(uTexture, uv);
+			    finalColor = vec4(.5,.5,.5,1.0);
+				// vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
+				// finalColor = texture2D(uTexture, scaledUV);
 			}
 		} else if (boxOneTexture == 0.5) {
 			if (boxOneUVToUse == 0.0) {
@@ -83,8 +107,13 @@ void main() {
 			}
 		} else if (boxOneTexture == 1.0) {
 			if (boxOneUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
+				vec2 uv = gl_FragCoord.xy / iRes.xy;
+				vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
+
+			    uv = ratio * uv;
+				// vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
+				// finalColor = texture2D(uTextureGirl, uv);
+				finalColor = vec4(.5,.5,.5,1.0);
 			}
 			else if (boxOneUVToUse == 0.5) {
 				vec2 scaledUV = flippedX * vec2(boxOneScale, boxOneScale);
@@ -95,8 +124,30 @@ void main() {
 				finalColor = texture2D(uTextureGirl, scaledUV);
 			}
 			else if (boxOneUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
+				// vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
+				// finalColor = texture2D(uTextureGirl, scaledUV);
+
+				vec2 uv = gl_FragCoord.xy / iRes.xy;
+    
+			    //Angle you want to rotate the texture to
+			    //float rot = radians(45.0);
+			    
+			    float rot = 4.71239;
+			    
+			    uv = uv - vec2(.5, .5);
+			    
+			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+			   	uv  = m * uv;
+			    
+			    uv = uv + vec2(.5, .5);
+
+			    vec2 ratio = vec2((iRes.x/3.0) / iRes.x, (iRes.y/2.0) / iRes.y);
+
+			    uv = ratio * uv;
+
+			    uv.y += .5;
+			    uv.x += .2;
+			    finalColor = texture2D(uTextureGirl, uv);
 			}
 		}
 	} 
@@ -137,8 +188,25 @@ void main() {
 			}
 		} else if (boxTwoTexture == 1.0) {
 			if (boxTwoUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
+				vec2 uv = gl_FragCoord.xy / iRes.xy;
+				vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
+
+				float rot = .0 * (3.14159265359 / 180.0);
+			    
+			    uv = uv - vec2(.5, .5);
+			    
+			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+			   	uv  = m * uv;
+			    
+			    uv = uv + vec2(.5, .5);
+
+			    uv = ratio * uv;
+				// vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
+				uv.y += .65;
+				uv.x -= .05;
+				finalColor = texture2D(uTextureGirl, uv);
+				// vec2 scaledUV = vUv * vec2(boxTwoScale, boxTwoScale);
+				// finalColor = texture2D(uTextureGirl, scaledUV);
 			}
 			else if (boxTwoUVToUse == 0.5) {
 				vec2 scaledUV = flippedX * vec2(boxTwoScale, boxTwoScale);

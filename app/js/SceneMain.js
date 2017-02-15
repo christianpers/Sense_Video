@@ -215,7 +215,8 @@ export default class SceneMain {
 
 		this.sceneCloudsMesh.update(sceneVals.grid);
 
-		var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
+		// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
+		var position = 1000;
 
 		this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth);
 		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
