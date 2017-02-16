@@ -162,10 +162,10 @@ export default class SceneMain {
 				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
-				vals.textureFlip = sceneItem[t].textureFlip;
-				// vals.flipX = sceneItem[t].flipX;
-				// vals.flipY = sceneItem[t].flipY;
-
+				vals.translateX = sceneItem[t].translateX;
+				vals.translateY = sceneItem[t].translateY;
+				vals.rotation = sceneItem[t].textureRotation;
+				
 				currentX += vals.w;
 				if (currentX >= 1.0) {
 					currentX = 0;

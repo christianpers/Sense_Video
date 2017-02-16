@@ -15,7 +15,11 @@ export default class SceneCloudsMesh{
 		textureUniforms.uTextureReverse = {value: FBOReverse.texture};
 		textureUniforms.uTextureGirl = {value: FBOGirl.texture};
 
-		const uniformsObj = Object.assign({}, boxUniforms, textureUniforms);
+		const resUniforms = {};
+		resUniforms.resX = {value: window.innerWidth};
+		resUniforms.resY = {value: window.innerHeight};
+
+		const uniformsObj = Object.assign({}, boxUniforms, textureUniforms, resUniforms);
 
 
 	
@@ -58,8 +62,15 @@ export default class SceneCloudsMesh{
 			const strScale = t + 'Scale';
 			uniforms[strScale] = {value: sceneVals[t].scale};
 
-			const strTextureFlip = t + 'UVToUse';
-			uniforms[strTextureFlip] = {value: sceneVals[t].textureFlip};
+			const strTranslateX = t + 'TranslateX';
+			uniforms[strTranslateX] = {value: sceneVals[t].translateX};
+
+			const strTranslateY = t + 'TranslateY';
+			uniforms[strTranslateY] = {value: sceneVals[t].translateY};
+
+			const strRotation = t + 'RotDegree';
+			uniforms[strRotation] = {value: sceneVals[t].rotation};
+
 
 
 	

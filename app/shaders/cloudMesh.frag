@@ -5,6 +5,8 @@ varying vec2 flippedY;
 uniform sampler2D uTexture;
 uniform sampler2D uTextureReverse;
 uniform sampler2D uTextureGirl;
+uniform float resX;
+uniform float resY;
 
 uniform float boxOneX;
 uniform float boxOneY;
@@ -12,7 +14,9 @@ uniform float boxOneW;
 uniform float boxOneH;
 uniform float boxOneTexture;
 uniform float boxOneScale;
-uniform float boxOneUVToUse;
+uniform float boxOneTranslateX;
+uniform float boxOneTranslateY;
+uniform float boxOneRotDegree;
 
 uniform float boxTwoX;
 uniform float boxTwoY;
@@ -20,7 +24,9 @@ uniform float boxTwoW;
 uniform float boxTwoH;
 uniform float boxTwoTexture;
 uniform float boxTwoScale;
-uniform float boxTwoUVToUse;
+uniform float boxTwoTranslateX;
+uniform float boxTwoTranslateY;
+uniform float boxTwoRotDegree;
 
 uniform float boxThreeX;
 uniform float boxThreeY;
@@ -28,7 +34,9 @@ uniform float boxThreeW;
 uniform float boxThreeH;
 uniform float boxThreeTexture;
 uniform float boxThreeScale;
-uniform float boxThreeUVToUse;
+uniform float boxThreeTranslateX;
+uniform float boxThreeTranslateY;
+uniform float boxThreeRotDegree;
 
 uniform float boxFourX;
 uniform float boxFourY;
@@ -36,7 +44,9 @@ uniform float boxFourW;
 uniform float boxFourH;
 uniform float boxFourTexture;
 uniform float boxFourScale;
-uniform float boxFourUVToUse;
+uniform float boxFourTranslateX;
+uniform float boxFourTranslateY;
+uniform float boxFourRotDegree;
 
 float degreeToRadian(float degree){
 	return degree * (3.14159265359 / 180.0);
@@ -49,330 +59,115 @@ void main() {
 	vec4 textureReverseColor = texture2D( uTextureReverse, vUv );
 	vec4 textureGirlColor = texture2D( uTextureGirl, vUv );
 
-	vec2 iRes = vec2(1083.0, 805.0);
+	vec2 iRes = vec2(resX, resY);
 
+	vec2 uv = gl_FragCoord.xy / iRes.xy;
+
+	vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
 	
 	if ((vUv.x >= boxOneX && vUv.x <= (boxOneX + boxOneW)) && (vUv.y >= boxOneY && vUv.y <= (boxOneY + boxOneH))){
+
+		uv.x += boxOneTranslateX;
+		uv.y += boxOneTranslateY;
+	    
+		float rot = boxOneRotDegree * (3.14159265359 / 180.0);
+
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
 		if (boxOneTexture == 0.0) {
-			if (boxOneUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxOneUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.5) {
-
-				vec2 uv = gl_FragCoord.xy / iRes.xy;
-    
-			    //Angle you want to rotate the texture to
-			    //float rot = radians(45.0);
-			    
-			    float rot = 4.71239;
-			    
-			    uv = uv - vec2(.5, .5);
-			    
-			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
-			   	uv  = m * uv;
-			    
-			    uv = uv + vec2(.5, .5);
-
-			    uv = vec2(.5,.5) * uv;
-			    // finalColor = texture2D(uTexture, uv);
-			    finalColor = vec4(.5,.5,.5,1.0);
-				// vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
-				// finalColor = texture2D(uTexture, scaledUV);
-			}
+			finalColor = texture2D(uTexture, uv);
 		} else if (boxOneTexture == 0.5) {
-			if (boxOneUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxOneUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
+			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxOneTexture == 1.0) {
-			if (boxOneUVToUse == 0.0) {
-				vec2 uv = gl_FragCoord.xy / iRes.xy;
-				vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
-
-			    uv = ratio * uv;
-				// vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
-				// finalColor = texture2D(uTextureGirl, uv);
-				finalColor = vec4(.5,.5,.5,1.0);
-			}
-			else if (boxOneUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxOneScale, boxOneScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxOneUVToUse == 1.5) {
-				// vec2 scaledUV = flippedUv * vec2(boxOneScale, boxOneScale);
-				// finalColor = texture2D(uTextureGirl, scaledUV);
-
-				vec2 uv = gl_FragCoord.xy / iRes.xy;
-    
-			    //Angle you want to rotate the texture to
-			    //float rot = radians(45.0);
-			    
-			    float rot = 4.71239;
-			    
-			    uv = uv - vec2(.5, .5);
-			    
-			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
-			   	uv  = m * uv;
-			    
-			    uv = uv + vec2(.5, .5);
-
-			    vec2 ratio = vec2((iRes.x/3.0) / iRes.x, (iRes.y/2.0) / iRes.y);
-
-			    uv = ratio * uv;
-
-			    uv.y += .5;
-			    uv.x += .2;
-			    finalColor = texture2D(uTextureGirl, uv);
-			}
+			finalColor = texture2D(uTextureGirl, uv);
 		}
 	} 
 	else if ((vUv.x >= boxTwoX && vUv.x <= (boxTwoX + boxTwoW)) && (vUv.y >= boxTwoY && vUv.y <= (boxTwoY + boxTwoH))){
+
+		uv.x += boxTwoTranslateX;
+		uv.y += boxTwoTranslateY;
+	    
+		float rot = boxTwoRotDegree * (3.14159265359 / 180.0);
+
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
 		if (boxTwoTexture == 0.0) {
-			if (boxTwoUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxTwoUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
+			finalColor = texture2D(uTexture, uv);
 		} else if (boxTwoTexture == 0.5) {
-			if (boxTwoUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxTwoUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
+			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxTwoTexture == 1.0) {
-			if (boxTwoUVToUse == 0.0) {
-				vec2 uv = gl_FragCoord.xy / iRes.xy;
-				vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
-
-				float rot = .0 * (3.14159265359 / 180.0);
-			    
-			    uv = uv - vec2(.5, .5);
-			    
-			    mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
-			   	uv  = m * uv;
-			    
-			    uv = uv + vec2(.5, .5);
-
-			    uv = ratio * uv;
-				// vec2 scaledUV = vUv * vec2(boxOneScale, boxOneScale);
-				uv.y += .65;
-				uv.x -= .05;
-				finalColor = texture2D(uTextureGirl, uv);
-				// vec2 scaledUV = vUv * vec2(boxTwoScale, boxTwoScale);
-				// finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxTwoUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxTwoUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxTwoScale, boxTwoScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-		
+			finalColor = texture2D(uTextureGirl, uv);
 		}
+		
 	}
 	else if ((vUv.x >= boxThreeX && vUv.x <= (boxThreeX + boxThreeW)) && (vUv.y >= boxThreeY && vUv.y <= (boxThreeY + boxThreeH))){
+		uv.x += boxThreeTranslateX;
+		uv.y += boxThreeTranslateY;
+	    
+		float rot = boxThreeRotDegree * (3.14159265359 / 180.0);
+
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
 		if (boxThreeTexture == 0.0) {
-			if (boxThreeUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxThreeUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
+			finalColor = texture2D(uTexture, uv);
 		} else if (boxThreeTexture == 0.5) {
-			if (boxThreeUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxThreeUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
+			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxThreeTexture == 1.0) {
-			if (boxThreeUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxThreeUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxThreeUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxThreeScale, boxThreeScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
+			finalColor = texture2D(uTextureGirl, uv);
 		}
 	}
 	else if ((vUv.x >= boxFourX && vUv.x <= (boxFourX + boxFourW)) && (vUv.y >= boxFourY && vUv.y <= (boxFourY + boxFourH))){
+		uv.x += boxFourTranslateX;
+		uv.y += boxFourTranslateY;
+	    
+		float rot = boxFourRotDegree * (3.14159265359 / 180.0);
+
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
 		if (boxFourTexture == 0.0) {
-			if (boxFourUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxFourUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTexture, scaledUV);
-			}
+			finalColor = texture2D(uTexture, uv);
 		} else if (boxFourTexture == 0.5) {
-			if (boxFourUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxFourUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureReverse, scaledUV);
-			}
+			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxFourTexture == 1.0) {
-			if (boxFourUVToUse == 0.0) {
-				vec2 scaledUV = vUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxFourUVToUse == 0.5) {
-				vec2 scaledUV = flippedX * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.0) {
-				vec2 scaledUV = flippedY * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
-			else if (boxFourUVToUse == 1.5) {
-				vec2 scaledUV = flippedUv * vec2(boxFourScale, boxFourScale);
-				finalColor = texture2D(uTextureGirl, scaledUV);
-			}
+			finalColor = texture2D(uTextureGirl, uv);
 		}
+
+
+		// vec3 tempColor = mix(textureGirlColor.rgb, textureReverseColor.rgb, .8);
+		// finalColor = vec4(tempColor, 1.0);
+		// textureGirlColor.a = .0;
+		// textureGirlColor.r *= .5;
+		// textureGirlColor.g *= .5;
+		// textureGirlColor.b *= .5;
+		// finalColor = textureReverseColor * textureGirlColor;
+		// finalColor = mix(textureReverseColor, textureGirlColor, .4);
+		// finalColor = textureGirlColor;
 	}
 	else {
 		finalColor = textureReverseColor;
 	}
 	
-	// if (normalActive == 2.1) {
 
-	// 	if ((vUv.x >= normalX && vUv.x <= (normalX + normalW)) && (vUv.y >= normalY && vUv.y <= (normalY + normalH))){
-
-	// 		finalColor = textureColor;
-	// 	}
-	// }
-
-	// if (reverseActive == 2.1) {
-
-	// 	if ((vUv.x >= reverseX && vUv.x <= (reverseX + reverseW)) && (vUv.y >= reverseY && vUv.y <= (reverseY + reverseH))){
-
-	// 		finalColor = textureReverseColor;
-	// 	}
-	// }
-
-	// if (girlActive == 2.1) {
-
-	// 	if ((vUv.x >= girlX && vUv.x <= (girlX + girlW)) && (vUv.y >= girlY && vUv.y <= (girlY + girlH))){
-
-	// 		finalColor = textureGirlColor;
-	// 	}
-	// }
-
-	// if (reverseActive == 2.0) {
-
-	// 	if ((vUv.x >= reverseX && vUv.x <= reverseW) && (vUv.y >= reverseY && vUv.y <= reverseH)){
-
-	// 		finalColor = textureReverseColor;
-	// 	}
-	// }
-
-	// if (girlActive == 2.0) {
-
-
-	// }
-
-	// if ((vUv.x > .2 && vUv.x < .8) && (vUv.y > .2 && vUv.y < .8)){
 
 	// 	// vec3 tempColor = mix(textureGirlColor.rgb, textureReverseColor.rgb, .8);
 	// 	// finalColor = vec4(tempColor, 1.0);
@@ -393,13 +188,7 @@ void main() {
 	// 	// vec3 finalColor = mix(textureColor.rgb, blackWhiteColor, 1.0);
 
 	// 	// gl_FragColor = vec4(finalColor, 1.0);
-	// } else {
-
-	// 	finalColor = textureColor;
-
-
-	// 	// gl_FragColor = finalColor;
-	// }
+	
 
 	gl_FragColor = finalColor;
 }
