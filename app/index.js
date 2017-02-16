@@ -142,6 +142,16 @@ class Starter {
 
 		this.reqFrame();
 
+		this.createAudio();
+
+	}
+
+	createAudio() {
+
+		this.audioEl = document.createElement('audio');
+		this.audioEl.src = 'assets/audio.mp3';
+
+		this.audioEl.play();
 	}
 
 	reqFrame() {
