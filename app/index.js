@@ -32,10 +32,96 @@ class Starter {
 		window.NS.transform = transformProp();
 		window.NS.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 		const scenePresets = [];
+
+		const sceneInit = {
+			boxOne: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.5,
+				translateY: 0.2,
+				textureRotation: 270
+			},
+			boxTwo: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: -0.5,
+				translateY: 0.2,
+				textureRotation: 90
+			},
+			boxThree: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: -0.3,
+				textureRotation: 90
+			},
+			boxFour: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: -0.2,
+				textureRotation: 270
+			},
+			boxFive: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: -0.3,
+				textureRotation: 90
+			},
+			boxSix: {
+				width: .5,
+				height: .5,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: -0.2,
+				textureRotation: 270
+			}
+		}
+
+		const sceneThree = {
+			title: 'Scene Three',
+			boxOne: {
+				width: 1,
+				height: 1,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: 0.0,
+				textureRotation: 0
+			},
+			cameraRotation: {
+				cloudNormal: {
+					rotation: false,
+					axis: 'z',
+					speed: -.01
+				},
+				cloudReverse: {
+					rotation: false,
+					axis: 'z',
+					speed: .01
+				}
+			},
+			cameraSpeed : {
+				cloudNormal: .03,
+				cloudReverse: .03
+			}
+			
+		}
 
 		const sceneOne = {
 			title: 'Scene one',
@@ -81,7 +167,7 @@ class Starter {
 			},
 			cameraRotation: {
 				cloudNormal: {
-					rotation: true,
+					rotation: false,
 					axis: 'z',
 					speed: .01
 				},
@@ -140,10 +226,9 @@ class Starter {
 			}
 		}
 		
-		scenePresets.push(sceneOne, sceneTwo);
+		scenePresets.push(sceneThree, sceneTwo, sceneOne);
 		
-		
-		this.sceneSelector = new SceneSelector(scenePresets);
+		this.sceneSelector = new SceneSelector(scenePresets, sceneInit);
 		container.appendChild(this.sceneSelector.containerEl);
 
 		this.sceneMain = new SceneMain(container, this.sceneSelector);
@@ -165,7 +250,7 @@ class Starter {
 		this.audioEl = document.createElement('audio');
 		this.audioEl.src = 'assets/audio.mp3';
 
-		this.audioEl.play();
+		// this.audioEl.play();
 	}
 
 	reqFrame() {

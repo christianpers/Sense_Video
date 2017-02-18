@@ -7,6 +7,8 @@ uniform sampler2D uTextureReverse;
 uniform sampler2D uTextureGirl;
 uniform float resX;
 uniform float resY;
+uniform float introVal;
+uniform float randomVal;
 
 uniform float boxOneX;
 uniform float boxOneY;
@@ -84,7 +86,10 @@ void main() {
 		} else if (boxOneTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxOneTexture == 1.0) {
-			finalColor = texture2D(uTextureGirl, uv);
+			// finalColor = texture2D(uTextureGirl, uv);
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = (girlColor - (cloudColor - vec4(randomVal/12.0))) * vec4(40.0);
 		}
 	} 
 	else if ((vUv.x >= boxTwoX && vUv.x <= (boxTwoX + boxTwoW)) && (vUv.y >= boxTwoY && vUv.y <= (boxTwoY + boxTwoH))){
@@ -106,7 +111,10 @@ void main() {
 		} else if (boxTwoTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxTwoTexture == 1.0) {
-			finalColor = texture2D(uTextureGirl, uv);
+			// finalColor = texture2D(uTextureGirl, uv);
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = cloudColor * girlColor;
 		}
 		
 	}
@@ -128,7 +136,10 @@ void main() {
 		} else if (boxThreeTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxThreeTexture == 1.0) {
-			finalColor = texture2D(uTextureGirl, uv);
+			// finalColor = texture2D(uTextureGirl, uv);
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = cloudColor * girlColor;
 		}
 	}
 	else if ((vUv.x >= boxFourX && vUv.x <= (boxFourX + boxFourW)) && (vUv.y >= boxFourY && vUv.y <= (boxFourY + boxFourH))){
@@ -149,7 +160,9 @@ void main() {
 		} else if (boxFourTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxFourTexture == 1.0) {
-			finalColor = texture2D(uTextureGirl, uv);
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = cloudColor * girlColor;
 		}
 
 
@@ -181,14 +194,14 @@ void main() {
 		
 
 	// 	// ----- B/W ----- 
-	// 	// float gray = 0.299*textureColor.r + 0.587*textureColor.g + 0.114*textureColor.b;
+	float gray = 0.299*finalColor.r + 0.587*finalColor.g + 0.114*finalColor.b;
+
+	vec3 blackWhiteColor = vec3(gray);
+
+	vec3 color = mix(finalColor.rgb, blackWhiteColor, introVal);
+
+	gl_FragColor = vec4(color, 1.0);
 	
-	// 	// vec3 blackWhiteColor = vec3(gray, gray, gray);
 
-	// 	// vec3 finalColor = mix(textureColor.rgb, blackWhiteColor, 1.0);
-
-	// 	// gl_FragColor = vec4(finalColor, 1.0);
-	
-
-	gl_FragColor = finalColor;
+	// gl_FragColor = finalColor;
 }

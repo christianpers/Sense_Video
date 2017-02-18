@@ -17,8 +17,9 @@ export default class SceneImport{
 
 	onLoaded(geometry, materials){
 
-		
-	
+		// THREE.GeometryUtils.center( geometry );
+
+		// geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0, 0) );
 		this.cubeCamera = new THREE.CubeCamera(1, 10000, 128);
 		// this.cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
 		// console.log(this.cubeCamera.renderTarget.texture);
@@ -70,10 +71,15 @@ export default class SceneImport{
 		// this.mesh.scale.y = .1;
 		// this.mesh.scale.z = .1;
 
+		// this.pivot = new THREE.Object3D();
+		// console.log(new THREE.Vector3(0,0,0));
+		// this.pivot.position = new THREE.Vector3(0,0,0);
+		// this.pivot.add(this.mesh);
+		// this.scene.add(pivot);
+
 		this.scene.add(this.mesh);
 
-		// directionalLight.target = this.mesh;
-
+	
 		this.render = true;
 	}
 
@@ -81,8 +87,17 @@ export default class SceneImport{
 
 		if (!this.render) return;
 
-		this.rotation += .5;
+		const translate = 10;
+
+		this.rotation += 0.5;
+		this.mesh.translate.z += translate;
+		// this.mesh.translate.y += translate
+		// this.mesh.center();
 		this.mesh.rotation.y = this.rotation * Math.PI / 180;
+		// this.mesh.translate.x -= translate;
+		this.mesh.translate.z -= translate;
+
+		// this.pivot.rotation.y += 0.05;
 
 		this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
 		this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);

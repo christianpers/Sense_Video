@@ -17,6 +17,9 @@ export default class SceneMain {
 
 		this.sceneSelector = sceneSelector;
 
+		this.introDuration = 40000;
+		this.introStartTime = Date.now();
+
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
 		this.FBO = new THREE.WebGLRenderTarget(
@@ -71,7 +74,7 @@ export default class SceneMain {
 
 		const sceneVals = this.getCurrentActiveSceneVals();
 
-		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
+		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
 		this.sceneImport = new SceneImport(this.FBO);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
@@ -104,11 +107,12 @@ export default class SceneMain {
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 		
-		this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: true } );
+		this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: false } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		this.renderer.autoClear = false;
 		// this.renderer.setClearColorHex( 0x000000, 1 );
-		this.renderer.setClearColor( '#e206db' );
+		// this.renderer.setClearColor( '#e206db' );
+		this.renderer.setClearColor('#d370d0');
 		this.container.appendChild( this.renderer.domElement );
 
 		this.currentTime = Date.now();
@@ -209,11 +213,18 @@ export default class SceneMain {
 
 	update() {
 
+		const now = Date.now();
+		const introDelta = now - this.introStartTime;
+		let introRemain = Math.abs((introDelta / this.introDuration) - 1);
+		if (introDelta > this.introDuration) {
+			introRemain = 0;
+		}
+
 		// super.update();
 
 		const sceneVals = this.getCurrentActiveSceneVals();
 
-		this.sceneCloudsMesh.update(sceneVals.grid);
+		this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
 
 		// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
 		var position = 1000;
