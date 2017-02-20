@@ -17,8 +17,11 @@ export default class SceneMain {
 
 		this.sceneSelector = sceneSelector;
 
-		this.introDuration = 40000;
+		this.introDuration = 25000;
 		this.introStartTime = Date.now();
+
+		this.cubeCameraUpdateInterval = 1000;
+		this.cubeCameraLastUpdate = Date.now();
 
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
@@ -74,6 +77,7 @@ export default class SceneMain {
 
 		const sceneVals = this.getCurrentActiveSceneVals();
 
+		
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
 		this.sceneImport = new SceneImport(this.FBO);
@@ -169,11 +173,15 @@ export default class SceneMain {
 				vals.translateX = sceneItem[t].translateX;
 				vals.translateY = sceneItem[t].translateY;
 				vals.rotation = sceneItem[t].textureRotation;
+				if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
+					vals.textureCoeff = sceneItem[t].specialTextureCoeff;
+				}
 				
 				currentX += vals.w;
-				if (currentX >= 1.0) {
+				if (currentX >= 0.99) {
+
 					currentX = 0;
-					currentY = sceneItem[t].height;
+					currentY += sceneItem[t].height;
 				}
 
 				ret.grid[t] = vals;
@@ -220,17 +228,27 @@ export default class SceneMain {
 			introRemain = 0;
 		}
 
+
+
 		// super.update();
 
 		const sceneVals = this.getCurrentActiveSceneVals();
+
 
 		this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
 
 		// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
 		var position = 1000;
 
-		this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth);
+		const updateCubeDelta = now - this.cubeCameraLastUpdate;
+		if (updateCubeDelta > 1000) {
+			this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, true);
+			this.cubeCameraLastUpdate = now;
+		} else {
+			this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
+			
 		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+		}
 		
 	}
 

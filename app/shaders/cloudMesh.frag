@@ -19,6 +19,7 @@ uniform float boxOneScale;
 uniform float boxOneTranslateX;
 uniform float boxOneTranslateY;
 uniform float boxOneRotDegree;
+uniform float boxOneCoeff;
 
 uniform float boxTwoX;
 uniform float boxTwoY;
@@ -29,6 +30,7 @@ uniform float boxTwoScale;
 uniform float boxTwoTranslateX;
 uniform float boxTwoTranslateY;
 uniform float boxTwoRotDegree;
+uniform float boxTwoCoeff;
 
 uniform float boxThreeX;
 uniform float boxThreeY;
@@ -39,6 +41,7 @@ uniform float boxThreeScale;
 uniform float boxThreeTranslateX;
 uniform float boxThreeTranslateY;
 uniform float boxThreeRotDegree;
+uniform float boxThreeCoeff;
 
 uniform float boxFourX;
 uniform float boxFourY;
@@ -49,6 +52,29 @@ uniform float boxFourScale;
 uniform float boxFourTranslateX;
 uniform float boxFourTranslateY;
 uniform float boxFourRotDegree;
+uniform float boxFourCoeff;
+
+uniform float boxFiveX;
+uniform float boxFiveY;
+uniform float boxFiveW;
+uniform float boxFiveH;
+uniform float boxFiveTexture;
+uniform float boxFiveScale;
+uniform float boxFiveTranslateX;
+uniform float boxFiveTranslateY;
+uniform float boxFiveRotDegree;
+uniform float boxFiveCoeff;
+
+uniform float boxSixX;
+uniform float boxSixY;
+uniform float boxSixW;
+uniform float boxSixH;
+uniform float boxSixTexture;
+uniform float boxSixScale;
+uniform float boxSixTranslateX;
+uniform float boxSixTranslateY;
+uniform float boxSixRotDegree;
+uniform float boxSixCoeff;
 
 float degreeToRadian(float degree){
 	return degree * (3.14159265359 / 180.0);
@@ -86,10 +112,12 @@ void main() {
 		} else if (boxOneTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxOneTexture == 1.0) {
-			// finalColor = texture2D(uTextureGirl, uv);
+			finalColor = texture2D(uTextureGirl, uv);
+			
+		} else if (boxOneTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
-			finalColor = (girlColor - (cloudColor - vec4(randomVal/12.0))) * vec4(40.0);
+			finalColor = (girlColor - (cloudColor - vec4(boxOneCoeff/12.0))) * vec4(40.0);
 		}
 	} 
 	else if ((vUv.x >= boxTwoX && vUv.x <= (boxTwoX + boxTwoW)) && (vUv.y >= boxTwoY && vUv.y <= (boxTwoY + boxTwoH))){
@@ -111,10 +139,11 @@ void main() {
 		} else if (boxTwoTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxTwoTexture == 1.0) {
-			// finalColor = texture2D(uTextureGirl, uv);
+			finalColor = texture2D(uTextureGirl, uv);
+		} else if (boxOneTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
-			finalColor = cloudColor * girlColor;
+			finalColor = (girlColor - (cloudColor - vec4(boxTwoCoeff/12.0))) * vec4(40.0);
 		}
 		
 	}
@@ -136,10 +165,11 @@ void main() {
 		} else if (boxThreeTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxThreeTexture == 1.0) {
-			// finalColor = texture2D(uTextureGirl, uv);
+			finalColor = texture2D(uTextureGirl, uv);
+		} else if (boxThreeTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
-			finalColor = cloudColor * girlColor;
+			finalColor = (girlColor - (cloudColor - vec4(boxThreeCoeff/12.0))) * vec4(40.0);
 		}
 	}
 	else if ((vUv.x >= boxFourX && vUv.x <= (boxFourX + boxFourW)) && (vUv.y >= boxFourY && vUv.y <= (boxFourY + boxFourH))){
@@ -160,21 +190,64 @@ void main() {
 		} else if (boxFourTexture == 0.5) {
 			finalColor = texture2D(uTextureReverse, uv);
 		} else if (boxFourTexture == 1.0) {
+			finalColor = texture2D(uTextureGirl, uv);
+		} else if (boxFourTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
-			finalColor = cloudColor * girlColor;
+			finalColor = (girlColor - (cloudColor - vec4(boxFourCoeff/12.0))) * vec4(40.0);
 		}
 
+	}
+	else if ((vUv.x >= boxFiveX && vUv.x <= (boxFiveX + boxFiveW)) && (vUv.y >= boxFiveY && vUv.y <= (boxFiveY + boxFiveH))){
+		uv.x += boxFiveTranslateX;
+		uv.y += boxFiveTranslateY;
+	    
+		float rot = boxFiveRotDegree * (3.14159265359 / 180.0);
 
-		// vec3 tempColor = mix(textureGirlColor.rgb, textureReverseColor.rgb, .8);
-		// finalColor = vec4(tempColor, 1.0);
-		// textureGirlColor.a = .0;
-		// textureGirlColor.r *= .5;
-		// textureGirlColor.g *= .5;
-		// textureGirlColor.b *= .5;
-		// finalColor = textureReverseColor * textureGirlColor;
-		// finalColor = mix(textureReverseColor, textureGirlColor, .4);
-		// finalColor = textureGirlColor;
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
+		if (boxFiveTexture == 0.0) {
+			finalColor = texture2D(uTexture, uv);
+		} else if (boxFiveTexture == 0.5) {
+			finalColor = texture2D(uTextureReverse, uv);
+		} else if (boxFiveTexture == 1.0) {
+			finalColor = texture2D(uTextureGirl, uv);
+		} else if (boxFiveTexture == 1.5) {
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = (girlColor - (cloudColor - vec4(boxFiveCoeff/12.0))) * vec4(40.0);
+		}
+	}
+	else if ((vUv.x >= boxSixX && vUv.x <= (boxSixX + boxSixW)) && (vUv.y >= boxSixY && vUv.y <= (boxSixY + boxSixH))){
+		uv.x += boxSixTranslateX;
+		uv.y += boxSixTranslateY;
+	    
+		float rot = boxSixRotDegree * (3.14159265359 / 180.0);
+
+		uv = uv - vec2(.5, .5);
+
+		mat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));
+		uv  = m * uv;
+
+		uv = uv + vec2(.5, .5);
+
+		if (boxSixTexture == 0.0) {
+			finalColor = texture2D(uTexture, uv);
+		} else if (boxSixTexture == 0.5) {
+			finalColor = texture2D(uTextureReverse, uv);
+		} else if (boxSixTexture == 1.0) {
+			finalColor = texture2D(uTextureGirl, uv);
+		} else if (boxSixTexture == 1.5) {
+			vec4 girlColor = texture2D(uTextureGirl, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			finalColor = (girlColor - (cloudColor - vec4(boxSixCoeff/12.0))) * vec4(40.0);
+		}
+
 	}
 	else {
 		finalColor = textureReverseColor;

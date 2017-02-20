@@ -39,66 +39,72 @@ class Starter {
 		const sceneInit = {
 			boxOne: {
 				width: .5,
-				height: .5,
+				height: .33,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: 0.5,
 				translateY: 0.2,
-				textureRotation: 270
+				textureRotation: 270,
+				specialTextureCoeff: 1.2
 			},
 			boxTwo: {
 				width: .5,
-				height: .5,
+				height: .33,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: -0.5,
 				translateY: 0.2,
-				textureRotation: 90
+				textureRotation: 90,
+				specialTextureCoeff: 1.2
 			},
 			boxThree: {
 				width: .5,
-				height: .5,
+				height: .33,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: 0.0,
 				translateY: -0.3,
-				textureRotation: 90
+				textureRotation: 90,
+				specialTextureCoeff: 1.2
 			},
 			boxFour: {
 				width: .5,
-				height: .5,
+				height: .33,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: 0.0,
 				translateY: -0.2,
-				textureRotation: 270
+				textureRotation: 270,
+				specialTextureCoeff: 1.2
 			},
 			boxFive: {
 				width: .5,
-				height: .5,
-				texture: 1.0,
+				height: .33,
+				texture: 0.0,
 				scale: 1.0,
 				translateX: 0.0,
-				translateY: -0.3,
-				textureRotation: 90
+				translateY: .0,
+				textureRotation: 0,
+				specialTextureCoeff: 1.2
 			},
 			boxSix: {
 				width: .5,
-				height: .5,
-				texture: 1.0,
+				height: .33,
+				texture: .5,
 				scale: 1.0,
 				translateX: 0.0,
-				translateY: -0.2,
-				textureRotation: 270
+				translateY: .0,
+				textureRotation: 0,
+				specialTextureCoeff: 1.2
 			}
 		}
 
-		const sceneThree = {
-			title: 'Scene Three',
+		const sceneOneA = {
+			title: 'Scene One A',
 			boxOne: {
 				width: 1,
 				height: 1,
-				texture: 1.0,
+				texture: 0.0,
 				scale: 1.0,
 				translateX: 0.0,
 				translateY: 0.0,
@@ -119,47 +125,64 @@ class Starter {
 			cameraSpeed : {
 				cloudNormal: .03,
 				cloudReverse: .03
-			}
-			
+			}	
 		}
 
-		const sceneOne = {
-			title: 'Scene one',
+		const sceneOneB = {
+			title: 'Scene one B',
 			boxOne: {
 				width: .5,
-				height: .5,
+				height: .333333,
 				texture: 1.0,
 				scale: 1.0,
-				translateX: 0.5,
-				translateY: 0.2,
-				textureRotation: 270
+				translateX: 0.2,
+				translateY: 0.5,
+				textureRotation: 0
 			},
 			boxTwo: {
 				width: .5,
-				height: .5,
+				height: .33333,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: -0.5,
-				translateY: 0.2,
+				translateY: 0.3,
 				textureRotation: 90
 			},
 			boxThree: {
 				width: .5,
-				height: .5,
+				height: .33333,
 				texture: 1.0,
 				scale: 1.0,
 				translateX: 0.0,
-				translateY: -0.3,
+				translateY: .0,
 				textureRotation: 90
 			},
 			boxFour: {
 				width: .5,
-				height: .5,
+				height: .333333,
 				texture: 1.0,
 				scale: 1.0,
+				translateX: -0.15,
+				translateY: -.2,
+				textureRotation: 200
+			},
+			boxFive: {
+				width: .5,
+				height: .333333,
+				texture: 0.0,
+				scale: 1.0,
 				translateX: 0.0,
-				translateY: -0.2,
-				textureRotation: 270
+				translateY: .0,
+				textureRotation: 0
+			},
+			boxSix: {
+				width: .5,
+				height: .333333,
+				texture: .5,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: .0,
+				textureRotation: 0
 			},
 			cameraSpeed : {
 				cloudNormal: .03,
@@ -225,8 +248,39 @@ class Starter {
 				}
 			}
 		}
+
+		const sceneThree = {
+			title: 'Scene Three',
+			boxOne: {
+				width: 1,
+				height: 1,
+				texture: 1.5,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: 0.0,
+				textureRotation: 0,
+				specialTextureCoeff: 1.2
+			},
+			cameraRotation: {
+				cloudNormal: {
+					rotation: false,
+					axis: 'z',
+					speed: -.01
+				},
+				cloudReverse: {
+					rotation: false,
+					axis: 'z',
+					speed: .01
+				}
+			},
+			cameraSpeed : {
+				cloudNormal: .03,
+				cloudReverse: .03
+			}
+			
+		}
 		
-		scenePresets.push(sceneThree, sceneTwo, sceneOne);
+		scenePresets.push(sceneOneA, sceneOneB, sceneTwo, sceneThree);
 		
 		this.sceneSelector = new SceneSelector(scenePresets, sceneInit);
 		container.appendChild(this.sceneSelector.containerEl);

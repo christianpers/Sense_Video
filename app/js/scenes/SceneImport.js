@@ -13,6 +13,8 @@ export default class SceneImport{
 
         this.FBO = FBO;
 
+        this.rotWorldMatrix;
+
 	}
 
 	onLoaded(geometry, materials){
@@ -58,6 +60,10 @@ export default class SceneImport{
 		
 		this.mesh = new THREE.Mesh( geometry, material );
 
+		const center = {x: 0, y: 0, z: 0};
+		// this.mesh.position.set( center.x, center.y, center.z );
+		// this.mesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( -center.x, -center.y, -center.z ) );
+
 		var light = new THREE.AmbientLight( 0xFFFFFF, 1.0 ); // soft white light
 		this.scene.add( light );
 
@@ -83,24 +89,76 @@ export default class SceneImport{
 		this.render = true;
 	}
 
-	update(renderer, scene, pos){
+// Rotate an object around an arbitrary axis in world space       
+// function rotateAroundWorldAxis(object, axis, radians) {
+//     rotWorldMatrix = new THREE.Matrix4();
+//     rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+//     // old code for Three.JS pre r54:
+//     //  rotWorldMatrix.multiply(object.matrix);
+//     // new code for Three.JS r55+:
+//     rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+//     object.matrix = rotWorldMatrix;
+
+//     // old code for Three.js pre r49:
+//     // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+//     // old code for Three.js pre r59:
+//     // object.rotation.setEulerFromRotationMatrix(object.matrix);
+//     // code for r59+:
+//     object.rotation.setFromRotationMatrix(object.matrix);
+// }
+	rotateAroundWorldAxis(object, axis, radians) {
+
+		this.rotWorldMatrix = new THREE.Matrix4();
+		this.rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+		this.rotWorldMatrix.multiply(object.matrix);
+
+		object.matrix = this.rotWorldMatrix;
+
+		object.rotation.setFromRotationMatrix(object.matrix);
+
+	}
+
+	update(renderer, scene, pos, updateCube){
+
+		console.log('update');
 
 		if (!this.render) return;
 
-		const translate = 10;
+		const translate = 3;
 
-		this.rotation += 0.5;
-		this.mesh.translate.z += translate;
-		// this.mesh.translate.y += translate
+		this.rotation = 0.5;
+
+		const yAxis = new THREE.Vector3(0,1,0);
+
+		this.rotateAroundWorldAxis(this.mesh, yAxis, this.rotation * Math.PI / 180);
+		
+		// this.mesh.position.z += translate;
+		// this.mesh.position.x = translate;
+		// this.mesh.position.y += translate;
+		// this.mesh.translate.z += translate;
+		// this.mesh.translate.y += translate;
+		// this.mesh.translate.x += translate;
 		// this.mesh.center();
-		this.mesh.rotation.y = this.rotation * Math.PI / 180;
+		// this.mesh.rotation.y = this.rotation * Math.PI / 180;
+		
+		
 		// this.mesh.translate.x -= translate;
-		this.mesh.translate.z -= translate;
+		// this.mesh.translate.z -= translate;
+		// this.mesh.translate.y -= translate;
+		// this.mesh.translate.x -= translate;
+		// this.mesh.position.z -= translate;
+		// this.mesh.position.x -= translate;
+		// this.mesh.position.z -= translate;
 
 		// this.pivot.rotation.y += 0.05;
 
-		this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
-		this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);
+		if (updateCube) {
+			this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
+			this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);
+		}
+		
 
 
 	}

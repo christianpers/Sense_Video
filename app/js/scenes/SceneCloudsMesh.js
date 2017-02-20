@@ -11,8 +11,7 @@ export default class SceneCloudsMesh{
 		const boxUniforms = this.getInitShaderUniforms(sceneVals, sceneInitObj);
 		// const boxUniforms = this.getShaderUniforms(sceneVals);
 
-		console.log(boxUniforms);
-
+	
 		const textureUniforms = {};
 		textureUniforms.uTexture = {value: FBO.texture};
 		textureUniforms.uTextureReverse = {value: FBOReverse.texture};
@@ -79,7 +78,10 @@ export default class SceneCloudsMesh{
 
 			const strRotation = t + 'RotDegree';
 			initUniforms[strRotation] = {value: 0};
-		})
+
+			const textureCoeffStr = t + 'Coeff';
+			initUniforms[textureCoeffStr] = {value: 0};
+		});
 
 
 		const uniforms = {};
@@ -111,6 +113,12 @@ export default class SceneCloudsMesh{
 
 			const strRotation = t + 'RotDegree';
 			uniforms[strRotation] = {value: sceneVals[t].rotation};
+
+			if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+				const textureCoeffStr = t + 'Coeff';
+				uniforms[textureCoeffStr] = {value: sceneVals[t].textureCoeff};
+			}
+			
 
 		});
 
@@ -150,8 +158,10 @@ export default class SceneCloudsMesh{
 			const strRotation = t + 'RotDegree';
 			uniforms[strRotation] = {value: sceneVals[t].rotation};
 
-
-
+			if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+				const textureCoeffStr = t + 'Coeff';
+				uniforms[textureCoeffStr] = {value: sceneVals[t].textureCoeff};
+			}
 	
 		});
 
@@ -169,6 +179,7 @@ export default class SceneCloudsMesh{
 		Object.keys(boxUniforms).forEach(t => {
 
 			this.quad.material.uniforms[t].value = boxUniforms[t].value;
+
 		});
 
 		this.quad.material.uniforms.introVal.value = introVal;
