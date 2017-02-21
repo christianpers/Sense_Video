@@ -25,12 +25,10 @@ export default class SceneCloudsMesh{
 		introUniforms.introVal = {value: 1.0};
 
 		const randomUniforms = {};
-		randomUniforms.randomVal = {value: Math.random()};
+		randomUniforms.randomVal = {value: Math.sin(Date.now())};
 
 		const uniformsObj = Object.assign({}, boxUniforms, textureUniforms, resUniforms, introUniforms, randomUniforms);
 
-
-	
 		var material = new THREE.ShaderMaterial({
 			uniforms: uniformsObj,
 			vertexShader: require("../../shaders/cloud.vert"),
@@ -183,7 +181,7 @@ export default class SceneCloudsMesh{
 		});
 
 		this.quad.material.uniforms.introVal.value = introVal;
-		this.quad.material.uniforms.randomVal.value = Math.random() -.5;
+		this.quad.material.uniforms.randomVal.value = {value: Math.sin(Date.now())};
 
 		
 	}

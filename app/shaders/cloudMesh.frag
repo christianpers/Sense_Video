@@ -92,6 +92,8 @@ void main() {
 	vec2 uv = gl_FragCoord.xy / iRes.xy;
 
 	vec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);
+
+	vec4 purple = vec4(242.0/255.0, 29.0/255.0, 199.0/255.0, 1.0) * vec4(.67);
 	
 	if ((vUv.x >= boxOneX && vUv.x <= (boxOneX + boxOneW)) && (vUv.y >= boxOneY && vUv.y <= (boxOneY + boxOneH))){
 
@@ -108,16 +110,22 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxOneTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxOneScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxOneTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxOneScale);
+
 		} else if (boxOneTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
 			
 		} else if (boxOneTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
-			finalColor = (girlColor - (cloudColor - vec4(boxOneCoeff/12.0))) * vec4(40.0);
+			finalColor = (girlColor - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);
 		}
 	} 
 	else if ((vUv.x >= boxTwoX && vUv.x <= (boxTwoX + boxTwoW)) && (vUv.y >= boxTwoY && vUv.y <= (boxTwoY + boxTwoH))){
@@ -135,12 +143,19 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxTwoTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxTwoCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxTwoScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxTwoTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxTwoCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxTwoScale);
+
 		} else if (boxTwoTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
-		} else if (boxOneTexture == 1.5) {
+			
+		} else if (boxTwoTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
 			finalColor = (girlColor - (cloudColor - vec4(boxTwoCoeff/12.0))) * vec4(40.0);
@@ -161,11 +176,18 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxThreeTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxThreeCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxThreeScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxThreeTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxThreeCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxThreeScale);
+
 		} else if (boxThreeTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
+			
 		} else if (boxThreeTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
@@ -186,11 +208,18 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxFourTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxFourCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxFourScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxFourTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxFourCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxFourScale);
+
 		} else if (boxFourTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
+			
 		} else if (boxFourTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
@@ -212,11 +241,18 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxFiveTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxFiveCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxFiveScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxFiveTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxFiveCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxFiveScale);
+
 		} else if (boxFiveTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
+			
 		} else if (boxFiveTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);
@@ -237,11 +273,18 @@ void main() {
 		uv = uv + vec2(.5, .5);
 
 		if (boxSixTexture == 0.0) {
-			finalColor = texture2D(uTexture, uv);
+			vec4 cloudColor = texture2D(uTexture, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxSixCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxSixScale);
+			// finalColor = texture2D(uTexture, uv);
 		} else if (boxSixTexture == 0.5) {
-			finalColor = texture2D(uTextureReverse, uv);
+			vec4 cloudColor = texture2D(uTextureReverse, uv);
+			vec4 fuckedColor = (purple - (cloudColor - vec4(boxSixCoeff))) * vec4(40.0);
+			finalColor = mix(cloudColor, fuckedColor, boxSixScale);
+
 		} else if (boxSixTexture == 1.0) {
 			finalColor = texture2D(uTextureGirl, uv);
+			
 		} else if (boxSixTexture == 1.5) {
 			vec4 girlColor = texture2D(uTextureGirl, uv);
 			vec4 cloudColor = texture2D(uTexture, uv);

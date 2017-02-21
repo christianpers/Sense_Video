@@ -96,7 +96,19 @@ class Starter {
 				translateY: .0,
 				textureRotation: 0,
 				specialTextureCoeff: 1.2
-			}
+			},
+			boxOverlay: {
+				x: .1,
+				y: .1,
+				width: .8,
+				height: .8,
+				texture: 0.0,
+				scale: 0.0,
+				translateX: 0.0,
+				translateY: 0.0,
+				textureRotation: 0,
+				specialTextureCoeff: .2
+			},
 		}
 
 		const sceneOneA = {
@@ -105,10 +117,11 @@ class Starter {
 				width: 1,
 				height: 1,
 				texture: 0.0,
-				scale: 1.0,
+				scale: 0.4,
 				translateX: 0.0,
 				translateY: 0.0,
-				textureRotation: 0
+				textureRotation: 0,
+				specialTextureCoeff: .6
 			},
 			cameraRotation: {
 				cloudNormal: {
@@ -170,7 +183,7 @@ class Starter {
 				width: .5,
 				height: .333333,
 				texture: 0.0,
-				scale: 1.0,
+				scale: 0.0,
 				translateX: 0.0,
 				translateY: .0,
 				textureRotation: 0
@@ -179,10 +192,11 @@ class Starter {
 				width: .5,
 				height: .333333,
 				texture: .5,
-				scale: 1.0,
+				scale: .0,
 				translateX: 0.0,
 				translateY: .0,
-				textureRotation: 0
+				textureRotation: 0,
+				specialTextureCoeff: .2
 			},
 			cameraSpeed : {
 				cloudNormal: .03,
@@ -208,31 +222,34 @@ class Starter {
 				width: 1,
 				height: .5,
 				texture: 0.0,
-				scale: 1.0,
+				scale: 0.0,
 				translateX: 0.0,
 				translateY: 0.0,
-				textureRotation: 0
+				textureRotation: 0,
+				specialTextureCoeff: .4
 			},
 			boxTwo: {
 				width: .5,
 				height: .5,
 				texture: .5,
-				scale: 1.0,
+				scale: 0.5,
 				translateX: 0.0,
 				translateY: 0.0,
-				textureRotation: 0
+				textureRotation: 0,
+				specialTextureCoeff: .4
 			},
 			boxThree: {
 				width: .5,
 				height: .5,
-				texture: 1.0,
-				scale: 1.1,
+				texture: 1.5,
+				scale: 0.4,
 				translateX: 0.0,
 				translateY: 0.0,
-				textureRotation: 0
+				textureRotation: 0,
+				specialTextureCoeff: .4
 			},
 			cameraSpeed : {
-				cloudNormal: .2,
+				cloudNormal: .05,
 				cloudReverse: .1
 			},
 			cameraRotation: {
@@ -259,7 +276,19 @@ class Starter {
 				translateX: 0.0,
 				translateY: 0.0,
 				textureRotation: 0,
-				specialTextureCoeff: 1.2
+				specialTextureCoeff: .2
+			},
+			boxOverlay: {
+				x: .1,
+				y: .1,
+				width: .8,
+				height: .8,
+				texture: 1.5,
+				scale: 0.5,
+				translateX: 0.2,
+				translateY: 0.0,
+				textureRotation: 20,
+				specialTextureCoeff: .2
 			},
 			cameraRotation: {
 				cloudNormal: {
@@ -276,11 +305,41 @@ class Starter {
 			cameraSpeed : {
 				cloudNormal: .03,
 				cloudReverse: .03
+			}	
+		}
+
+		const sceneFour = {
+			title: 'Scene Four',
+			boxOne: {
+				width: 1,
+				height: 1,
+				texture: 1.0,
+				scale: 1.0,
+				translateX: 0.0,
+				translateY: 0.0,
+				textureRotation: 0,
+				specialTextureCoeff: 2
+			},
+			cameraRotation: {
+				cloudNormal: {
+					rotation: false,
+					axis: 'z',
+					speed: -.1
+				},
+				cloudReverse: {
+					rotation: false,
+					axis: 'z',
+					speed: .1
+				}
+			},
+			cameraSpeed : {
+				cloudNormal: .03,
+				cloudReverse: .03
 			}
-			
+
 		}
 		
-		scenePresets.push(sceneOneA, sceneOneB, sceneTwo, sceneThree);
+		scenePresets.push(sceneOneA, sceneOneB, sceneTwo, sceneThree, sceneFour);
 		
 		this.sceneSelector = new SceneSelector(scenePresets, sceneInit);
 		container.appendChild(this.sceneSelector.containerEl);

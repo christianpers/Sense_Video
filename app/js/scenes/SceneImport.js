@@ -122,7 +122,6 @@ export default class SceneImport{
 
 	update(renderer, scene, pos, updateCube){
 
-		console.log('update');
 
 		if (!this.render) return;
 

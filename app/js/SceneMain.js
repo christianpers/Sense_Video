@@ -17,7 +17,7 @@ export default class SceneMain {
 
 		this.sceneSelector = sceneSelector;
 
-		this.introDuration = 25000;
+		this.introDuration = 250;
 		this.introStartTime = Date.now();
 
 		this.cubeCameraUpdateInterval = 1000;
@@ -81,7 +81,8 @@ export default class SceneMain {
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
 		this.sceneImport = new SceneImport(this.FBO);
-		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
+		console.log(sceneVals.overlay);
+		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
 		this.start_time = Date.now();
 
@@ -196,8 +197,12 @@ export default class SceneMain {
 				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
-				vals.flipX = sceneItem[t].flipX;
-				vals.flipY = sceneItem[t].flipY;
+				vals.translateX = sceneItem[t].translateX;
+				vals.translateY = sceneItem[t].translateY;
+				vals.rotation = sceneItem[t].textureRotation;
+				if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
+					vals.textureCoeff = sceneItem[t].specialTextureCoeff;
+				}
 
 				ret.overlay[t] = vals;
 			}
@@ -236,6 +241,9 @@ export default class SceneMain {
 
 
 		this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
+		if (this.currentSceneSettings.renderOverlay) {
+			this.sceneCloudsOverlay.update(sceneVals.overlay);
+		}
 
 		// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
 		var position = 1000;
