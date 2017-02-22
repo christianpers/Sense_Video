@@ -336,7 +336,6 @@ class Starter {
 				cloudNormal: .03,
 				cloudReverse: .03
 			}
-
 		}
 		
 		scenePresets.push(sceneOneA, sceneOneB, sceneTwo, sceneThree, sceneFour);

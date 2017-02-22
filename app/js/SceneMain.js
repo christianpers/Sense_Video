@@ -2,6 +2,7 @@ import SceneClouds from './scenes/SceneClouds';
 import SceneCloudsMesh from './scenes/SceneCloudsMesh';
 import SceneImport from './scenes/SceneImport';
 import SceneCloudsOverlay from './scenes/SceneCloudsOverlay';
+import Timeline from '../timeline';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -24,6 +25,8 @@ export default class SceneMain {
 		this.cubeCameraLastUpdate = Date.now();
 
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
+
+
 
 		this.FBO = new THREE.WebGLRenderTarget(
 							window.innerWidth, 
@@ -81,7 +84,6 @@ export default class SceneMain {
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
 		this.sceneImport = new SceneImport(this.FBO);
-		console.log(sceneVals.overlay);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
 		this.start_time = Date.now();
@@ -151,12 +153,47 @@ export default class SceneMain {
 		this.doRender = true;
 	}
 
+	getSceneFromTimeline() {
+
+		if (!this.start_time) {
+			return Timeline.init.scene;
+		}
+
+		const now = Date.now();
+		const startDelta = (now - this.start_time)/1000;
+
+		for (var i=0; i< Timeline.schedules.length;i++){
+			if (startDelta <= Timeline.schedules[i].time){
+				return Timeline.schedules[i].scene;
+			}
+		}
+
+		return Timeline.schedules[Timeline.schedules.length-1].scene;
+	}
+
 
 	getCurrentActiveSceneVals() {
 
 		const ret = {overlay: {}, grid: {}};
 
-		const sceneItem = this.sceneSelector.currentItem;
+		// if (Timeline.active) {
+		const scene = this.getSceneFromTimeline();
+
+
+		let sceneItem = this.sceneSelector.items[scene];
+
+
+
+		// console.log(sceneItem);
+
+
+		// } else {
+		if (!sceneItem || !Timeline.active) {
+			sceneItem = this.sceneSelector.currentItem;
+		}
+		
+		// }
+		
 
 		let currentX = 0;
 		let currentY = 0;
@@ -233,12 +270,7 @@ export default class SceneMain {
 			introRemain = 0;
 		}
 
-
-
-		// super.update();
-
 		const sceneVals = this.getCurrentActiveSceneVals();
-
 
 		this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
 		if (this.currentSceneSettings.renderOverlay) {

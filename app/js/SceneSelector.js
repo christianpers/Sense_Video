@@ -16,6 +16,7 @@ export default class SceneSelector{
 
 			var itemObj = items[i];
 			var item = new SceneSelectorItem(this.containerEl, this.onTypeClick, this, itemObj);
+			this.items.push(itemObj);
 		}
 
 	}
