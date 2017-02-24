@@ -9,7 +9,7 @@ export default class SceneMain {
 
 		this.increase = Math.PI * 2 / 500;
 		this.counter = 0;
-		
+
 		this.mouseX = 0;
 		this.mouseY = 0;
 
@@ -29,58 +29,58 @@ export default class SceneMain {
 
 
 		this.FBO = new THREE.WebGLRenderTarget(
-							window.innerWidth, 
-							window.innerHeight, 
+							window.innerWidth,
+							window.innerHeight,
 							{
-								minFilter: THREE.LinearFilter, 
-								magFilter: THREE.NearestFilter, 
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
 								format: THREE.RGBFormat
 							}
 						);
 
 		this.FBOStill = new THREE.WebGLRenderTarget(
-							window.innerWidth, 
-							window.innerHeight, 
+							window.innerWidth,
+							window.innerHeight,
 							{
-								minFilter: THREE.LinearFilter, 
-								magFilter: THREE.NearestFilter, 
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
 								format: THREE.RGBFormat
 							}
 						);
 
 		this.FBOReverse = new THREE.WebGLRenderTarget(
-							window.innerWidth, 
-							window.innerHeight, 
+							window.innerWidth,
+							window.innerHeight,
 							{
-								minFilter: THREE.LinearFilter, 
-								magFilter: THREE.NearestFilter, 
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
 								format: THREE.RGBFormat
 							}
 						);
 
 		this.FBOGirl = new THREE.WebGLRenderTarget(
-							window.innerWidth, 
-							window.innerHeight, 
+							window.innerWidth,
+							window.innerHeight,
 							{
-								minFilter: THREE.LinearFilter, 
-								magFilter: THREE.NearestFilter, 
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
 								format: THREE.RGBFormat
 							}
 						);
 
 		this.FBOBg = new THREE.WebGLRenderTarget(
-							window.innerWidth, 
-							window.innerHeight, 
+							window.innerWidth,
+							window.innerHeight,
 							{
-								minFilter: THREE.LinearFilter, 
-								magFilter: THREE.NearestFilter, 
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
 								format: THREE.RGBFormat
 							}
 						);
 
 		const sceneVals = this.getCurrentActiveSceneVals();
 
-		
+
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
 		this.sceneImport = new SceneImport(this.FBO);
@@ -93,9 +93,9 @@ export default class SceneMain {
 
 		this.container = container;
 
-		
+
 		this.doRender = false;
-		
+
 		this.container.style.opacity = 1;
 
 		this.createBgCanvas();
@@ -103,17 +103,17 @@ export default class SceneMain {
 		this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.camera.position.z = this.sceneClouds.totDepth;
 		this.camera.position.y = -40;
-		
+
 		this.reverseCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.reverseCamera.position.z = 0;
 		this.reverseCamera.position.y = -40;
-		
+
 		this.importCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.importCamera.position.z = 10;
 		this.importCamera.position.y = 14;
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
-		
+
 		this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: false } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		this.renderer.autoClear = false;
@@ -191,9 +191,9 @@ export default class SceneMain {
 		if (!sceneItem || !Timeline.active) {
 			sceneItem = this.sceneSelector.currentItem;
 		}
-		
+
 		// }
-		
+
 
 		let currentX = 0;
 		let currentY = 0;
@@ -214,7 +214,7 @@ export default class SceneMain {
 				if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
 					vals.textureCoeff = sceneItem[t].specialTextureCoeff;
 				}
-				
+
 				currentX += vals.w;
 				if (currentX >= 0.99) {
 
@@ -286,10 +286,10 @@ export default class SceneMain {
 			this.cubeCameraLastUpdate = now;
 		} else {
 			this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
-			
+
 		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
 		}
-		
+
 	}
 
 	render() {
@@ -297,14 +297,14 @@ export default class SceneMain {
 		if (!this.doRender) return;
 
 		const now = Date.now();
-		
+
 		var position = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudNormal ) % this.sceneClouds.totDepth;
 
 		this.camera.position.z = - position + this.sceneClouds.totDepth;
 		if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation){
 			this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
 		}
-		
+
 		var reversePos = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudReverse ) % this.sceneClouds.totDepth;
 
 		var reversePos = reversePos;
@@ -338,7 +338,7 @@ export default class SceneMain {
 			this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
 			this.renderer.render( this.sceneCloudsOverlay.scene, this.orthoCamera );
 		}
-		
+
 
 	}
 

@@ -1,5 +1,5 @@
 export default class SceneImport{
-	
+
 	constructor(FBO){
 
 		this.scene = new THREE.Scene();
@@ -41,7 +41,7 @@ export default class SceneImport{
 				"uTexCube" : { type: "t", value: this.cubeCamera.renderTarget.texture },
 				"uTextureBg" : {value: this.FBO.texture}
 
-				
+
 			},
 			vertexShader: require("../../shaders/import.vert"),
 			fragmentShader: require("../../shaders/import.frag")
@@ -51,13 +51,13 @@ export default class SceneImport{
 		// var material = new THREE.MeshBasicMaterial( {
 		// 			envMap: this.cubeCamera.renderTarget.texture
 		// 		} );
-		
+
 		// var material = new THREE.ShaderMaterial({
 		// 	vertexShader: require("../../shaders/import.vert"),
 		// 	fragmentShader: require("../../shaders/import.frag")
 		// });
 
-		
+
 		this.mesh = new THREE.Mesh( geometry, material );
 
 		const center = {x: 0, y: 0, z: 0};
@@ -85,11 +85,11 @@ export default class SceneImport{
 
 		this.scene.add(this.mesh);
 
-	
+
 		this.render = true;
 	}
 
-// Rotate an object around an arbitrary axis in world space       
+// Rotate an object around an arbitrary axis in world space
 // function rotateAroundWorldAxis(object, axis, radians) {
 //     rotWorldMatrix = new THREE.Matrix4();
 //     rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
@@ -132,7 +132,7 @@ export default class SceneImport{
 		const yAxis = new THREE.Vector3(0,1,0);
 
 		this.rotateAroundWorldAxis(this.mesh, yAxis, this.rotation * Math.PI / 180);
-		
+
 		// this.mesh.position.z += translate;
 		// this.mesh.position.x = translate;
 		// this.mesh.position.y += translate;
@@ -141,8 +141,8 @@ export default class SceneImport{
 		// this.mesh.translate.x += translate;
 		// this.mesh.center();
 		// this.mesh.rotation.y = this.rotation * Math.PI / 180;
-		
-		
+
+
 		// this.mesh.translate.x -= translate;
 		// this.mesh.translate.z -= translate;
 		// this.mesh.translate.y -= translate;
@@ -157,7 +157,7 @@ export default class SceneImport{
 			this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
 			this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);
 		}
-		
+
 
 
 	}
