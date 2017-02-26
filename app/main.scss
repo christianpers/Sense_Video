@@ -55,6 +55,17 @@ h1,h2,h3,h4,h5,text,p {
     	font-size: 12px;
 
     }
+
+    .timeline-toggler{
+    	background: rgba(255,255,255,.6);
+    	color: black;
+    	border: 2px solid rgba(220, 20, 100, .8);
+    	font-weight: 700;
+    	position: fixed;
+    	left: 20px;
+    	
+
+    }
 }
 
 .mainLoader{

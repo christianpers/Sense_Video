@@ -54,13 +54,9 @@
 
 	var _SceneMain2 = _interopRequireDefault(_SceneMain);
 
-	var _Main = __webpack_require__(14);
+	var _SceneSelector = __webpack_require__(17);
 
-	var _Main2 = _interopRequireDefault(_Main);
-
-	var _Data = __webpack_require__(26);
-
-	var _Data2 = _interopRequireDefault(_Data);
+	var _SceneSelector2 = _interopRequireDefault(_SceneSelector);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78,7 +74,6 @@
 			canvas.className = "Main-Canvas";
 			canvas.id = 'gl';
 			var container = document.body.querySelector('.container');
-			container.appendChild(canvas);
 
 			function transformProp() {
 				var testEl = document.createElement('div');
@@ -102,7 +97,710 @@
 
 			if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-			this.sceneMain = new _SceneMain2.default(container);
+			var scenePresets = [];
+
+			var sceneInit = {
+				boxOne: {
+					width: .5,
+					height: .33,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: 0.5,
+					translateY: 0.2,
+					textureRotation: 90,
+					specialTextureCoeff: 1.2
+				},
+				boxTwo: {
+					width: .5,
+					height: .33,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: -0.5,
+					translateY: 0.2,
+					textureRotation: 90,
+					specialTextureCoeff: 1.2
+				},
+				boxThree: {
+					width: .5,
+					height: .33,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: -0.3,
+					textureRotation: 90,
+					specialTextureCoeff: 1.2
+				},
+				boxFour: {
+					width: .5,
+					height: .33,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: -0.2,
+					textureRotation: 270,
+					specialTextureCoeff: 1.2
+				},
+				boxFive: {
+					width: .5,
+					height: .33,
+					texture: 0.0,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: .0,
+					textureRotation: 0,
+					specialTextureCoeff: 1.2
+				},
+				boxSix: {
+					width: .5,
+					height: .33,
+					texture: .5,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: .0,
+					textureRotation: 0,
+					specialTextureCoeff: 1.2
+				},
+				boxOverlay: {
+					x: .1,
+					y: .1,
+					width: .8,
+					height: .8,
+					texture: 0.0,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .2
+				}
+			};
+
+			var sceneOneA = {
+				title: 'Scene One A',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 0.0,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+
+				cameraSpeed: {
+					cloudNormal: .05,
+					cloudReverse: .01
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.002
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .001
+					}
+				}
+			};
+			var sceneOneB = {
+				title: 'Scene One B',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 0.0,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 180,
+					specialTextureCoeff: 1.5
+				},
+
+				cameraSpeed: {
+					cloudNormal: .05,
+					cloudReverse: .01
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.002
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .001
+					}
+				}
+			};
+			var sceneOneC = {
+				title: 'Scene One C',
+				boxOne: {
+					width: 1.0,
+					height: 0.5,
+					texture: .5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .4
+				},
+
+				boxTwo: {
+					width: 1.0,
+					height: 0.5,
+					texture: 0.0,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 180,
+					specialTextureCoeff: .2
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneD = {
+				title: 'Scene One D',
+				boxOne: {
+					width: 1.0,
+					height: 0.5,
+					texture: 0.0,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 180,
+					specialTextureCoeff: .2
+				},
+
+				boxTwo: {
+					width: 1.0,
+					height: 0.5,
+					texture: .5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .4
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneE = {
+				title: 'Scene One E',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: .5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 180,
+					specialTextureCoeff: .4
+				},
+
+				boxOverlay: {
+					x: .05,
+					y: .1,
+					width: .9,
+					height: .8,
+					texture: 0.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneF = {
+				title: 'Scene One F',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 1.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: 0.2
+				},
+
+				boxOverlay: {
+					x: .05,
+					y: .1,
+					width: .9,
+					height: .8,
+					texture: 0.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneG = {
+				title: 'Scene One G',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 1.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: 0.2
+				},
+
+				boxOverlay: {
+					x: .05,
+					y: .1,
+					width: .9,
+					height: .8,
+					texture: 1.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 10,
+					specialTextureCoeff: .7
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneH = {
+				title: 'Scene One H',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 1.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: -0.4,
+					textureRotation: 0.0,
+					specialTextureCoeff: .4
+				},
+				boxOverlay: {
+					x: .05,
+					y: .1,
+					width: .9,
+					height: .8,
+					texture: 1.5,
+					scale: 0.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: -10,
+					specialTextureCoeff: .7
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneI = {
+				title: 'Scene one I',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 0.0,
+					scale: 0.1,
+					translateX: 1.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: 0.2
+				},
+
+				boxOverlay: {
+					x: .05,
+					y: .1,
+					width: .9,
+					height: .8,
+					texture: 0.0,
+					scale: 0.1,
+					translateX: 0.0,
+					translateY: 1.0,
+					textureRotation: 180,
+					specialTextureCoeff: .2
+				},
+
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			var sceneOneJ = {
+				title: 'Scene One J',
+				boxOne: {
+					width: 1.0,
+					height: 1.0,
+					texture: 0.0,
+					scale: 0.1,
+					translateX: 0.2,
+					translateY: -0.3,
+					textureRotation: 50,
+					specialTextureCoeff: .2
+				},
+				boxOverlay: {
+					x: .1,
+					y: .1,
+					width: .8,
+					height: .8,
+					texture: 0.2,
+					scale: 0.0,
+					translateX: 0.2,
+					translateY: -0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+				cameraSpeed: {
+					cloudNormal: .01,
+					cloudReverse: .01
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.002
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .001
+					}
+				}
+			};
+
+			var sceneOneK = {
+				title: 'Scene one K',
+				boxOne: {
+					width: 1.0,
+					height: 0.5,
+					texture: 0.0,
+					scale: 0.15,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 280,
+					specialTextureCoeff: .2
+				},
+				boxTwo: {
+					width: 1.0,
+					height: 0.5,
+					texture: 1.0,
+					scale: 0.15,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 270,
+					specialTextureCoeff: .2
+				},
+				boxOverlay: {
+					x: .05,
+					y: .05,
+					width: 0.9,
+					height: 0.9,
+					texture: 0.2,
+					scale: 0.0,
+					translateX: 0.2,
+					translateY: -0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+				cameraSpeed: {
+					cloudNormal: .01,
+					cloudReverse: .01
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.002
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .001
+					}
+				}
+			};
+
+			var sceneTwo = {
+				title: 'Scene one B',
+				boxOne: {
+					width: 1.0,
+					height: 0.5,
+					texture: 0.0,
+					scale: 0.15,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 280,
+					specialTextureCoeff: .2
+				},
+				boxTwo: {
+					width: 1.0,
+					height: 0.5,
+					texture: 1.0,
+					scale: 0.15,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 270,
+					specialTextureCoeff: .2
+				},
+				boxOverlay: {
+					x: .05,
+					y: .05,
+					width: 0.9,
+					height: 0.9,
+					texture: 0.2,
+					scale: 0.0,
+					translateX: 0.2,
+					translateY: -0.0,
+					textureRotation: 0.0,
+					specialTextureCoeff: .2
+				},
+				cameraSpeed: {
+					cloudNormal: .01,
+					cloudReverse: .01
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.002
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .001
+					}
+				}
+			};
+
+			var sceneThree = {
+				title: 'Scene Three',
+				boxOne: {
+					width: 1,
+					height: 1,
+					texture: 1.5,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .2
+				},
+				boxOverlay: {
+					x: .1,
+					y: .1,
+					width: .8,
+					height: .8,
+					texture: 1.5,
+					scale: 0.5,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 20,
+					specialTextureCoeff: .2
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				},
+				cameraSpeed: {
+					cloudNormal: .03,
+					cloudReverse: .03
+				}
+			};
+
+			var sceneFour = {
+				title: 'Scene Four',
+				boxOne: {
+					width: 1,
+					height: 1,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: 2
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: false,
+						axis: 'z',
+						speed: -.1
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .1
+					}
+				},
+				cameraSpeed: {
+					cloudNormal: .03,
+					cloudReverse: .03
+				}
+			};
+
+			var sceneFive = {
+				title: 'Scene five',
+				boxOne: {
+					width: .5,
+					height: 1.0,
+					texture: 1.0,
+					scale: 1.0,
+					translateX: 0.2,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .4
+				},
+				boxTwo: {
+					width: .5,
+					height: 1.0,
+					texture: .5,
+					scale: 0.5,
+					translateX: 0.0,
+					translateY: 0.0,
+					textureRotation: 0,
+					specialTextureCoeff: .4
+				},
+				cameraSpeed: {
+					cloudNormal: .1,
+					cloudReverse: .1
+				},
+				cameraRotation: {
+					cloudNormal: {
+						rotation: true,
+						axis: 'z',
+						speed: -.01
+					},
+					cloudReverse: {
+						rotation: false,
+						axis: 'z',
+						speed: .01
+					}
+				}
+			};
+
+			scenePresets.push(sceneOneA, sceneOneB, sceneOneC, sceneOneD, sceneOneE, sceneOneF, sceneOneG, sceneOneH, sceneOneI, sceneOneJ, sceneOneK, sceneTwo, sceneThree, sceneFour, sceneFive);
+
+			this.sceneSelector = new _SceneSelector2.default(scenePresets, sceneInit);
+			container.appendChild(this.sceneSelector.containerEl);
+
+			this.sceneMain = new _SceneMain2.default(container, this.sceneSelector);
 			// this.main = new Main(new Data());
 
 			this.onResize();
@@ -110,10 +808,26 @@
 				_this.onResize();
 			});
 
-			this.reqFrame();
+			this.createAudio();
 		}
 
 		_createClass(Starter, [{
+			key: 'createAudio',
+			value: function createAudio() {
+
+				this.audioEl = document.createElement('audio');
+				this.audioEl.src = 'assets/audio.mp3';
+				this.audioEl.addEventListener('playing', this.onPlaying.bind(this));
+				this.audioEl.play();
+			}
+		}, {
+			key: 'onPlaying',
+			value: function onPlaying() {
+				console.log('sdfsdfsdfs');
+
+				this.reqFrame();
+			}
+		}, {
 			key: 'reqFrame',
 			value: function reqFrame() {
 				var _this2 = this;
@@ -179,7 +893,7 @@
 
 
 	// module
-	exports.push([module.id, "html, body {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  position: static;\n  background: #fff; }\n\nbody {\n  height: 100%; }\n\n* {\n  box-sizing: border-box; }\n\na {\n  text-decoration: none;\n  color: rgba(0, 0, 0, 0.8); }\n\nhtml {\n  -webkit-text-size-adjust: none;\n  -moz-text-size-adjust: none;\n  text-size-adjust: none; }\n\nh1, h2, h3, h4, h5, text, p {\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-webkit-font-smoothing: antialiased;\n  font-family: Arial; }\n\n.mainLoader {\n  position: absolute;\n  z-index: 10;\n  width: 200px;\n  height: 200px;\n  top: 50%;\n  left: 50%;\n  margin-top: -100px;\n  margin-left: -100px; }\n\n.logo {\n  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);\n  color: transparent;\n  font-family: Arial;\n  font-weight: lighter;\n  position: fixed;\n  right: 14px;\n  top: 6px;\n  z-index: 20;\n  margin: 0;\n  font-size: 32px;\n  opacity: 1; }\n  @media only screen and (max-width: 767px) {\n    .logo {\n      top: 10px; } }\n\n.closeBtn {\n  position: fixed;\n  top: 52px;\n  right: 40px;\n  width: 50px;\n  height: 50px;\n  text-indent: -9999px;\n  padding: 0 4px;\n  z-index: 10;\n  cursor: pointer; }\n  @media only screen and (max-width: 767px) {\n    .closeBtn {\n      right: 10px;\n      width: 30px;\n      height: 30px; } }\n\n.container {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 0; }\n\n.Main-Canvas {\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n  position: absolute;\n  z-index: 0; }\n\n.imageContainer {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%; }\n  .imageContainer > img {\n    height: 100%;\n    margin: 0 auto;\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 50%;\n    transform: scale(0);\n    -webkit-transform: scale(0);\n    opacity: 0; }\n\n.nav {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  font-family: \"Arial\";\n  padding: 10px;\n  z-index: 5;\n  color: rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  opacity: 1; }\n  .nav .nav-item {\n    cursor: pointer;\n    padding: 10px;\n    font-size: 10px;\n    position: relative;\n    left: 0;\n    transition: transform .5s;\n    -webkit-transition: transform .5s; }\n    .nav .nav-item:hover {\n      background: white; }\n    @media only screen and (max-width: 767px) {\n      .nav .nav-item {\n        display: block;\n        padding: 4px;\n        margin-bottom: 10px;\n        transform: translate(-200px, 0);\n        background: white; }\n        .nav .nav-item:hover {\n          background: transparent; } }\n  .nav .menuBurger {\n    display: none;\n    width: 39px;\n    height: 35px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    margin-top: 0;\n    margin-bottom: 10px; }\n    @media only screen and (max-width: 767px) {\n      .nav .menuBurger {\n        display: block; } }\n\n.overlay {\n  position: absolute;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transition: opacity .6s, transform .6s;\n  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n  transition: opacity .6s, transform .6s;\n  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n  color: rgba(0, 0, 0, 0.8);\n  -webkit-transform: scale(0.8);\n  /* Chrome, Opera 15+, Safari 3.1+ */\n  transform: scale(0.8);\n  /* Firefox 16+, IE 10+, Opera */\n  padding: 40px 100px; }\n  .overlay .overlayTitle {\n    text-align: center;\n    font-size: 32px; }\n\n.touchLayer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n\n.contact {\n  padding-top: 20%;\n  text-align: center; }\n  .contact > h1 {\n    font-size: 60px;\n    color: rgba(0, 0, 0, 0.8); }\n  @media only screen and (max-width: 767px) {\n    .contact {\n      padding: 40% 0;\n      margin-top: 0; }\n      .contact > h1 {\n        font-size: 20px; } }\n\n.about {\n  margin-top: 100px; }\n  .about .overlayDescr {\n    line-height: 22px;\n    width: 50%; }\n  @media only screen and (max-width: 767px) {\n    .about {\n      padding: 0px 10px;\n      font-size: 10px;\n      line-height: 0px;\n      padding-top: 40px;\n      margin-top: 16%; }\n      .about .overlayDescr {\n        line-height: 18px;\n        font-size: 14px;\n        width: 90%; } }\n\n.projects {\n  padding: 0;\n  margin-top: 80px; }\n  .projects .projectsContainer {\n    width: 80%;\n    margin: 20px auto;\n    position: relative; }\n  .projects .projectDetailWrapper {\n    opacity: 0;\n    display: none;\n    height: 100%;\n    width: 100%;\n    z-index: 8;\n    position: relative;\n    transition: opacity .5s;\n    -webkit-transition: opacity .5s; }\n    .projects .projectDetailWrapper .projectDescr {\n      width: 100%;\n      text-align: center;\n      padding: 0 10%;\n      font-size: 12px;\n      line-height: 20px; }\n    .projects .projectDetailWrapper .projectSlider {\n      margin: 20px auto;\n      position: relative; }\n      .projects .projectDetailWrapper .projectSlider .sliderNav {\n        width: 20px;\n        height: 20px;\n        position: absolute;\n        top: 50%;\n        margin-top: -10px;\n        cursor: pointer;\n        transition: transform .2s;\n        -webkit-transition: transform .2s;\n        transform: scale(1);\n        -webkit-transform: scale(1); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav:hover {\n          transform: scale(1.2);\n          -webkit-transform: scale(1.2); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderNext {\n          right: -30px; }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderPrev {\n          left: -30px; }\n      .projects .projectDetailWrapper .projectSlider .sliderContainer {\n        position: absolute;\n        overflow: hidden;\n        height: 100%; }\n      .projects .projectDetailWrapper .projectSlider .sliderItem {\n        position: absolute;\n        top: 0;\n        width: 100%;\n        height: 100%;\n        transition: transform .5s, opacity .5s;\n        -webkit-transition: transform .5s, opacity .5s;\n        z-index: 2; }\n        .projects .projectDetailWrapper .projectSlider .sliderItem > img {\n          width: 100%;\n          height: auto; }\n  .projects .projectItem {\n    background: rgba(0, 0, 0, 0.2);\n    position: absolute;\n    top: 0;\n    left: 0;\n    cursor: pointer;\n    transition: opacity .4s, transform .3s;\n    -webkit-transition: opacity .4s, transform .3s; }\n    .projects .projectItem > .touchLayer {\n      z-index: 2; }\n    .projects .projectItem .projectItemLoader {\n      z-index: 3; }\n    .projects .projectItem .itemCaption {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      color: white;\n      background: rgba(0, 0, 0, 0.6);\n      z-index: 1;\n      opacity: 0;\n      transition: opacity .4s;\n      -webkit-transition: opacity .4s;\n      padding-top: 22%; }\n      .projects .projectItem .itemCaption > h5 {\n        font-size: 20px;\n        text-align: center;\n        text-transform: uppercase; }\n      .projects .projectItem .itemCaption .projectOpenBtn {\n        font-size: 16px;\n        color: white; }\n    .projects .projectItem > img {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      transform: scale(1);\n      -webkit-transform: scale(1);\n      opacity: 1;\n      z-index: 0; }\n  @media only screen and (max-width: 767px) {\n    .projects {\n      padding-top: 40px;\n      margin-top: 0; } }\n", "", {"version":3,"sources":["/./app/main.scss"],"names":[],"mappings":"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","file":"main.scss","sourcesContent":["$mobile      : 'only screen and (max-width : 767px)';\n\n\nhtml, body {\n\twidth:100%;\n\theight:100%;\n\n\tmargin:0;\n\tpadding:0;\n\n\t// overflow:hidden;\n\tposition: static;\n\tbackground: #fff;\n}\n\nbody{\n\theight: 100%;\n}\n\n*{\n\tbox-sizing: border-box;\n}\n\na{\n\ttext-decoration: none;\n\tcolor: rgba(0,0,0,.8);\n}\n\nhtml {\n\t-webkit-text-size-adjust: none;\n\t-moz-text-size-adjust: none;\n\ttext-size-adjust: none;\n}\n\nh1,h2,h3,h4,h5,text,p {\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-webkit-font-smoothing: antialiased;\n\tfont-family: Arial;\n}\n\n.mainLoader{\n\tposition: absolute;\n\tz-index: 10;\n\twidth: 200px;\n\theight: 200px;\n\ttop: 50%;\n\tleft: 50%;\n\tmargin-top: -100px;\n\tmargin-left: -100px;\n}\n\n.logo{\n\t-webkit-text-stroke: 1px rgba(255,255,255,.5);\n    color: rgba(0,0,0,0);\n    font-family: Arial;\n    font-weight: lighter;\n    position: fixed;\n    right: 14px;\n    top: 6px;\n    z-index: 20;\n    margin: 0;\n    font-size: 32px;\n    opacity: 1;\n    @media #{$mobile}{\n    \ttop: 10px;\n    }\n}\n\n.closeBtn{\n\tposition: fixed;\n\ttop: 52px;\n\tright: 40px;\n\t// display: none;\n\twidth: 50px;\n    height: 50px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    z-index: 10;\n    cursor: pointer;\n\n   \n\t@media #{$mobile}{\n\t\tright: 10px;\n\t\twidth: 30px;\n    \theight: 30px;\n\t}\n}\n\n.container{\n\tposition: fixed;\n\ttop: 0;\n\tleft: 0;\n\twidth:100%;\n\theight:100%;\n\topacity: 0;\n\n}\n\n.Main-Canvas {\n\twidth:100%;\n\theight:100%;\n\ttop:0px;\n\tleft:0px;\n\tposition: absolute;\n\tz-index: 0;\n}\n\n.imageContainer{\n\tposition: absolute;\n\tz-index: 2;\n\twidth: 100%;\n\theight: 100%;\n\t> img{\n\t\theight: 100%;\n\t\tmargin: 0 auto;\n\t\tdisplay: block;\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 50%;\n\t\ttransform: scale(0);\n\t\t-webkit-transform: scale(0);\n\t\topacity: 0;\n\n\t}\n}\n\n\n\n.nav{\n\tposition: fixed;\n    top: 0px;\n    left: 0px;\n    font-family: \"Arial\";\n    padding: 10px;\n    z-index: 5;\n    color: rgba(0,0,0,.8);\n    z-index: 10;\n    opacity: 1;\n\n\t.nav-item{\n\t\tcursor: pointer;\n\t\tpadding: 10px;\n\t\tfont-size: 10px;\n\t\tposition: relative;\n\t\tleft: 0;\n\t\ttransition: transform .5s;\n\t\t-webkit-transition: transform .5s;\n\t\t&:hover{\n\t\t\tbackground: white;\n\t\t}\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t\tpadding: 4px;\n\t\t\tmargin-bottom: 10px;\n\t\t\ttransform: translate(-200px, 0);\n\t\t\tbackground: white;\n\t\t\t&:hover{\n\t\t\t\tbackground: transparent;\n\t\t\t}\n\t\t}\n\t}\n\n\t.menuBurger{\n\t\tdisplay: none;\n\t\twidth: 39px;\n\t    height: 35px;\n\t    text-indent: -9999px;\n\t    padding: 0 4px;\n\t    margin-top: 0;\n\t    margin-bottom: 10px;\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t}\n\n\t}\n\n}\n\n.overlay{\n\tposition: absolute;\n\tz-index: 1;\n\twidth: 100%;\n\theight: 100%;\n\tleft: 0;\n\ttop: 0;\n\topacity: 0;\n\tdisplay: none;\n\t-webkit-transition: opacity .6s, transform .6s;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n    transition: opacity .6s, transform .6s;  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n    color: rgba(0,0,0,.8);\n    -webkit-transform: scale(0.8);  /* Chrome, Opera 15+, Safari 3.1+ */\n    //   -ms-transform: scale(0.8);  /* IE 9 */\n    transform: scale(.8);  /* Firefox 16+, IE 10+, Opera */\n    // background: rgba(0,0,0,.3);\n    padding: 40px 100px;\n    // background: rgba(255,255,255,.6);\n    .overlayTitle{\n    \ttext-align: center;\n    \tfont-size: 32px;\n\n    }\n    \n\n\n\t\n}\n\n.touchLayer{\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\n.contact{\n\tpadding-top: 20%;\n\ttext-align: center;\n\t> h1{\n\t\tfont-size: 60px;\n\t\tcolor: rgba(0,0,0,.8);\n\t}\n\n\t@media #{$mobile}{\n\t\t// padding-top: 40px;\n\t\tpadding: 40% 0;\n    \tmargin-top: 0;\n\t\t> h1 {\n\t\t\tfont-size: 20px;\n\t\t}\n\t}\n}\n\n.about{\n\t// background: rgba(250, 40, 40, .7);\n\tmargin-top: 100px;\n\t.overlayDescr{\n    \tline-height: 22px;\n    \twidth: 50%;\n    }\n\n    @media #{$mobile}{\n    \tpadding: 0px 10px;\n\t    font-size: 10px;\n\t    line-height: 0px;\n\t    padding-top: 40px;\n    \tmargin-top: 16%;\n    \t.overlayDescr{\n    \t\tline-height: 18px;\n    \t\tfont-size: 14px;\n    \t\twidth: 90%;\n    \t}\n    }\n}\n\n.projects{\n\t// background: rgba(250, 40, 240, .7);\n\tpadding: 0;\n\tmargin-top: 80px;\n\t.projectsContainer{\n\t\twidth: 80%;\n\t\tmargin: 20px auto;\n\t\tposition: relative;\n\t}\n\t.projectDetailWrapper{\n\t\topacity: 0;\n\t\tdisplay: none;\n\t\theight: 100%;\n\t    width: 100%;\n\t    // background: rgba(0,0,0,.1);\n\t    z-index: 8;\n\t    position: relative;\n\t    transition: opacity .5s;\n\t    -webkit-transition: opacity .5s;\n\t    \n\t    .projectDescr{\n\t    \twidth: 100%;\n\t\t    text-align: center;\n\t\t    padding: 0 10%;\n\t\t    font-size: 12px;\n    \t\tline-height: 20px;\n\t    }\n\t    .projectSlider{\n\t   \t\t\n\t\t\tmargin: 20px auto;\n   \t\t\tposition: relative;\n\t\t    .sliderNav{\n\t\t    \twidth: 20px;\n\t\t    \theight: 20px;\n\t\t    \tposition: absolute;\n\t\t    \ttop: 50%;\n\t\t    \tmargin-top: -10px;\n\t\t    \tcursor: pointer;\n\t\t    \ttransition: transform .2s;\n\t\t    \t-webkit-transition: transform .2s;\n\t\t    \ttransform: scale(1.0);\n\t\t    \t-webkit-transform: scale(1.0);\n\t\t    \t&:hover{\n\t\t    \t\ttransform: scale(1.2);\n\t\t    \t\t-webkit-transform: scale(1.2);\n\t\t    \t}\n\t\t    \t&.sliderNext{\n\t\t    \t\tright: -30px;\n\t\t    \t}\n\t\t    \t&.sliderPrev{\n\t\t    \t\tleft: -30px;\n\t\t    \t}\n\t\t    }\n\t\t    .sliderContainer{\n\t\t    \tposition: absolute;\n\t\t    \toverflow: hidden;\n\t\t    \theight: 100%;\n\t\t    }\n\t\t    \n\t    \t.sliderItem{\n\t    \t\tposition: absolute;\n\t    \t\ttop: 0;\n\t    \t\twidth: 100%;\n\t    \t\theight: 100%;\n\t    \t\ttransition: transform .5s, opacity .5s;\n\t    \t\t-webkit-transition: transform .5s, opacity .5s;\n\t    \t\tz-index: 2;\n\t    \t\t> img{\n\t    \t\t\twidth: 100%;\n\t\t\t\t\theight: auto;\n\t    \t\t}\n\t\t    }\n\t    }\n\n\t}\n\t.projectItem{\n\t\tbackground: rgba(0,0,0,.2);\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\tcursor: pointer;\n\t\ttransition: opacity .4s, transform .3s;\n\t\t-webkit-transition: opacity .4s, transform .3s;\n\t\t> .touchLayer{\n\t\t\tz-index: 2;\n\t\t}\n\t\t.projectItemLoader{\n\t\t\tz-index: 3;\n\t\t}\n\t\t.itemCaption{\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t\tcolor: white;\n\t\t\tbackground: rgba(0,0,0,.6);\n\t\t\tz-index: 1;\n\t\t\topacity: 0;\n\t\t\ttransition: opacity .4s;\n\t\t\t-webkit-transition: opacity .4s;\n\t\t\tpadding-top: 22%;\n\n\t\t\t> h5{\n\t\t\t\tfont-size: 20px;\n\t\t\t\ttext-align: center;\n\t\t\t\ttext-transform: uppercase;\n\t\t\t}\n\t\t\t.projectOpenBtn{\n\t\t\t\tfont-size: 16px;\n    \t\t\tcolor: white;\n    \t\t\t\n\t\t\t}\n\t\t}\n\t\t> img{\n\t\t\tposition: absolute;\n\t\t    top: 0;\n\t\t    left: 0;\n\t\t    width: 100%;\n\t\t    height: 100%;\n\t\t    transform: scale(1);\n\t\t    -webkit-transform: scale(1);\n\t\t    opacity: 1;\n\t\t    z-index: 0;\n\t\t}\n\t}\n\t@media #{$mobile}{\n\t\tpadding-top: 40px;\n    \tmargin-top: 0;\n\t}\n\n}\n\n\n\n\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "html, body {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  position: static;\n  background: #fff; }\n\nbody {\n  height: 100%; }\n\n* {\n  box-sizing: border-box; }\n\na {\n  text-decoration: none;\n  color: rgba(0, 0, 0, 0.8); }\n\nhtml {\n  -webkit-text-size-adjust: none;\n  -moz-text-size-adjust: none;\n  text-size-adjust: none; }\n\nh1, h2, h3, h4, h5, text, p {\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-webkit-font-smoothing: antialiased;\n  font-family: Arial; }\n\n.selector-container {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 200px;\n  height: 400px;\n  padding: 20px; }\n  .selector-container .item-container {\n    margin-bottom: 10px; }\n  .selector-container .select {\n    padding: 10px;\n    background: white;\n    cursor: pointer;\n    font-size: 12px; }\n  .selector-container .timeline-toggler {\n    background: rgba(255, 255, 255, 0.6);\n    color: black;\n    border: 2px solid rgba(220, 20, 100, 0.8);\n    font-weight: 700;\n    position: fixed;\n    left: 20px; }\n\n.mainLoader {\n  position: absolute;\n  z-index: 10;\n  width: 200px;\n  height: 200px;\n  top: 50%;\n  left: 50%;\n  margin-top: -100px;\n  margin-left: -100px; }\n\n.logo {\n  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);\n  color: transparent;\n  font-family: Arial;\n  font-weight: lighter;\n  position: fixed;\n  right: 14px;\n  top: 6px;\n  z-index: 20;\n  margin: 0;\n  font-size: 32px;\n  opacity: 1; }\n  @media only screen and (max-width: 767px) {\n    .logo {\n      top: 10px; } }\n\n.closeBtn {\n  position: fixed;\n  top: 52px;\n  right: 40px;\n  width: 50px;\n  height: 50px;\n  text-indent: -9999px;\n  padding: 0 4px;\n  z-index: 10;\n  cursor: pointer; }\n  @media only screen and (max-width: 767px) {\n    .closeBtn {\n      right: 10px;\n      width: 30px;\n      height: 30px; } }\n\n.container {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 0; }\n\n.Main-Canvas {\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n  position: absolute;\n  z-index: 0; }\n\n.imageContainer {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%; }\n  .imageContainer > img {\n    height: 100%;\n    margin: 0 auto;\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 50%;\n    transform: scale(0);\n    -webkit-transform: scale(0);\n    opacity: 0; }\n\n.nav {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  font-family: \"Arial\";\n  padding: 10px;\n  z-index: 5;\n  color: rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  opacity: 1; }\n  .nav .nav-item {\n    cursor: pointer;\n    padding: 10px;\n    font-size: 10px;\n    position: relative;\n    left: 0;\n    transition: transform .5s;\n    -webkit-transition: transform .5s; }\n    .nav .nav-item:hover {\n      background: white; }\n    @media only screen and (max-width: 767px) {\n      .nav .nav-item {\n        display: block;\n        padding: 4px;\n        margin-bottom: 10px;\n        transform: translate(-200px, 0);\n        background: white; }\n        .nav .nav-item:hover {\n          background: transparent; } }\n  .nav .menuBurger {\n    display: none;\n    width: 39px;\n    height: 35px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    margin-top: 0;\n    margin-bottom: 10px; }\n    @media only screen and (max-width: 767px) {\n      .nav .menuBurger {\n        display: block; } }\n\n.overlay {\n  position: absolute;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transition: opacity .6s, transform .6s;\n  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n  transition: opacity .6s, transform .6s;\n  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n  color: rgba(0, 0, 0, 0.8);\n  -webkit-transform: scale(0.8);\n  /* Chrome, Opera 15+, Safari 3.1+ */\n  transform: scale(0.8);\n  /* Firefox 16+, IE 10+, Opera */\n  padding: 40px 100px; }\n  .overlay .overlayTitle {\n    text-align: center;\n    font-size: 32px; }\n\n.touchLayer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n\n.contact {\n  padding-top: 20%;\n  text-align: center; }\n  .contact > h1 {\n    font-size: 60px;\n    color: rgba(0, 0, 0, 0.8); }\n  @media only screen and (max-width: 767px) {\n    .contact {\n      padding: 40% 0;\n      margin-top: 0; }\n      .contact > h1 {\n        font-size: 20px; } }\n\n.about {\n  margin-top: 100px; }\n  .about .overlayDescr {\n    line-height: 22px;\n    width: 50%; }\n  @media only screen and (max-width: 767px) {\n    .about {\n      padding: 0px 10px;\n      font-size: 10px;\n      line-height: 0px;\n      padding-top: 40px;\n      margin-top: 16%; }\n      .about .overlayDescr {\n        line-height: 18px;\n        font-size: 14px;\n        width: 90%; } }\n\n.projects {\n  padding: 0;\n  margin-top: 80px; }\n  .projects .projectsContainer {\n    width: 80%;\n    margin: 20px auto;\n    position: relative; }\n  .projects .projectDetailWrapper {\n    opacity: 0;\n    display: none;\n    height: 100%;\n    width: 100%;\n    z-index: 8;\n    position: relative;\n    transition: opacity .5s;\n    -webkit-transition: opacity .5s; }\n    .projects .projectDetailWrapper .projectDescr {\n      width: 100%;\n      text-align: center;\n      padding: 0 10%;\n      font-size: 12px;\n      line-height: 20px; }\n    .projects .projectDetailWrapper .projectSlider {\n      margin: 20px auto;\n      position: relative; }\n      .projects .projectDetailWrapper .projectSlider .sliderNav {\n        width: 20px;\n        height: 20px;\n        position: absolute;\n        top: 50%;\n        margin-top: -10px;\n        cursor: pointer;\n        transition: transform .2s;\n        -webkit-transition: transform .2s;\n        transform: scale(1);\n        -webkit-transform: scale(1); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav:hover {\n          transform: scale(1.2);\n          -webkit-transform: scale(1.2); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderNext {\n          right: -30px; }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderPrev {\n          left: -30px; }\n      .projects .projectDetailWrapper .projectSlider .sliderContainer {\n        position: absolute;\n        overflow: hidden;\n        height: 100%; }\n      .projects .projectDetailWrapper .projectSlider .sliderItem {\n        position: absolute;\n        top: 0;\n        width: 100%;\n        height: 100%;\n        transition: transform .5s, opacity .5s;\n        -webkit-transition: transform .5s, opacity .5s;\n        z-index: 2; }\n        .projects .projectDetailWrapper .projectSlider .sliderItem > img {\n          width: 100%;\n          height: auto; }\n  .projects .projectItem {\n    background: rgba(0, 0, 0, 0.2);\n    position: absolute;\n    top: 0;\n    left: 0;\n    cursor: pointer;\n    transition: opacity .4s, transform .3s;\n    -webkit-transition: opacity .4s, transform .3s; }\n    .projects .projectItem > .touchLayer {\n      z-index: 2; }\n    .projects .projectItem .projectItemLoader {\n      z-index: 3; }\n    .projects .projectItem .itemCaption {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      color: white;\n      background: rgba(0, 0, 0, 0.6);\n      z-index: 1;\n      opacity: 0;\n      transition: opacity .4s;\n      -webkit-transition: opacity .4s;\n      padding-top: 22%; }\n      .projects .projectItem .itemCaption > h5 {\n        font-size: 20px;\n        text-align: center;\n        text-transform: uppercase; }\n      .projects .projectItem .itemCaption .projectOpenBtn {\n        font-size: 16px;\n        color: white; }\n    .projects .projectItem > img {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      transform: scale(1);\n      -webkit-transform: scale(1);\n      opacity: 1;\n      z-index: 0; }\n  @media only screen and (max-width: 767px) {\n    .projects {\n      padding-top: 40px;\n      margin-top: 0; } }\n", "", {"version":3,"sources":["/./app/main.scss"],"names":[],"mappings":"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","file":"main.scss","sourcesContent":["$mobile      : 'only screen and (max-width : 767px)';\n\n\nhtml, body {\n\twidth:100%;\n\theight:100%;\n\n\tmargin:0;\n\tpadding:0;\n\n\t// overflow:hidden;\n\tposition: static;\n\tbackground: #fff;\n}\n\nbody{\n\theight: 100%;\n}\n\n*{\n\tbox-sizing: border-box;\n}\n\na{\n\ttext-decoration: none;\n\tcolor: rgba(0,0,0,.8);\n}\n\nhtml {\n\t-webkit-text-size-adjust: none;\n\t-moz-text-size-adjust: none;\n\ttext-size-adjust: none;\n}\n\nh1,h2,h3,h4,h5,text,p {\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-webkit-font-smoothing: antialiased;\n\tfont-family: Arial;\n}\n\n.selector-container{\n\tposition: absolute;\n    top: 0;\n    right: 0;\n    width: 200px;\n    height: 400px;\n    padding: 20px;\n    .item-container{\n    \tmargin-bottom: 10px;\n    }\n    .select{\n    \tpadding: 10px;\n    \tbackground: white;\n    \tcursor: pointer;\n    \tfont-size: 12px;\n\n    }\n\n    .timeline-toggler{\n    \tbackground: rgba(255,255,255,.6);\n    \tcolor: black;\n    \tborder: 2px solid rgba(220, 20, 100, .8);\n    \tfont-weight: 700;\n    \tposition: fixed;\n    \tleft: 20px;\n    \t\n\n    }\n}\n\n.mainLoader{\n\tposition: absolute;\n\tz-index: 10;\n\twidth: 200px;\n\theight: 200px;\n\ttop: 50%;\n\tleft: 50%;\n\tmargin-top: -100px;\n\tmargin-left: -100px;\n}\n\n.logo{\n\t-webkit-text-stroke: 1px rgba(255,255,255,.5);\n    color: rgba(0,0,0,0);\n    font-family: Arial;\n    font-weight: lighter;\n    position: fixed;\n    right: 14px;\n    top: 6px;\n    z-index: 20;\n    margin: 0;\n    font-size: 32px;\n    opacity: 1;\n    @media #{$mobile}{\n    \ttop: 10px;\n    }\n}\n\n.closeBtn{\n\tposition: fixed;\n\ttop: 52px;\n\tright: 40px;\n\t// display: none;\n\twidth: 50px;\n    height: 50px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    z-index: 10;\n    cursor: pointer;\n\n   \n\t@media #{$mobile}{\n\t\tright: 10px;\n\t\twidth: 30px;\n    \theight: 30px;\n\t}\n}\n\n.container{\n\tposition: fixed;\n\ttop: 0;\n\tleft: 0;\n\twidth:100%;\n\theight:100%;\n\topacity: 0;\n\n}\n\n.Main-Canvas {\n\twidth:100%;\n\theight:100%;\n\ttop:0px;\n\tleft:0px;\n\tposition: absolute;\n\tz-index: 0;\n}\n\n.imageContainer{\n\tposition: absolute;\n\tz-index: 2;\n\twidth: 100%;\n\theight: 100%;\n\t> img{\n\t\theight: 100%;\n\t\tmargin: 0 auto;\n\t\tdisplay: block;\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 50%;\n\t\ttransform: scale(0);\n\t\t-webkit-transform: scale(0);\n\t\topacity: 0;\n\n\t}\n}\n\n\n\n.nav{\n\tposition: fixed;\n    top: 0px;\n    left: 0px;\n    font-family: \"Arial\";\n    padding: 10px;\n    z-index: 5;\n    color: rgba(0,0,0,.8);\n    z-index: 10;\n    opacity: 1;\n\n\t.nav-item{\n\t\tcursor: pointer;\n\t\tpadding: 10px;\n\t\tfont-size: 10px;\n\t\tposition: relative;\n\t\tleft: 0;\n\t\ttransition: transform .5s;\n\t\t-webkit-transition: transform .5s;\n\t\t&:hover{\n\t\t\tbackground: white;\n\t\t}\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t\tpadding: 4px;\n\t\t\tmargin-bottom: 10px;\n\t\t\ttransform: translate(-200px, 0);\n\t\t\tbackground: white;\n\t\t\t&:hover{\n\t\t\t\tbackground: transparent;\n\t\t\t}\n\t\t}\n\t}\n\n\t.menuBurger{\n\t\tdisplay: none;\n\t\twidth: 39px;\n\t    height: 35px;\n\t    text-indent: -9999px;\n\t    padding: 0 4px;\n\t    margin-top: 0;\n\t    margin-bottom: 10px;\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t}\n\n\t}\n\n}\n\n.overlay{\n\tposition: absolute;\n\tz-index: 1;\n\twidth: 100%;\n\theight: 100%;\n\tleft: 0;\n\ttop: 0;\n\topacity: 0;\n\tdisplay: none;\n\t-webkit-transition: opacity .6s, transform .6s;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n    transition: opacity .6s, transform .6s;  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n    color: rgba(0,0,0,.8);\n    -webkit-transform: scale(0.8);  /* Chrome, Opera 15+, Safari 3.1+ */\n    //   -ms-transform: scale(0.8);  /* IE 9 */\n    transform: scale(.8);  /* Firefox 16+, IE 10+, Opera */\n    // background: rgba(0,0,0,.3);\n    padding: 40px 100px;\n    // background: rgba(255,255,255,.6);\n    .overlayTitle{\n    \ttext-align: center;\n    \tfont-size: 32px;\n\n    }\n    \n\n\n\t\n}\n\n.touchLayer{\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\n.contact{\n\tpadding-top: 20%;\n\ttext-align: center;\n\t> h1{\n\t\tfont-size: 60px;\n\t\tcolor: rgba(0,0,0,.8);\n\t}\n\n\t@media #{$mobile}{\n\t\t// padding-top: 40px;\n\t\tpadding: 40% 0;\n    \tmargin-top: 0;\n\t\t> h1 {\n\t\t\tfont-size: 20px;\n\t\t}\n\t}\n}\n\n.about{\n\t// background: rgba(250, 40, 40, .7);\n\tmargin-top: 100px;\n\t.overlayDescr{\n    \tline-height: 22px;\n    \twidth: 50%;\n    }\n\n    @media #{$mobile}{\n    \tpadding: 0px 10px;\n\t    font-size: 10px;\n\t    line-height: 0px;\n\t    padding-top: 40px;\n    \tmargin-top: 16%;\n    \t.overlayDescr{\n    \t\tline-height: 18px;\n    \t\tfont-size: 14px;\n    \t\twidth: 90%;\n    \t}\n    }\n}\n\n.projects{\n\t// background: rgba(250, 40, 240, .7);\n\tpadding: 0;\n\tmargin-top: 80px;\n\t.projectsContainer{\n\t\twidth: 80%;\n\t\tmargin: 20px auto;\n\t\tposition: relative;\n\t}\n\t.projectDetailWrapper{\n\t\topacity: 0;\n\t\tdisplay: none;\n\t\theight: 100%;\n\t    width: 100%;\n\t    // background: rgba(0,0,0,.1);\n\t    z-index: 8;\n\t    position: relative;\n\t    transition: opacity .5s;\n\t    -webkit-transition: opacity .5s;\n\t    \n\t    .projectDescr{\n\t    \twidth: 100%;\n\t\t    text-align: center;\n\t\t    padding: 0 10%;\n\t\t    font-size: 12px;\n    \t\tline-height: 20px;\n\t    }\n\t    .projectSlider{\n\t   \t\t\n\t\t\tmargin: 20px auto;\n   \t\t\tposition: relative;\n\t\t    .sliderNav{\n\t\t    \twidth: 20px;\n\t\t    \theight: 20px;\n\t\t    \tposition: absolute;\n\t\t    \ttop: 50%;\n\t\t    \tmargin-top: -10px;\n\t\t    \tcursor: pointer;\n\t\t    \ttransition: transform .2s;\n\t\t    \t-webkit-transition: transform .2s;\n\t\t    \ttransform: scale(1.0);\n\t\t    \t-webkit-transform: scale(1.0);\n\t\t    \t&:hover{\n\t\t    \t\ttransform: scale(1.2);\n\t\t    \t\t-webkit-transform: scale(1.2);\n\t\t    \t}\n\t\t    \t&.sliderNext{\n\t\t    \t\tright: -30px;\n\t\t    \t}\n\t\t    \t&.sliderPrev{\n\t\t    \t\tleft: -30px;\n\t\t    \t}\n\t\t    }\n\t\t    .sliderContainer{\n\t\t    \tposition: absolute;\n\t\t    \toverflow: hidden;\n\t\t    \theight: 100%;\n\t\t    }\n\t\t    \n\t    \t.sliderItem{\n\t    \t\tposition: absolute;\n\t    \t\ttop: 0;\n\t    \t\twidth: 100%;\n\t    \t\theight: 100%;\n\t    \t\ttransition: transform .5s, opacity .5s;\n\t    \t\t-webkit-transition: transform .5s, opacity .5s;\n\t    \t\tz-index: 2;\n\t    \t\t> img{\n\t    \t\t\twidth: 100%;\n\t\t\t\t\theight: auto;\n\t    \t\t}\n\t\t    }\n\t    }\n\n\t}\n\t.projectItem{\n\t\tbackground: rgba(0,0,0,.2);\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\tcursor: pointer;\n\t\ttransition: opacity .4s, transform .3s;\n\t\t-webkit-transition: opacity .4s, transform .3s;\n\t\t> .touchLayer{\n\t\t\tz-index: 2;\n\t\t}\n\t\t.projectItemLoader{\n\t\t\tz-index: 3;\n\t\t}\n\t\t.itemCaption{\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t\tcolor: white;\n\t\t\tbackground: rgba(0,0,0,.6);\n\t\t\tz-index: 1;\n\t\t\topacity: 0;\n\t\t\ttransition: opacity .4s;\n\t\t\t-webkit-transition: opacity .4s;\n\t\t\tpadding-top: 22%;\n\n\t\t\t> h5{\n\t\t\t\tfont-size: 20px;\n\t\t\t\ttext-align: center;\n\t\t\t\ttext-transform: uppercase;\n\t\t\t}\n\t\t\t.projectOpenBtn{\n\t\t\t\tfont-size: 16px;\n    \t\t\tcolor: white;\n    \t\t\t\n\t\t\t}\n\t\t}\n\t\t> img{\n\t\t\tposition: absolute;\n\t\t    top: 0;\n\t\t    left: 0;\n\t\t    width: 100%;\n\t\t    height: 100%;\n\t\t    transform: scale(1);\n\t\t    -webkit-transform: scale(1);\n\t\t    opacity: 1;\n\t\t    z-index: 0;\n\t\t}\n\t}\n\t@media #{$mobile}{\n\t\tpadding-top: 40px;\n    \tmargin-top: 0;\n\t}\n\n}\n\n\n\n\n"],"sourceRoot":"webpack://"}]);
 
 	// exports
 
@@ -516,12 +1230,20 @@
 
 	var _SceneImport2 = _interopRequireDefault(_SceneImport);
 
+	var _SceneCloudsOverlay = __webpack_require__(14);
+
+	var _SceneCloudsOverlay2 = _interopRequireDefault(_SceneCloudsOverlay);
+
+	var _timeline = __webpack_require__(16);
+
+	var _timeline2 = _interopRequireDefault(_timeline);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SceneMain = function () {
-		function SceneMain(container) {
+		function SceneMain(container, sceneSelector) {
 			_classCallCheck(this, SceneMain);
 
 			this.increase = Math.PI * 2 / 500;
@@ -529,6 +1251,19 @@
 
 			this.mouseX = 0;
 			this.mouseY = 0;
+
+			this.normalRotation = 0;
+			this.reverseRotation = 0;
+
+			this.sceneSelector = sceneSelector;
+
+			this.introDuration = 250;
+			this.introStartTime = Date.now();
+
+			this.cubeCameraUpdateInterval = 1000;
+			this.cubeCameraLastUpdate = Date.now();
+
+			this.currentSceneSettings = { renderOverlay: false, cameraSpeed: {} };
 
 			this.FBO = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
 				minFilter: THREE.LinearFilter,
@@ -542,9 +1277,30 @@
 				format: THREE.RGBFormat
 			});
 
-			this.sceneCloudsMesh = new _SceneCloudsMesh2.default(this.FBO, this.FBOStill);
+			this.FBOReverse = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.NearestFilter,
+				format: THREE.RGBFormat
+			});
+
+			this.FBOGirl = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.NearestFilter,
+				format: THREE.RGBFormat
+			});
+
+			this.FBOBg = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.NearestFilter,
+				format: THREE.RGBFormat
+			});
+
+			var sceneVals = this.getCurrentActiveSceneVals();
+
+			this.sceneCloudsMesh = new _SceneCloudsMesh2.default(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 			this.sceneClouds = new _SceneClouds2.default(this.enableRender, this);
-			this.sceneImport = new _SceneImport2.default();
+			this.sceneImport = new _SceneImport2.default(this.FBO);
+			this.sceneCloudsOverlay = new _SceneCloudsOverlay2.default(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
 			this.start_time = Date.now();
 
@@ -552,8 +1308,6 @@
 			this.windowHalfY;
 
 			this.container = container;
-
-			this.pumpkin = null;
 
 			this.doRender = false;
 
@@ -565,123 +1319,28 @@
 			this.camera.position.z = this.sceneClouds.totDepth;
 			this.camera.position.y = -40;
 
+			this.reverseCamera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 3000);
+			this.reverseCamera.position.z = 0;
+			this.reverseCamera.position.y = -40;
+
 			this.importCamera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 3000);
-			this.importCamera.position.z = 50;
-			this.importCamera.position.y = 10;
+			this.importCamera.position.z = 10;
+			this.importCamera.position.y = 14;
 
 			this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
-			this.orthoCamera.position.z = 10;
 
-			this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+			this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			// this.renderer.autoClear = false;
+			this.renderer.autoClear = false;
 			// this.renderer.setClearColorHex( 0x000000, 1 );
-			this.renderer.setClearColor('#e206db');
+			// this.renderer.setClearColor( '#e206db' );
+			this.renderer.setClearColor('#d370d0');
 			this.container.appendChild(this.renderer.domElement);
 
 			this.currentTime = Date.now();
-
-			// this.loadImports();
 		}
 
 		_createClass(SceneMain, [{
-			key: 'loadImports',
-			value: function loadImports() {
-
-				var loader = new THREE.ObjectLoader();
-
-				var self = this;
-
-				// loader.setTexturePath('assets/imports/low_poly_pumpkin/texture.jpg');
-
-				// load a resource
-				loader.load(
-				// resource URL
-				'assets/imports/low_poly_pumpkin/low-poly-halloween-pumpkin.json', function (obj) {
-					// for (var i=0;i<10;i++){
-					// var clone = JSON.parse(JSON.stringify(obj));
-					// console.log(obj);
-					// console.log(clone);
-					// var test = obj.clone();
-					// console.log(test);
-					self.onImportLoaded(obj);
-					// }
-				}
-
-				// Function when resource is loaded
-				// function ( obj) {
-				// 	var material = new THREE.MultiMaterial( materials );
-				// 	var object = new THREE.Mesh( geometry, material );
-
-				// 	console.log('loaded');
-				// 	console.log(geometry, materials);
-				// 	// scene.add( object );
-				// }
-				);
-			}
-		}, {
-			key: 'onImportLoaded',
-			value: function onImportLoaded(object) {
-
-				console.log('main: ', object);
-
-				var material = new THREE.ShaderMaterial({
-
-					uniforms: {
-
-						// "map": { type: "t", value: object.texture },
-						// "fogColor" : { type: "c", value: fog.color },
-						// "fogNear" : { type: "f", value: fog.near },
-						// "fogFar" : { type: "f", value: fog.far },
-
-					},
-					vertexShader: __webpack_require__(12),
-					fragmentShader: __webpack_require__(13),
-					depthWrite: false,
-					depthTest: true,
-					transparent: false
-
-				});
-
-				object.traverse(function (child) {
-
-					if (child instanceof THREE.Mesh) {
-
-						child.material = material;
-						// console.log('assign m');
-					}
-				});
-
-				for (var i = 0; i < 30; i++) {
-					var scale = Math.random() * 0.8 + .8;
-					var obj = object.clone();
-					obj.position.x = Math.random() * 80 - 40;
-					obj.position.y = -Math.random() * Math.random() * 60 - 30;
-					obj.position.z = Math.random() * this.totDepth;
-					obj.rotation.y = 180 * Math.PI / 180;
-					// object.rotation.z = 90 * Math.PI / 180;
-					obj.scale.x = scale;
-					obj.scale.y = scale;
-					obj.scale.z = scale;
-
-					this.scene.add(obj);
-				}
-
-				// object.position.x = 0;
-				// object.position.y = -40;
-				// object.position.z = 2200;
-				//       object.rotation.y = 180* Math.PI / 180;
-				//       // object.rotation.z = 90 * Math.PI / 180;
-				//       object.scale.x = .8;
-				//       object.scale.y = .8;
-				//       object.scale.z = .8;
-				//       var obj = object;
-
-				// this.scene.add(obj);
-
-				// this.pumpkin = obj;
-			}
-		}, {
 			key: 'createBgCanvas',
 			value: function createBgCanvas() {
 
@@ -708,11 +1367,106 @@
 				this.doRender = true;
 			}
 		}, {
-			key: 'initTextures',
-			value: function initTextures() {}
+			key: 'getSceneFromTimeline',
+			value: function getSceneFromTimeline() {
+
+				if (!this.start_time) {
+					return _timeline2.default.init.scene;
+				}
+
+				var now = Date.now();
+				var startDelta = (now - this.start_time) / 1000;
+
+				for (var i = 0; i < _timeline2.default.schedules.length; i++) {
+					if (startDelta <= _timeline2.default.schedules[i].time) {
+						return _timeline2.default.schedules[i].scene;
+					}
+				}
+
+				return _timeline2.default.schedules[_timeline2.default.schedules.length - 1].scene;
+			}
 		}, {
-			key: 'initViews',
-			value: function initViews() {}
+			key: 'getCurrentActiveSceneVals',
+			value: function getCurrentActiveSceneVals() {
+				var _this = this;
+
+				var ret = { overlay: {}, grid: {} };
+
+				// if (Timeline.active) {
+				var scene = this.getSceneFromTimeline();
+
+				var sceneItem = this.sceneSelector.items[scene];
+
+				// console.log(sceneItem);
+
+
+				// } else {
+				if (!sceneItem || !this.sceneSelector.playTimeline) {
+					sceneItem = this.sceneSelector.currentItem;
+				}
+
+				// }
+
+
+				var currentX = 0;
+				var currentY = 0;
+				this.currentSceneSettings.renderOverlay = false;
+				Object.keys(sceneItem).forEach(function (t) {
+
+					if (t.indexOf('box') > -1 && t !== 'boxOverlay') {
+						var vals = {};
+						vals.x = currentX;
+						vals.y = currentY;
+						vals.w = sceneItem[t].width;
+						vals.h = sceneItem[t].height;
+						vals.texture = sceneItem[t].texture;
+						vals.scale = sceneItem[t].scale;
+						vals.translateX = sceneItem[t].translateX;
+						vals.translateY = sceneItem[t].translateY;
+						vals.rotation = sceneItem[t].textureRotation;
+						if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
+							vals.textureCoeff = sceneItem[t].specialTextureCoeff;
+						}
+
+						currentX += vals.w;
+						if (currentX >= 0.99) {
+
+							currentX = 0;
+							currentY += sceneItem[t].height;
+						}
+
+						ret.grid[t] = vals;
+					}
+
+					if (t === 'boxOverlay') {
+						_this.currentSceneSettings.renderOverlay = true;
+						var _vals = {};
+						_vals.x = sceneItem[t].x;
+						_vals.y = sceneItem[t].y;
+						_vals.w = sceneItem[t].width;
+						_vals.h = sceneItem[t].height;
+						_vals.texture = sceneItem[t].texture;
+						_vals.scale = sceneItem[t].scale;
+						_vals.translateX = sceneItem[t].translateX;
+						_vals.translateY = sceneItem[t].translateY;
+						_vals.rotation = sceneItem[t].textureRotation;
+						if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
+							_vals.textureCoeff = sceneItem[t].specialTextureCoeff;
+						}
+
+						ret.overlay[t] = _vals;
+					}
+
+					if (t === 'cameraSpeed') {
+						_this.currentSceneSettings.cameraSpeed = sceneItem[t];
+					}
+					if (t === 'cameraRotation') {
+						_this.currentSceneSettings.cameraRotation = sceneItem[t];
+					}
+				});
+
+				return ret;
+			}
 		}, {
 			key: 'loop',
 			value: function loop() {
@@ -724,14 +1478,32 @@
 			key: 'update',
 			value: function update() {
 
-				// super.update();
+				var now = Date.now();
+				var introDelta = now - this.introStartTime;
+				var introRemain = Math.abs(introDelta / this.introDuration - 1);
+				if (introDelta > this.introDuration) {
+					introRemain = 0;
+				}
 
-				// this.sceneCloudsMesh.update(this.FBO);
+				var sceneVals = this.getCurrentActiveSceneVals();
 
-				var position = (Date.now() - this.start_time) * 0.03 % this.sceneClouds.totDepth;
+				this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
+				if (this.currentSceneSettings.renderOverlay) {
+					this.sceneCloudsOverlay.update(sceneVals.overlay);
+				}
 
-				// this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth);
-				this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+				// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
+				var position = 1000;
+
+				var updateCubeDelta = now - this.cubeCameraLastUpdate;
+				if (updateCubeDelta > 1000) {
+					this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, true);
+					this.cubeCameraLastUpdate = now;
+				} else {
+					this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
+
+					// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+				}
 			}
 		}, {
 			key: 'render',
@@ -739,22 +1511,47 @@
 
 				if (!this.doRender) return;
 
-				var position = (Date.now() - this.start_time) * 0.03 % this.sceneClouds.totDepth;
+				var now = Date.now();
+
+				var position = (now - this.start_time) * this.currentSceneSettings.cameraSpeed.cloudNormal % this.sceneClouds.totDepth;
 
 				this.camera.position.z = -position + this.sceneClouds.totDepth;
+				if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation) {
+					this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
+				}
+
+				var reversePos = (now - this.start_time) * this.currentSceneSettings.cameraSpeed.cloudReverse % this.sceneClouds.totDepth;
+
+				var reversePos = reversePos;
+				if (reversePos > this.sceneClouds.totDepth) {
+					reversePos = 0;
+				}
+				this.reverseCamera.position.z = reversePos;
+				if (this.currentSceneSettings.cameraRotation.cloudReverse.rotation) {
+					this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudReverse.axis] = this.reverseRotation += this.currentSceneSettings.cameraRotation.cloudReverse.speed;
+				}
 
 				if (!this.sceneImport.render) return;
 
-				this.sceneClouds.renderTexture(this.renderer, this.camera, this.FBO);
+				// this.sceneClouds.renderTexture(this.renderer, this.camera, this.FBO);
 
+
+				this.renderer.clear();
 				// this.renderer.render( this.sceneImport.scene, this.importCamera );
-				// this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
+				this.renderer.render(this.sceneClouds.scene, this.camera, this.FBO, true);
+				this.renderer.render(this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true);
 				// this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
 				// this.renderer.clear();
-				this.renderer.render(this.sceneClouds.scene, this.camera);
+				// this.renderer.render( this.sceneClouds.scene, this.camera );
 				// this.renderer.clearDepth();
-				// this.renderer.render( this.sceneImport.scene, this.importCamera );
+				this.renderer.render(this.sceneImport.scene, this.importCamera, this.FBOGirl, true);
 
+				if (!this.currentSceneSettings.renderOverlay) {
+					this.renderer.render(this.sceneCloudsMesh.scene, this.orthoCamera);
+				} else {
+					this.renderer.render(this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true);
+					this.renderer.render(this.sceneCloudsOverlay.scene, this.orthoCamera);
+				}
 			}
 		}, {
 			key: 'onResize',
@@ -804,8 +1601,8 @@
 
 			this.geometry = new THREE.Geometry();
 
-			var jsonLoader = new THREE.JSONLoader();
-			jsonLoader.load("assets/imports/test.js", this.onLoaded.bind(this));
+			// var jsonLoader = new THREE.JSONLoader();
+			//       jsonLoader.load( "assets/imports/test.js", this.onLoaded.bind(this) );
 
 			this.texture = THREE.ImageUtils.loadTexture('assets/cloud10.png', null, function () {
 				return enableRenderCallback.call(callbackScope);
@@ -837,7 +1634,7 @@
 
 				var plane = new THREE.Mesh(new THREE.PlaneGeometry(64, 64), this.material);
 
-				plane.position.x = Math.random() * 1000 - 500;
+				plane.position.x = Math.random() * 2000 - 100;
 				plane.position.y = -Math.random() * Math.random() * 200 - 15;
 				plane.position.z = Math.random() * this.totDepth;
 				plane.rotation.z = Math.random() * Math.PI;
@@ -929,7 +1726,7 @@
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec2 flippedUv;\nuniform float uTopLeft;\n\nvoid main() {\n\n\tvUv = uv;\n\tflippedUv = vec2(1.0 - vUv.x, 1.0 - vUv.y);\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
+	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec2 flippedUv;\nvarying vec2 flippedX;\nvarying vec2 flippedY;\nuniform float xFlip;\nuniform float yFlip;\n\n\nvoid main() {\n\n\tvec2 testUv = uv;\n\ttestUv = testUv - vec2(.5, .5);\n\tfloat rot = 4.71239;\n\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n   \ttestUv = m * uv;\n    \n    testUv = testUv + vec2(.5, .5);\n\tvUv = uv;\n\tflippedUv = testUv;\n\tflippedX = vec2(1.0 - vUv.x, vUv.y);\n\tflippedY = vec2(vUv.x, 1.0 - vUv.y);\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
 
 /***/ },
 /* 8 */
@@ -952,7 +1749,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SceneCloudsMesh = function () {
-		function SceneCloudsMesh(FBO, FBOStill) {
+		function SceneCloudsMesh(sceneVals, sceneInitObj, FBO, FBOStill, FBOReverse, FBOGirl) {
 			_classCallCheck(this, SceneCloudsMesh);
 
 			this.scene = new THREE.Scene();
@@ -961,12 +1758,29 @@
 
 			this.mixVal = 1.0;
 
+			var boxUniforms = this.getInitShaderUniforms(sceneVals, sceneInitObj);
+			// const boxUniforms = this.getShaderUniforms(sceneVals);
+
+
+			var textureUniforms = {};
+			textureUniforms.uTexture = { value: FBO.texture };
+			textureUniforms.uTextureReverse = { value: FBOReverse.texture };
+			textureUniforms.uTextureGirl = { value: FBOGirl.texture };
+
+			var resUniforms = {};
+			resUniforms.resX = { value: window.innerWidth };
+			resUniforms.resY = { value: window.innerHeight };
+
+			var introUniforms = {};
+			introUniforms.introVal = { value: 1.0 };
+
+			var randomUniforms = {};
+			randomUniforms.randomVal = { value: Math.sin(Date.now()) };
+
+			var uniformsObj = Object.assign({}, boxUniforms, textureUniforms, resUniforms, introUniforms, randomUniforms);
+
 			var material = new THREE.ShaderMaterial({
-				uniforms: {
-					uTexture: { value: FBO.texture },
-					uMixVal: { value: this.mixVal },
-					uTopLeft: { value: .2 }
-				},
+				uniforms: uniformsObj,
 				vertexShader: __webpack_require__(7),
 				fragmentShader: __webpack_require__(10)
 			});
@@ -982,24 +1796,140 @@
 		}
 
 		_createClass(SceneCloudsMesh, [{
-			key: "update",
-			value: function update(FBO) {
+			key: "getInitShaderUniforms",
+			value: function getInitShaderUniforms(sceneVals, sceneInit) {
 
-				var now = Date.now();
-				var delta = now - this.currentTime;
+				var initUniforms = {};
+				Object.keys(sceneInit).forEach(function (t) {
 
-				if (delta > this.threshold) {
-					this.currentTime = now;
+					var strX = t + 'X';
+					initUniforms[strX] = { value: 0 };
 
-					if (this.mixVal > 0.0) {
-						this.mixVal = Math.random();
+					var strY = t + 'Y';
+					initUniforms[strY] = { value: 0 };
+
+					var strW = t + 'W';
+					initUniforms[strW] = { value: 0 };
+
+					var strH = t + 'H';
+					initUniforms[strH] = { value: 0 };
+
+					var strTexture = t + 'Texture';
+					initUniforms[strTexture] = { value: -1 };
+
+					var strScale = t + 'Scale';
+					initUniforms[strScale] = { value: 0 };
+
+					var strTranslateX = t + 'TranslateX';
+					initUniforms[strTranslateX] = { value: 0 };
+
+					var strTranslateY = t + 'TranslateY';
+					initUniforms[strTranslateY] = { value: 0 };
+
+					var strRotation = t + 'RotDegree';
+					initUniforms[strRotation] = { value: 0 };
+
+					var textureCoeffStr = t + 'Coeff';
+					initUniforms[textureCoeffStr] = { value: 0 };
+				});
+
+				var uniforms = {};
+				Object.keys(sceneVals).forEach(function (t) {
+
+					var strX = t + 'X';
+					uniforms[strX] = { value: sceneVals[t].x };
+
+					var strY = t + 'Y';
+					uniforms[strY] = { value: sceneVals[t].y };
+
+					var strW = t + 'W';
+					uniforms[strW] = { value: sceneVals[t].w };
+
+					var strH = t + 'H';
+					uniforms[strH] = { value: sceneVals[t].h };
+
+					var strTexture = t + 'Texture';
+					uniforms[strTexture] = { value: sceneVals[t].texture };
+
+					var strScale = t + 'Scale';
+					uniforms[strScale] = { value: sceneVals[t].scale };
+
+					var strTranslateX = t + 'TranslateX';
+					uniforms[strTranslateX] = { value: sceneVals[t].translateX };
+
+					var strTranslateY = t + 'TranslateY';
+					uniforms[strTranslateY] = { value: sceneVals[t].translateY };
+
+					var strRotation = t + 'RotDegree';
+					uniforms[strRotation] = { value: sceneVals[t].rotation };
+
+					if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+						var textureCoeffStr = t + 'Coeff';
+						uniforms[textureCoeffStr] = { value: sceneVals[t].textureCoeff };
 					}
+				});
 
-					this.quad.material.uniforms.uTopLeft.value = Math.random();
-					this.quad.material.uniforms.uMixVal.value = this.mixVal;
+				return Object.assign({}, initUniforms, uniforms);
+			}
+		}, {
+			key: "getShaderUniforms",
+			value: function getShaderUniforms(sceneVals) {
 
-					// console.log(this.mixVal);
-				}
+				var uniforms = {};
+				Object.keys(sceneVals).forEach(function (t) {
+
+					var strX = t + 'X';
+					uniforms[strX] = { value: sceneVals[t].x };
+
+					var strY = t + 'Y';
+					uniforms[strY] = { value: sceneVals[t].y };
+
+					var strW = t + 'W';
+					uniforms[strW] = { value: sceneVals[t].w };
+
+					var strH = t + 'H';
+					uniforms[strH] = { value: sceneVals[t].h };
+
+					var strTexture = t + 'Texture';
+					uniforms[strTexture] = { value: sceneVals[t].texture };
+
+					var strScale = t + 'Scale';
+					uniforms[strScale] = { value: sceneVals[t].scale };
+
+					var strTranslateX = t + 'TranslateX';
+					uniforms[strTranslateX] = { value: sceneVals[t].translateX };
+
+					var strTranslateY = t + 'TranslateY';
+					uniforms[strTranslateY] = { value: sceneVals[t].translateY };
+
+					var strRotation = t + 'RotDegree';
+					uniforms[strRotation] = { value: sceneVals[t].rotation };
+
+					if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+						var textureCoeffStr = t + 'Coeff';
+						uniforms[textureCoeffStr] = { value: sceneVals[t].textureCoeff };
+					}
+				});
+
+				return uniforms;
+			}
+		}, {
+			key: "update",
+			value: function update(sceneVals, introVal) {
+				var _this = this;
+
+				// const now = Date.now();
+				// const delta = now - this.currentTime;
+
+				var boxUniforms = this.getShaderUniforms(sceneVals);
+
+				Object.keys(boxUniforms).forEach(function (t) {
+
+					_this.quad.material.uniforms[t].value = boxUniforms[t].value;
+				});
+
+				this.quad.material.uniforms.introVal.value = introVal;
+				this.quad.material.uniforms.randomVal.value = { value: Math.sin(Date.now()) };
 			}
 		}]);
 
@@ -1012,11 +1942,11 @@
 /* 10 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec2 flippedUv;\nuniform sampler2D uTexture;\nuniform float uMixVal;\nuniform float uTopLeft;\n\nvoid main() {\n\n\tvec4 textureColor = texture2D( uTexture, vUv );\n\tvec4 textureStillColor = texture2D( uTexture, flippedUv );\n\tif (vUv.x < .2 || vUv.x > uTopLeft+.1 || vUv.y < uTopLeft || vUv.y > .8){\n\n\t\ttextureColor = textureStillColor;\n\t\tfloat gray = 0.299*textureColor.r + 0.587*textureColor.g + 0.114*textureColor.b;\n\t\n\t\tvec3 blackWhiteColor = vec3(gray, gray, gray);\n\n\t\tvec3 finalColor = mix(textureColor.rgb, blackWhiteColor, 1.0);\n\n\t\tgl_FragColor = vec4(finalColor, 1.0);\n\t} else {\n\n\t\t\n\n\n\t\tgl_FragColor = textureColor;\n\t}\n\n\t// gl_FragColor = textureColor;\n}"
+	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec2 flippedUv;\nvarying vec2 flippedX;\nvarying vec2 flippedY;\nuniform sampler2D uTexture;\nuniform sampler2D uTextureReverse;\nuniform sampler2D uTextureGirl;\nuniform float resX;\nuniform float resY;\nuniform float introVal;\nuniform float randomVal;\n\nuniform float boxOneX;\nuniform float boxOneY;\nuniform float boxOneW;\nuniform float boxOneH;\nuniform float boxOneTexture;\nuniform float boxOneScale;\nuniform float boxOneTranslateX;\nuniform float boxOneTranslateY;\nuniform float boxOneRotDegree;\nuniform float boxOneCoeff;\n\nuniform float boxTwoX;\nuniform float boxTwoY;\nuniform float boxTwoW;\nuniform float boxTwoH;\nuniform float boxTwoTexture;\nuniform float boxTwoScale;\nuniform float boxTwoTranslateX;\nuniform float boxTwoTranslateY;\nuniform float boxTwoRotDegree;\nuniform float boxTwoCoeff;\n\nuniform float boxThreeX;\nuniform float boxThreeY;\nuniform float boxThreeW;\nuniform float boxThreeH;\nuniform float boxThreeTexture;\nuniform float boxThreeScale;\nuniform float boxThreeTranslateX;\nuniform float boxThreeTranslateY;\nuniform float boxThreeRotDegree;\nuniform float boxThreeCoeff;\n\nuniform float boxFourX;\nuniform float boxFourY;\nuniform float boxFourW;\nuniform float boxFourH;\nuniform float boxFourTexture;\nuniform float boxFourScale;\nuniform float boxFourTranslateX;\nuniform float boxFourTranslateY;\nuniform float boxFourRotDegree;\nuniform float boxFourCoeff;\n\nuniform float boxFiveX;\nuniform float boxFiveY;\nuniform float boxFiveW;\nuniform float boxFiveH;\nuniform float boxFiveTexture;\nuniform float boxFiveScale;\nuniform float boxFiveTranslateX;\nuniform float boxFiveTranslateY;\nuniform float boxFiveRotDegree;\nuniform float boxFiveCoeff;\n\nuniform float boxSixX;\nuniform float boxSixY;\nuniform float boxSixW;\nuniform float boxSixH;\nuniform float boxSixTexture;\nuniform float boxSixScale;\nuniform float boxSixTranslateX;\nuniform float boxSixTranslateY;\nuniform float boxSixRotDegree;\nuniform float boxSixCoeff;\n\nfloat degreeToRadian(float degree){\n\treturn degree * (3.14159265359 / 180.0);\n}\n\nvoid main() {\n\n\tvec4 finalColor;\n\tvec4 textureColor = texture2D( uTexture, vUv );\n\tvec4 textureReverseColor = texture2D( uTextureReverse, vUv );\n\tvec4 textureGirlColor = texture2D( uTextureGirl, vUv );\n\n\tvec2 iRes = vec2(resX, resY);\n\n\tvec2 uv = gl_FragCoord.xy / iRes.xy;\n\n\tvec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);\n\n\tvec4 purple = vec4(242.0/255.0, 29.0/255.0, 199.0/255.0, 1.0) * vec4(.67);\n\t\n\tif ((vUv.x >= boxOneX && vUv.x <= (boxOneX + boxOneW)) && (vUv.y >= boxOneY && vUv.y <= (boxOneY + boxOneH))){\n\n\t\tuv.x += boxOneTranslateX;\n\t\tuv.y += boxOneTranslateY;\n\t    \n\t\tfloat rot = boxOneRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxOneTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxOneScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxOneTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxOneScale);\n\n\t\t} else if (boxOneTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxOneTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxOneCoeff))) * vec4(40.0);\n\t\t}\n\t} \n\telse if ((vUv.x >= boxTwoX && vUv.x <= (boxTwoX + boxTwoW)) && (vUv.y >= boxTwoY && vUv.y <= (boxTwoY + boxTwoH))){\n\n\t\tuv.x += boxTwoTranslateX;\n\t\tuv.y += boxTwoTranslateY;\n\t    \n\t\tfloat rot = boxTwoRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxTwoTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxTwoCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxTwoScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxTwoTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxTwoCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxTwoScale);\n\n\t\t} else if (boxTwoTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxTwoTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxTwoCoeff/12.0))) * vec4(40.0);\n\t\t}\n\t\t\n\t}\n\telse if ((vUv.x >= boxThreeX && vUv.x <= (boxThreeX + boxThreeW)) && (vUv.y >= boxThreeY && vUv.y <= (boxThreeY + boxThreeH))){\n\t\tuv.x += boxThreeTranslateX;\n\t\tuv.y += boxThreeTranslateY;\n\t    \n\t\tfloat rot = boxThreeRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxThreeTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxThreeCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxThreeScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxThreeTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxThreeCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxThreeScale);\n\n\t\t} else if (boxThreeTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxThreeTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxThreeCoeff/12.0))) * vec4(40.0);\n\t\t}\n\t}\n\telse if ((vUv.x >= boxFourX && vUv.x <= (boxFourX + boxFourW)) && (vUv.y >= boxFourY && vUv.y <= (boxFourY + boxFourH))){\n\t\tuv.x += boxFourTranslateX;\n\t\tuv.y += boxFourTranslateY;\n\t    \n\t\tfloat rot = boxFourRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxFourTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxFourCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxFourScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxFourTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxFourCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxFourScale);\n\n\t\t} else if (boxFourTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxFourTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxFourCoeff/12.0))) * vec4(40.0);\n\t\t}\n\n\t}\n\telse if ((vUv.x >= boxFiveX && vUv.x <= (boxFiveX + boxFiveW)) && (vUv.y >= boxFiveY && vUv.y <= (boxFiveY + boxFiveH))){\n\t\tuv.x += boxFiveTranslateX;\n\t\tuv.y += boxFiveTranslateY;\n\t    \n\t\tfloat rot = boxFiveRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxFiveTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxFiveCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxFiveScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxFiveTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxFiveCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxFiveScale);\n\n\t\t} else if (boxFiveTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxFiveTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxFiveCoeff/12.0))) * vec4(40.0);\n\t\t}\n\t}\n\telse if ((vUv.x >= boxSixX && vUv.x <= (boxSixX + boxSixW)) && (vUv.y >= boxSixY && vUv.y <= (boxSixY + boxSixH))){\n\t\tuv.x += boxSixTranslateX;\n\t\tuv.y += boxSixTranslateY;\n\t    \n\t\tfloat rot = boxSixRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxSixTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxSixCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxSixScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxSixTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxSixCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxSixScale);\n\n\t\t} else if (boxSixTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxSixTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxSixCoeff/12.0))) * vec4(40.0);\n\t\t}\n\n\t}\n\telse {\n\t\tfinalColor = textureReverseColor;\n\t}\n\t\n\n\n\t// \t// vec3 tempColor = mix(textureGirlColor.rgb, textureReverseColor.rgb, .8);\n\t// \t// finalColor = vec4(tempColor, 1.0);\n\t// \t// textureGirlColor.a = .0;\n\t// \t// textureGirlColor.r *= .5;\n\t// \t// textureGirlColor.g *= .5;\n\t// \t// textureGirlColor.b *= .5;\n\t// \t// finalColor = textureReverseColor * textureGirlColor;\n\t// \tfinalColor = mix(textureReverseColor, textureGirlColor, .4);\n\t// \t// finalColor = textureGirlColor;\n\t\t\n\n\t// \t// ----- B/W ----- \n\tfloat gray = 0.299*finalColor.r + 0.587*finalColor.g + 0.114*finalColor.b;\n\n\tvec3 blackWhiteColor = vec3(gray);\n\n\tvec3 color = mix(finalColor.rgb, blackWhiteColor, introVal);\n\n\tgl_FragColor = vec4(color, 1.0);\n\t\n\n\t// gl_FragColor = finalColor;\n}"
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1029,7 +1959,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SceneImport = function () {
-		function SceneImport() {
+		function SceneImport(FBO) {
 			_classCallCheck(this, SceneImport);
 
 			this.scene = new THREE.Scene();
@@ -1040,12 +1970,19 @@
 			jsonLoader.load("assets/imports/test.js", this.onLoaded.bind(this));
 
 			this.rotation = 0;
+
+			this.FBO = FBO;
+
+			this.rotWorldMatrix;
 		}
 
 		_createClass(SceneImport, [{
 			key: "onLoaded",
 			value: function onLoaded(geometry, materials) {
 
+				// THREE.GeometryUtils.center( geometry );
+
+				// geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0, 0) );
 				this.cubeCamera = new THREE.CubeCamera(1, 10000, 128);
 				// this.cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
 				// console.log(this.cubeCamera.renderTarget.texture);
@@ -1059,7 +1996,18 @@
 
 				this.scene.add(this.cubeCamera);
 
-				var material = new THREE.MeshLambertMaterial({ envMap: this.cubeCamera.renderTarget.texture, transparent: false });
+				var material = new THREE.ShaderMaterial({
+					uniforms: {
+						// uTexture: {value: this.FBO.texture},
+						"uTexCube": { type: "t", value: this.cubeCamera.renderTarget.texture },
+						"uTextureBg": { value: this.FBO.texture }
+
+					},
+					vertexShader: __webpack_require__(12),
+					fragmentShader: __webpack_require__(13)
+				});
+
+				// var material = new THREE.MeshLambertMaterial( { envMap: this.cubeCamera.renderTarget.texture, transparent: false, emissive:0xFFFFFF } );
 				// var material = new THREE.MeshBasicMaterial( {
 				// 			envMap: this.cubeCamera.renderTarget.texture
 				// 		} );
@@ -1071,6 +2019,10 @@
 
 
 				this.mesh = new THREE.Mesh(geometry, material);
+
+				var center = { x: 0, y: 0, z: 0 };
+				// this.mesh.position.set( center.x, center.y, center.z );
+				// this.mesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation( -center.x, -center.y, -center.z ) );
 
 				var light = new THREE.AmbientLight(0xFFFFFF, 1.0); // soft white light
 				this.scene.add(light);
@@ -1085,23 +2037,87 @@
 				// this.mesh.scale.y = .1;
 				// this.mesh.scale.z = .1;
 
-				this.scene.add(this.mesh);
+				// this.pivot = new THREE.Object3D();
+				// console.log(new THREE.Vector3(0,0,0));
+				// this.pivot.position = new THREE.Vector3(0,0,0);
+				// this.pivot.add(this.mesh);
+				// this.scene.add(pivot);
 
-				// directionalLight.target = this.mesh;
+				this.scene.add(this.mesh);
 
 				this.render = true;
 			}
+
+			// Rotate an object around an arbitrary axis in world space
+			// function rotateAroundWorldAxis(object, axis, radians) {
+			//     rotWorldMatrix = new THREE.Matrix4();
+			//     rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+			//     // old code for Three.JS pre r54:
+			//     //  rotWorldMatrix.multiply(object.matrix);
+			//     // new code for Three.JS r55+:
+			//     rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+			//     object.matrix = rotWorldMatrix;
+
+			//     // old code for Three.js pre r49:
+			//     // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+			//     // old code for Three.js pre r59:
+			//     // object.rotation.setEulerFromRotationMatrix(object.matrix);
+			//     // code for r59+:
+			//     object.rotation.setFromRotationMatrix(object.matrix);
+			// }
+
+		}, {
+			key: "rotateAroundWorldAxis",
+			value: function rotateAroundWorldAxis(object, axis, radians) {
+
+				this.rotWorldMatrix = new THREE.Matrix4();
+				this.rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+				this.rotWorldMatrix.multiply(object.matrix);
+
+				object.matrix = this.rotWorldMatrix;
+
+				object.rotation.setFromRotationMatrix(object.matrix);
+			}
 		}, {
 			key: "update",
-			value: function update(renderer, scene, pos) {
+			value: function update(renderer, scene, pos, updateCube) {
 
 				if (!this.render) return;
 
-				this.rotation += .5;
-				this.mesh.rotation.y = this.rotation * Math.PI / 180;
+				var translate = 3;
 
-				this.cubeCamera.position.copy({ x: 0, y: -40, z: pos });
-				this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);
+				this.rotation = 0.5;
+
+				var yAxis = new THREE.Vector3(0, 1, 0);
+
+				this.rotateAroundWorldAxis(this.mesh, yAxis, this.rotation * Math.PI / 180);
+
+				// this.mesh.position.z += translate;
+				// this.mesh.position.x = translate;
+				// this.mesh.position.y += translate;
+				// this.mesh.translate.z += translate;
+				// this.mesh.translate.y += translate;
+				// this.mesh.translate.x += translate;
+				// this.mesh.center();
+				// this.mesh.rotation.y = this.rotation * Math.PI / 180;
+
+
+				// this.mesh.translate.x -= translate;
+				// this.mesh.translate.z -= translate;
+				// this.mesh.translate.y -= translate;
+				// this.mesh.translate.x -= translate;
+				// this.mesh.position.z -= translate;
+				// this.mesh.position.x -= translate;
+				// this.mesh.position.z -= translate;
+
+				// this.pivot.rotation.y += 0.05;
+
+				if (updateCube) {
+					this.cubeCamera.position.copy({ x: 0, y: -40, z: pos });
+					this.cubeCamera.updateCubeMap(renderer, scene, this.mesh.position);
+				}
 			}
 		}]);
 
@@ -1114,13 +2130,13 @@
 /* 12 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\n\nvoid main() {\n\n\tvUv = uv;\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
+	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec3 vPos;\nvarying vec3 vNormal;\n\n\nvoid main() {\n\n\tvUv = uv;\n\tvNormal = normalMatrix * normal;\n\tvPos = vec3(modelMatrix * vec4(position, 1.0));\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
 
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nuniform sampler2D map;\n\nvarying vec2 vUv;\n\nvoid main() {\n\n\tfloat depth = gl_FragCoord.z / gl_FragCoord.w;\n\t\n\tvec4 textureColor = texture2D( map, vUv );\n\tgl_FragColor = texture2D( map, vUv );\n\t// gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );\n\t\n\t// vec4 color = mix( textureColor, vec4( fogColor, gl_FragColor.w ), fogFactor );\n\n\t// gl_FragColor = vec4(vUv.x, vUv.y, 1.0, 1.0) * color;\n\n}"
+	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nuniform samplerCube uTexCube;\nuniform sampler2D uTextureBg;\nvarying vec3 vPos;\nvarying vec3 vNormal;\n\nvoid main() {\n\n\t// vec4 textureColor = texture2D( uTexture, vUv );\n\t// // vec4 textureStillColor = texture2D( uTexture, flippedUv );\n\t// if (vUv.x < .2 || vUv.x > .8 || vUv.y < .2 || vUv.y > .8){\n\n\t// \t// textureColor = textureStillColor;\n\t// \tfloat gray = 0.299*textureColor.r + 0.587*textureColor.g + 0.114*textureColor.b;\n\t\n\t// \tvec3 blackWhiteColor = vec3(gray, gray, gray);\n\n\t// \tvec3 finalColor = mix(textureColor.rgb, blackWhiteColor, 1.0);\n\n\t// \tgl_FragColor = vec4(finalColor, 1.0);\n\t// } else {\n\n\t\t\n\n\n\t// \tgl_FragColor = textureColor;\n\t// }\n\n\t\n\n\t// vec3 c = textureCube(uTexCube, vPos).rgb;\n\n\t// vec3 finalColor = c;\n\n\t// gl_FragColor = vec4(finalColor,1.0);\n\n\t\n\tvec3 I = normalize(vPos - cameraPosition);\n    vec3 R = reflect(I, normalize(vNormal));\n    vec3 color = textureCube(uTexCube, R).rgb;\n\n\n\n    if (color == vec3(0.0, 0.0, 0.0)){\n    \tcolor = vec3(226.0/255.0, 6.0/255.0, 219.0/255.0);\n    }\n\n    vec3 finalColor = color;\n\n    gl_FragColor = vec4(finalColor, 1.0);\n\n}"
 
 /***/ },
 /* 14 */
@@ -1134,378 +2150,190 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _ViewImages = __webpack_require__(15);
-
-	var _ViewImages2 = _interopRequireDefault(_ViewImages);
-
-	var _ViewAbout = __webpack_require__(17);
-
-	var _ViewAbout2 = _interopRequireDefault(_ViewAbout);
-
-	var _ViewProjects = __webpack_require__(19);
-
-	var _ViewProjects2 = _interopRequireDefault(_ViewProjects);
-
-	var _ViewContact = __webpack_require__(23);
-
-	var _ViewContact2 = _interopRequireDefault(_ViewContact);
-
-	var _ViewMobileMenu = __webpack_require__(24);
-
-	var _ViewMobileMenu2 = _interopRequireDefault(_ViewMobileMenu);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var MOBILE_BREAK = 768;
+	var SceneCloudsOverlay = function () {
+		function SceneCloudsOverlay(sceneVals, sceneInitObj, FBO, FBOStill, FBOReverse, FBOGirl, FBOBG) {
+			_classCallCheck(this, SceneCloudsOverlay);
 
-	var Main = function () {
-		function Main(data) {
-			_classCallCheck(this, Main);
+			this.scene = new THREE.Scene();
 
-			this.DATA = data;
+			this.currentStillTexture = FBO.texture;
 
-			this.currentShowingOverlay = null;
+			this.mixVal = 1.0;
 
-			// console.log(getVendorPrefix());
+			var boxUniforms = this.getInitShaderUniforms(sceneVals, sceneInitObj);
 
+			var textureUniforms = {};
+			textureUniforms.uTexture = { value: FBO.texture };
+			textureUniforms.uTextureReverse = { value: FBOReverse.texture };
+			textureUniforms.uTextureGirl = { value: FBOGirl.texture };
+			textureUniforms.uTextureBg = { value: FBOBG.texture };
 
-			console.log(window.NS.transform);
+			var resUniforms = {};
+			resUniforms.resX = { value: window.innerWidth };
+			resUniforms.resY = { value: window.innerHeight };
 
-			this._mainLoaderGif = document.querySelector('.mainLoader');
+			var uniformsObj = Object.assign({}, boxUniforms, textureUniforms, resUniforms);
 
-			this._vImages = new _ViewImages2.default(document.getElementById('imageWrapper'), this.DATA.featured, this.featuredLoaded, this, MOBILE_BREAK);
-			this._vAbout = new _ViewAbout2.default(document.querySelector('.overlay.about'), this.onOverlayHide, this);
-			this._vProjects = new _ViewProjects2.default(document.querySelector('.overlay.projects'), this.onOverlayHide, this, this.DATA.projects, true);
-			this._vContact = new _ViewContact2.default(document.querySelector('.overlay.contact'), this.onOverlayHide, this);
+			var material = new THREE.ShaderMaterial({
+				uniforms: uniformsObj,
+				vertexShader: __webpack_require__(7),
+				fragmentShader: __webpack_require__(15)
+			});
 
-			this._vMobileMenu = new _ViewMobileMenu2.default(document.querySelector('.nav'));
+			var plane = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerHeight);
 
-			this._overlays = [];
+			this.quad = new THREE.Mesh(plane, material);
+			this.quad.position.z = 0;
+			this.scene.add(this.quad);
 
-			this._overlays[this._vAbout.dataId] = this._vAbout;
-			this._overlays[this._vProjects.dataId] = this._vProjects;
-			this._overlays[this._vContact.dataId] = this._vContact;
-
-			var logo = document.querySelector('.logo');
-
-			setTimeout(function () {
-				logo.style.opacity = 1;
-			}, 500);
+			this.threshold = 100;
+			this.currentTime = Date.now();
 		}
 
-		_createClass(Main, [{
-			key: "onOverlayHide",
-			value: function onOverlayHide() {
-				var _this = this;
+		_createClass(SceneCloudsOverlay, [{
+			key: "getInitShaderUniforms",
+			value: function getInitShaderUniforms(sceneVals, sceneInit) {
 
-				// document.body.style.overflow = 'visible';
+				var initUniforms = {};
+				Object.keys(sceneInit).forEach(function (t) {
 
-				setTimeout(function () {
-					_this._vImages.show();
-				}, 500);
-			}
-		}, {
-			key: "featuredLoaded",
-			value: function featuredLoaded() {
-				var _this2 = this;
+					var strX = t + 'X';
+					initUniforms[strX] = { value: 0 };
 
-				this._mainLoaderGif.style.display = 'none';
+					var strY = t + 'Y';
+					initUniforms[strY] = { value: 0 };
 
-				this.onResize(window.innerWidth, window.innerHeight);
+					var strW = t + 'W';
+					initUniforms[strW] = { value: 0 };
 
-				var navItems = document.querySelectorAll('.nav-item');
-				for (var i = 0; i < navItems.length; i++) {
-					navItems[i].addEventListener('click', this.onNavClick.bind(this));
-				}
+					var strH = t + 'H';
+					initUniforms[strH] = { value: 0 };
 
-				window.scrollTo(0, 0);
-				this.onScroll();
+					var strTexture = t + 'Texture';
+					initUniforms[strTexture] = { value: -1 };
 
-				window.addEventListener('scroll', function (e) {
-					_this2.onScroll(e);
+					var strScale = t + 'Scale';
+					initUniforms[strScale] = { value: 0 };
+
+					var strTranslateX = t + 'TranslateX';
+					initUniforms[strTranslateX] = { value: 0 };
+
+					var strTranslateY = t + 'TranslateY';
+					initUniforms[strTranslateY] = { value: 0 };
+
+					var strRotation = t + 'RotDegree';
+					initUniforms[strRotation] = { value: 0 };
+
+					var textureCoeffStr = t + 'Coeff';
+					initUniforms[textureCoeffStr] = { value: 0 };
 				});
+
+				var uniforms = {};
+				Object.keys(sceneVals).forEach(function (t) {
+
+					var strX = t + 'X';
+					uniforms[strX] = { value: sceneVals[t].x };
+
+					var strY = t + 'Y';
+					uniforms[strY] = { value: sceneVals[t].y };
+
+					var strW = t + 'W';
+					uniforms[strW] = { value: sceneVals[t].w };
+
+					var strH = t + 'H';
+					uniforms[strH] = { value: sceneVals[t].h };
+
+					var strTexture = t + 'Texture';
+					uniforms[strTexture] = { value: sceneVals[t].texture };
+
+					var strScale = t + 'Scale';
+					uniforms[strScale] = { value: sceneVals[t].scale };
+
+					var strTranslateX = t + 'TranslateX';
+					uniforms[strTranslateX] = { value: sceneVals[t].translateX };
+
+					var strTranslateY = t + 'TranslateY';
+					uniforms[strTranslateY] = { value: sceneVals[t].translateY };
+
+					var strRotation = t + 'RotDegree';
+					uniforms[strRotation] = { value: sceneVals[t].rotation };
+
+					if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+						var textureCoeffStr = t + 'Coeff';
+						uniforms[textureCoeffStr] = { value: sceneVals[t].textureCoeff };
+					}
+				});
+
+				return Object.assign({}, initUniforms, uniforms);
 			}
 		}, {
-			key: "onNavClick",
-			value: function onNavClick(e) {
-				var _this3 = this;
+			key: "getShaderUniforms",
+			value: function getShaderUniforms(sceneVals) {
 
-				// debugger;
+				var uniforms = {};
+				Object.keys(sceneVals).forEach(function (t) {
 
-				if (e.target.nodeName !== 'A') {
+					var strX = t + 'X';
+					uniforms[strX] = { value: sceneVals[t].x };
 
-					e.preventDefault();
+					var strY = t + 'Y';
+					uniforms[strY] = { value: sceneVals[t].y };
 
-					if (this._overlays[e.target.getAttribute('data-id')].showing) return;
+					var strW = t + 'W';
+					uniforms[strW] = { value: sceneVals[t].w };
 
-					if (!this._vImages.isHidden) {
-						// document.body.style.overflow = 'hidden';
+					var strH = t + 'H';
+					uniforms[strH] = { value: sceneVals[t].h };
 
-						this._vImages.hide();
+					var strTexture = t + 'Texture';
+					uniforms[strTexture] = { value: sceneVals[t].texture };
+
+					var strScale = t + 'Scale';
+					uniforms[strScale] = { value: sceneVals[t].scale };
+
+					var strTranslateX = t + 'TranslateX';
+					uniforms[strTranslateX] = { value: sceneVals[t].translateX };
+
+					var strTranslateY = t + 'TranslateY';
+					uniforms[strTranslateY] = { value: sceneVals[t].translateY };
+
+					var strRotation = t + 'RotDegree';
+					uniforms[strRotation] = { value: sceneVals[t].rotation };
+
+					if (sceneVals[t].hasOwnProperty('textureCoeff')) {
+						var textureCoeffStr = t + 'Coeff';
+						uniforms[textureCoeffStr] = { value: sceneVals[t].textureCoeff };
 					}
+				});
 
-					for (var overlay in this._overlays) {
-						this._overlays[overlay]._hide();
-					}
-
-					setTimeout(function () {
-
-						_this3._overlays[e.target.getAttribute('data-id')]._show();
-					}, 1000);
-				}
-			}
-		}, {
-			key: "onScroll",
-			value: function onScroll(e) {
-
-				var scrollTop = getScrollTop();
-
-				this._vImages.onScroll(scrollTop);
-
-				function getScrollTop() {
-
-					var ret = document.body.scrollTop;
-
-					if (ret == 0) {
-						if (window.pageYOffset) ret = window.pageYOffset;else ret = document.body.parentElement ? document.body.parentElement.scrollTop : 0;
-					}
-
-					return ret;
-				}
+				return uniforms;
 			}
 		}, {
 			key: "update",
-			value: function update() {
-				if (this._vImages) this._vImages.update();
-			}
-		}, {
-			key: "onResize",
-			value: function onResize(w, h) {
-				document.body.style.height = this._vImages.nrImages * h + 'px';
+			value: function update(sceneVals) {
+				var _this = this;
 
-				this._vImages.onResize(w, h);
-				for (var overlay in this._overlays) {
-					this._overlays[overlay].onResize(w, h);
-				}this._vMobileMenu.onResize(w, h);
+				var boxUniforms = this.getShaderUniforms(sceneVals);
+
+				Object.keys(boxUniforms).forEach(function (t) {
+
+					_this.quad.material.uniforms[t].value = boxUniforms[t].value;
+				});
 			}
 		}]);
 
-		return Main;
+		return SceneCloudsOverlay;
 	}();
 
-	exports.default = Main;
+	exports.default = SceneCloudsOverlay;
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ViewImage = __webpack_require__(16);
-
-	var _ViewImage2 = _interopRequireDefault(_ViewImage);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewImages = function () {
-		function ViewImages(el, images, imagesLoadedCallback, scope, mobileBreak) {
-			_classCallCheck(this, ViewImages);
-
-			this._el = el;
-
-			this.mobileBreak;
-
-			this.nrImages = images.length;
-			this.images = images.slice();
-
-			this.imagesLoadedCallback = imagesLoadedCallback;
-			this.scope = scope;
-			this.loadImage(this.images.shift());
-
-			this.winH = undefined;
-
-			this._viewImages = [];
-
-			this.currScrollTop = -1;
-
-			this.runUpdate = false;
-			this.currentAnimation = { diff: undefined, start: undefined, end: undefined, current: undefined };
-
-			this.isHidden = false;
-		}
-
-		_createClass(ViewImages, [{
-			key: 'loadImage',
-			value: function loadImage(src) {
-				var _this = this;
-
-				var img = new Image();
-				img.onload = function () {
-					_this._el.appendChild(img);
-					var viewImage = new _ViewImage2.default(img, _this.nrImages - _this._viewImages.length);
-					_this._viewImages.push(viewImage);
-					if (_this.images.length > 0) _this.loadImage(_this.images.shift());else {
-						_this.onResize(window.innerWidth, window.innerHeight);
-						_this.imagesLoadedCallback.call(_this.scope);
-					}
-				};
-				img.src = 'assets/' + src + '.png';
-			}
-		}, {
-			key: 'show',
-			value: function show() {
-
-				this.isHidden = false;
-
-				var currScrollTop = this.currScrollTop;
-				var winH = this.winH;
-				var currentIdx = Math.floor(currScrollTop / winH);
-
-				window.scrollTo(0, currScrollTop);
-
-				var scrollTop = 0;
-				if (currentIdx == 0) {
-					scrollTop = winH;
-					console.log('first');
-				} else if (currentIdx == this.nrImages - 1) {
-					console.log('last');
-					scrollTop = currentIdx * winH;
-				} else {
-					scrollTop = winH * currentIdx - winH;
-					console.log('mid');
-				}
-
-				currScrollTop -= winH;
-				var diff = scrollTop - currScrollTop;
-				this.currentAnimation.diff = diff;
-				this.currentAnimation.start = currScrollTop;
-				this.currentAnimation.current = 0.0;
-				this.currentAnimation.type = 'show';
-				this.runUpdate = true;
-			}
-		}, {
-			key: 'hide',
-			value: function hide() {
-
-				var currScrollTop = this.currScrollTop;
-				var winH = this.winH;
-				var currentIdx = Math.floor(currScrollTop / winH);
-
-				var scrollTop = 0;
-				if (currentIdx == 0) {
-					scrollTop = winH / 2;
-					console.log('first');
-				} else if (currentIdx == this.nrImages - 1) {
-					console.log('last');
-					scrollTop = currentIdx * winH - winH / 2;
-				} else {
-					scrollTop = winH * currentIdx + winH / 2 - winH;
-					console.log('mid');
-				}
-
-				currScrollTop -= winH;
-				var diff = scrollTop - currScrollTop;
-				this.currentAnimation.diff = diff;
-				this.currentAnimation.start = currScrollTop;
-				this.currentAnimation.current = 0.0;
-				this.currentAnimation.type = 'hide';
-				this.runUpdate = true;
-			}
-		}, {
-			key: 'update',
-			value: function update() {
-
-				if (!this.runUpdate) return;
-
-				var val = this.currentAnimation.diff * this.currentAnimation.current + this.currentAnimation.start;
-
-				window.scrollTo(0, val);
-
-				if (this.currentAnimation.current >= 1) {
-					if (this.currentAnimation.type == 'hide') this.isHidden = true;
-
-					this.runUpdate = false;
-				} else {
-					this.currentAnimation.current += .05;
-				}
-			}
-		}, {
-			key: 'onScroll',
-			value: function onScroll(scrollTop) {
-
-				if (this.isHidden) return;
-
-				if (this._viewImages.length == 0) return;
-
-				var winH = this.winH;
-				scrollTop += winH;
-				var currentIdx = Math.floor(scrollTop / winH);
-				if (currentIdx == this.nrImages) return;
-				var prevIdx = currentIdx > 0 ? currentIdx - 1 : -1;
-				var nextIdx = currentIdx < this.nrImages - 1 ? currentIdx + 1 : -1;
-
-				var normalized = Math.round(scrollTop % winH / winH * 100) / 100;
-				var prevNormalized = 1 - normalized;
-				var nextNormalized = 1 - normalized;
-
-				if (currentIdx > -1) {
-					this._viewImages[currentIdx].update(normalized);
-				}
-
-				if (prevIdx > -1) {
-					this._viewImages[prevIdx].update(prevNormalized);
-				}
-
-				this.currScrollTop = scrollTop;
-				// console.log(currentIdx, normalized);
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(w, h) {
-
-				this.winH = h;
-
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
-
-				try {
-					for (var _iterator = this._viewImages[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var img = _step.value;
-
-						img.onResize(w, h);
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
-				}
-			}
-		}]);
-
-		return ViewImages;
-	}();
-
-	exports.default = ViewImages;
+	module.exports = "#define GLSLIFY 1\nvarying vec2 vUv;\nvarying vec2 flippedUv;\nuniform sampler2D uTexture;\nuniform sampler2D uTextureReverse;\nuniform sampler2D uTextureGirl;\nuniform sampler2D uTextureBg;\nuniform float resX;\nuniform float resY;\n\nuniform float boxOverlayX;\nuniform float boxOverlayY;\nuniform float boxOverlayW;\nuniform float boxOverlayH;\nuniform float boxOverlayTexture;\nuniform float boxOverlayScale;\nuniform float boxOverlayTranslateX;\nuniform float boxOverlayTranslateY;\nuniform float boxOverlayRotDegree;\nuniform float boxOverlayCoeff;\n\nvoid main() {\n\n\tvec4 finalColor;\n\tvec4 textureColor = texture2D( uTexture, vUv );\n\tvec4 textureReverseColor = texture2D( uTextureReverse, vUv );\n\tvec4 textureGirlColor = texture2D( uTextureGirl, vUv );\n\tvec4 bgColor = texture2D(uTextureBg, vUv);\n\n\tvec2 iRes = vec2(resX, resY);\n\n\tvec2 uv = gl_FragCoord.xy / iRes.xy;\n\n\tvec2 ratio = vec2((iRes.x/2.0) / iRes.x, (iRes.y/2.0) / iRes.y);\n\n\tvec4 purple = vec4(242.0/255.0, 29.0/255.0, 199.0/255.0, 1.0) * vec4(.67);\n\n\t\n\tif ((vUv.x >= boxOverlayX && vUv.x <= (boxOverlayX + boxOverlayW)) && (vUv.y >= boxOverlayY && vUv.y <= (boxOverlayY + boxOverlayH))){\n\n\t\tuv.x += boxOverlayTranslateX;\n\t\tuv.y += boxOverlayTranslateY;\n\t    \n\t\tfloat rot = boxOverlayRotDegree * (3.14159265359 / 180.0);\n\n\t\tuv = uv - vec2(.5, .5);\n\n\t\tmat2 m = mat2(cos(rot), -sin(rot), sin(rot), cos(rot));\n\t\tuv  = m * uv;\n\n\t\tuv = uv + vec2(.5, .5);\n\n\t\tif (boxOverlayTexture == 0.0) {\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxOverlayCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxOverlayScale);\n\t\t\t// finalColor = texture2D(uTexture, uv);\n\t\t} else if (boxOverlayTexture == 0.5) {\n\t\t\tvec4 cloudColor = texture2D(uTextureReverse, uv);\n\t\t\tvec4 fuckedColor = (purple - (cloudColor - vec4(boxOverlayCoeff))) * vec4(40.0);\n\t\t\tfinalColor = mix(cloudColor, fuckedColor, boxOverlayScale);\n\n\t\t} else if (boxOverlayTexture == 1.0) {\n\t\t\tfinalColor = texture2D(uTextureGirl, uv);\n\t\t\t\n\t\t} else if (boxOverlayTexture == 1.5) {\n\t\t\tvec4 girlColor = texture2D(uTextureGirl, uv);\n\t\t\tvec4 cloudColor = texture2D(uTexture, uv);\n\t\t\tfinalColor = (girlColor - (cloudColor - vec4(boxOverlayCoeff))) * vec4(40.0);\n\t\t}\n\t}\n\telse {\n\t\tfinalColor = bgColor;\n\t}\n\t\n\n\tgl_FragColor = finalColor;\n}"
 
 /***/ },
 /* 16 */
@@ -1516,44 +2344,63 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewImage = function () {
-		function ViewImage(el, idx) {
-			_classCallCheck(this, ViewImage);
-
-			this._el = el;
-			this._idx = idx;
-		}
-
-		_createClass(ViewImage, [{
-			key: 'update',
-			value: function update(normalized) {
-
-				var opacity = Math.pow(normalized, 8);
-				var scaleMult = this._isMobile ? 1.0 : 1.3;
-				var scale = Math.pow(normalized, 3) * scaleMult;
-
-				this._el.style[window.NS.transform] = 'scale(' + scale + ')';
-
-				this._el.style.opacity = opacity;
-			}
+	var Timeline = {
+		active: true,
+		init: {
+			scene: 'SceneA'
+		},
+		schedules: [{
+			time: 7.8,
+			scene: 0
 		}, {
-			key: 'onResize',
-			value: function onResize(w, h) {
+			time: 13,
+			scene: 1
+		}, {
+			time: 18.4,
+			scene: 2
+		}, {
+			time: 23.7,
+			scene: 3
+		}, {
+			time: 29,
+			scene: 4
+		}, {
+			time: 36,
+			scene: 6
+		}, {
+			time: 42,
+			scene: 7
+		}, {
+			time: 50,
+			scene: 8
+		}, {
+			time: 55,
+			scene: 9
+		}, {
+			time: 62,
+			scene: 10
+		}, {
+			time: 20,
+			scene: 3
+		}, {
+			time: 22,
+			scene: 0
+		}, {
+			time: 23,
+			scene: 3
+		}, {
+			time: 26,
+			scene: 2
+		}, {
+			time: 28,
+			scene: 3
+		}, {
+			time: 34,
+			scene: 0
+		}]
+	};
 
-				this._isMobile = w < 768 ? true : false;
-				this._el.style.marginLeft = -(this._el.width / 2) + 'px';
-			}
-		}]);
-
-		return ViewImage;
-	}();
-
-	exports.default = ViewImage;
+	exports.default = Timeline;
 
 /***/ },
 /* 17 */
@@ -1565,31 +2412,81 @@
 		value: true
 	});
 
-	var _ViewOverlay2 = __webpack_require__(18);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _ViewOverlay3 = _interopRequireDefault(_ViewOverlay2);
+	var _SceneSelectorItem = __webpack_require__(18);
+
+	var _SceneSelectorItem2 = _interopRequireDefault(_SceneSelectorItem);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var SceneSelector = function () {
+		function SceneSelector(items, initObj) {
+			_classCallCheck(this, SceneSelector);
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+			var getUrlParameter = function getUrlParameter(name) {
+				name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+				var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+				var results = regex.exec(location.search);
+				return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+			};
 
-	var ViewAbout = function (_ViewOverlay) {
-		_inherits(ViewAbout, _ViewOverlay);
+			this.containerEl = document.createElement('div');
+			this.containerEl.classList.add('selector-container');
 
-		function ViewAbout(el, onHideCallback, callbackScope) {
-			_classCallCheck(this, ViewAbout);
+			this.playTimeline = getUrlParameter('timeline') === 'active';
 
-			return _possibleConstructorReturn(this, (ViewAbout.__proto__ || Object.getPrototypeOf(ViewAbout)).call(this, el, onHideCallback, callbackScope));
+			this.toggleTimelineEl = document.createElement('div');
+			this.toggleTimelineEl.classList.add('timeline-toggler');
+			this.toggleTimelineEl.classList.add('select');
+			if (this.playTimeline) {
+				this.toggleTimelineEl.innerHTML = 'Disable Timeline';
+			} else {
+				this.toggleTimelineEl.innerHTML = 'Use Timeline';
+			}
+			this.toggleTimelineEl.addEventListener('click', this.onToggleClick.bind(this));
+
+			this.containerEl.appendChild(this.toggleTimelineEl);
+
+			this.currentItem = items[0];
+
+			this.initObj = initObj;
+
+			this.items = [];
+			for (var i = 0; i < items.length; i++) {
+
+				var itemObj = items[i];
+				var item = new _SceneSelectorItem2.default(this.containerEl, this.onTypeClick, this, itemObj);
+				this.items.push(itemObj);
+			}
 		}
 
-		return ViewAbout;
-	}(_ViewOverlay3.default);
+		_createClass(SceneSelector, [{
+			key: 'onToggleClick',
+			value: function onToggleClick() {
 
-	exports.default = ViewAbout;
+				var url = document.location.protocol + '//' + document.location.host + document.location.pathname;
+
+				if (!this.playTimeline) window.location.href = url + '?timeline=active';else {
+					window.location.href = url;
+				}
+			}
+		}, {
+			key: 'onTypeClick',
+			value: function onTypeClick(itemObj) {
+
+				console.log('on type click', itemObj);
+
+				this.currentItem = itemObj;
+			}
+		}]);
+
+		return SceneSelector;
+	}();
+
+	exports.default = SceneSelector;
 
 /***/ },
 /* 18 */
@@ -1605,1226 +2502,41 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var ViewOverlay = function () {
-		function ViewOverlay(el, onHideCallback, callbackScope) {
-			var hasDetail = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+	var SceneSelectorItem = function () {
+		function SceneSelectorItem(parentEl, onClickCallback, callbackScope, itemObj) {
+			_classCallCheck(this, SceneSelectorItem);
 
-			_classCallCheck(this, ViewOverlay);
-
-			this._el = el;
-
-			this.dataId = this._el.getAttribute('data-id');
-
-			this._el.style.transform = 'scale(.93)';
-
-			this.onHideCallback = onHideCallback;
+			this.onClickCallback = onClickCallback;
 			this.callbackScope = callbackScope;
+			this.itemObj = itemObj;
 
-			this.hasDetail = hasDetail;
+			this.containerEl = document.createElement('div');
+			this.containerEl.classList.add('item-container');
 
-			this.closeBtn = document.querySelector('.closeBtn');
-			this.onCloseBtnClickBound = this.onCloseBtnClick.bind(this);
-			// var touchLayer = this._el.querySelector('.touchLayer');
-			// touchLayer.addEventListener('click', () => {
-			// 	this._hide();
-			// 	this.onHideCallback.call(this.callbackScope);
-			// });
+			this.selectBtn = document.createElement('div');
+			this.selectBtn.classList.add('select');
+			this.containerEl.appendChild(this.selectBtn);
+			this.selectBtn.innerHTML = itemObj.title;
 
-			this.showing = false;
-			// this.onResize(window.innerWidth, window.innerHeight);
+			this.onClickBound = this.onClick.bind(this);
 
+			this.selectBtn.addEventListener('click', this.onClickBound);
+
+			parentEl.appendChild(this.containerEl);
 		}
 
-		_createClass(ViewOverlay, [{
-			key: 'toggle',
-			value: function toggle() {
+		_createClass(SceneSelectorItem, [{
+			key: 'onClick',
+			value: function onClick(e) {
 
-				if (this.showing) this._hide();else this._show();
+				this.onClickCallback.call(this.callbackScope, this.itemObj);
 			}
-		}, {
-			key: 'activateCloseBtn',
-			value: function activateCloseBtn() {
-
-				this.closeBtn.addEventListener('click', this.onCloseBtnClickBound);
-			}
-		}, {
-			key: 'onCloseBtnClick',
-			value: function onCloseBtnClick() {
-
-				console.log('close btn');
-				if (this.hasDetail) {
-
-					if (this.detailOpen) {
-						console.log('deatil open');
-						var _iteratorNormalCompletion = true;
-						var _didIteratorError = false;
-						var _iteratorError = undefined;
-
-						try {
-							for (var _iterator = this.items[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-								var item = _step.value;
-
-								item._projectDetail.hide();
-							}
-						} catch (err) {
-							_didIteratorError = true;
-							_iteratorError = err;
-						} finally {
-							try {
-								if (!_iteratorNormalCompletion && _iterator.return) {
-									_iterator.return();
-								}
-							} finally {
-								if (_didIteratorError) {
-									throw _iteratorError;
-								}
-							}
-						}
-					} else {
-						this._hide();
-						this.onHideCallback.call(this.callbackScope);
-					}
-				} else {
-					this._hide();
-					this.onHideCallback.call(this.callbackScope);
-				}
-			}
-		}, {
-			key: 'inactivateCloseBtn',
-			value: function inactivateCloseBtn() {
-
-				this.closeBtn.removeEventListener('click', this.onCloseBtnClickBound);
-			}
-		}, {
-			key: '_show',
-			value: function _show() {
-
-				this.activateCloseBtn();
-				this._el.style.display = 'block';
-
-				var self = this;
-				setTimeout(function () {
-					self._el.style.opacity = 1;
-					self._el.style[window.NS.transform] = 'scale(1.0)';
-
-					self.closeBtn.style.opacity = 1;
-				}, 100);
-
-				this.showing = true;
-
-				window.scrollTo(0, 0);
-			}
-		}, {
-			key: '_hide',
-			value: function _hide() {
-				var _this = this;
-
-				this.inactivateCloseBtn();
-				// this._el.style.transform = 'translate3d(0, -100%,0)';
-				this._el.style.opacity = 0;
-				this._el.style[window.NS.transform] = 'scale(.93)';
-
-				this.closeBtn.style.opacity = 0;
-
-				setTimeout(function () {
-					_this._el.style.display = 'none';
-				}, 1000);
-				this.showing = false;
-
-				// this._el.style.height = '0';
-			}
-		}, {
-			key: 'update',
-			value: function update() {}
-		}, {
-			key: 'render',
-			value: function render() {}
-		}, {
-			key: 'onResize',
-			value: function onResize(w, h) {}
 		}]);
 
-		return ViewOverlay;
+		return SceneSelectorItem;
 	}();
 
-	exports.default = ViewOverlay;
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ViewOverlay2 = __webpack_require__(18);
-
-	var _ViewOverlay3 = _interopRequireDefault(_ViewOverlay2);
-
-	var _ViewProjectItem = __webpack_require__(20);
-
-	var _ViewProjectItem2 = _interopRequireDefault(_ViewProjectItem);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ViewProjects = function (_ViewOverlay) {
-		_inherits(ViewProjects, _ViewOverlay);
-
-		function ViewProjects(el, onHideCallback, callbackScope, projectsData, hasDetail) {
-			_classCallCheck(this, ViewProjects);
-
-			var _this = _possibleConstructorReturn(this, (ViewProjects.__proto__ || Object.getPrototypeOf(ViewProjects)).call(this, el, onHideCallback, callbackScope, hasDetail));
-
-			_this.projectsContainer = _this._el.querySelector('.projectsContainer');
-
-			_this.ITEMS_PER_ROW = 3;
-			_this.ITEMS_PER_ROW_MOBILE = 1;
-			_this.MOBILE_BREAK = 768;
-			_this.MARGIN = 10;
-
-			_this.items = [];
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = projectsData[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var projectData = _step.value;
-
-					var item = new _ViewProjectItem2.default(_this.projectsContainer, projectData, _this.onDetailOpen, _this.onDetailClose, _this);
-					_this.items.push(item);
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			_this.detailOpen = false;
-
-			return _this;
-		}
-
-		_createClass(ViewProjects, [{
-			key: 'onDetailOpen',
-			value: function onDetailOpen() {
-
-				var delay = 0;
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
-
-				try {
-					for (var _iterator2 = this.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var item = _step2.value;
-
-						item.hide(delay += 100);
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
-					}
-				}
-
-				this.detailOpen = true;
-				// this.closeBtn.style.display = 'none';
-			}
-		}, {
-			key: 'onDetailClose',
-			value: function onDetailClose() {
-
-				var delay = (this.items.length - 1) * 100;
-				var _iteratorNormalCompletion3 = true;
-				var _didIteratorError3 = false;
-				var _iteratorError3 = undefined;
-
-				try {
-					for (var _iterator3 = this.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-						var item = _step3.value;
-
-						item.show(delay -= 100);
-					}
-				} catch (err) {
-					_didIteratorError3 = true;
-					_iteratorError3 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion3 && _iterator3.return) {
-							_iterator3.return();
-						}
-					} finally {
-						if (_didIteratorError3) {
-							throw _iteratorError3;
-						}
-					}
-				}
-
-				this.detailOpen = false;
-				// this.closeBtn.style.display = 'block';
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(w, h) {
-
-				var isMobile = w < this.MOBILE_BREAK ? true : false;
-				var wMult = isMobile ? .9 : .8;
-				var containerW = w * wMult;
-				this.projectsContainer.style.width = containerW + 'px';
-
-				var itemsPerRow = isMobile ? this.ITEMS_PER_ROW_MOBILE : this.ITEMS_PER_ROW;
-
-				var itemW = Math.floor(containerW / itemsPerRow);
-
-				var currentX = 0;
-				var currentY = 0;
-				var idx = 1;
-
-				var itemH = itemW;
-
-				var _iteratorNormalCompletion4 = true;
-				var _didIteratorError4 = false;
-				var _iteratorError4 = undefined;
-
-				try {
-					for (var _iterator4 = this.items[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-						var item = _step4.value;
-
-						item.onResize(currentX, currentY, itemW, itemH, w);
-						if (idx % itemsPerRow == 0) {
-							if (idx > 0) {
-								currentY += itemH + this.MARGIN;
-							}
-							currentX = 0;
-						} else {
-							currentX += itemW + this.MARGIN;
-						}
-
-						idx++;
-					}
-				} catch (err) {
-					_didIteratorError4 = true;
-					_iteratorError4 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion4 && _iterator4.return) {
-							_iterator4.return();
-						}
-					} finally {
-						if (_didIteratorError4) {
-							throw _iteratorError4;
-						}
-					}
-				}
-
-				var containerH = this.items.length * (itemH + this.MARGIN);
-				// this._el.style.height = containerH + 'px';
-			}
-		}]);
-
-		return ViewProjects;
-	}(_ViewOverlay3.default);
-
-	exports.default = ViewProjects;
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ViewProjectDetail = __webpack_require__(21);
-
-	var _ViewProjectDetail2 = _interopRequireDefault(_ViewProjectDetail);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewProjectItem = function () {
-		function ViewProjectItem(parentEl, data, openDetailCallback, closeDetailCallback, callbackScope) {
-			var _this = this;
-
-			_classCallCheck(this, ViewProjectItem);
-
-			this.isMobile = false;
-
-			this.openDetailCallback = openDetailCallback;
-			this.closeDetailCallback = closeDetailCallback;
-			this.callbackScope = callbackScope;
-
-			var el = document.createElement('div');
-			el.classList.add('projectItem');
-
-			var loader = document.createElement('img');
-			loader.classList.add('projectItemLoader');
-			loader.src = '../assets/triangle.svg';
-			el.appendChild(loader);
-			this.loader = loader;
-
-			var captionLayer = document.createElement('div');
-			captionLayer.classList.add('itemCaption');
-
-			var captionCopy = document.createElement('h5');
-			captionCopy.innerHTML = data.title;
-
-			captionLayer.appendChild(captionCopy);
-
-			var openBtn = document.createElement('h5');
-			openBtn.classList.add('projectOpenBtn');
-			openBtn.innerHTML = 'VIEW';
-
-			captionLayer.appendChild(openBtn);
-
-			var touchLayer = document.createElement('div');
-			touchLayer.classList.add('touchLayer');
-
-			el.appendChild(touchLayer);
-			el.appendChild(captionLayer);
-
-			parentEl.appendChild(el);
-
-			this._el = el;
-
-			var img = new Image();
-			img.onload = function () {
-				_this._el.appendChild(img);
-			};
-			img.src = '../assets/projects/' + data.frontAsset + '.jpg';
-
-			this.touchLayer = touchLayer;
-			this.captionLayer = captionLayer;
-
-			this.captionVisible = false;
-
-			var projectDetailEl = document.createElement('div');
-			projectDetailEl.className = 'projectDetailWrapper';
-
-			parentEl.appendChild(projectDetailEl);
-
-			this._projectDetail = new _ViewProjectDetail2.default(projectDetailEl, data.detail, this.onDetailClose, this.onDetailLoaded, this);
-
-			touchLayer.addEventListener('click', function () {
-				if (!_this._projectDetail.isSliderLoaded()) return;
-				_this.openDetailCallback.call(_this.callbackScope);
-
-				_this._projectDetail.show();
-			});
-		}
-
-		_createClass(ViewProjectItem, [{
-			key: 'onDetailLoaded',
-			value: function onDetailLoaded() {
-
-				this.loader.style.display = 'none';
-			}
-		}, {
-			key: 'onDetailClose',
-			value: function onDetailClose() {
-
-				this.closeDetailCallback.call(this.callbackScope);
-			}
-		}, {
-			key: 'activateDesktop',
-			value: function activateDesktop() {
-				var _this2 = this;
-
-				this.touchLayer.addEventListener('mouseover', function () {
-					_this2.captionLayer.style.opacity = 1;
-				});
-
-				this.touchLayer.addEventListener('mouseout', function () {
-					_this2.captionLayer.style.opacity = 0;
-				});
-
-				this.touchLayer.removeEventListener('click', function () {});
-			}
-		}, {
-			key: 'activateMobile',
-			value: function activateMobile() {
-				var _this3 = this;
-
-				this.touchLayer.removeEventListener('mouseover', function () {});
-				this.touchLayer.removeEventListener('mouseout', function () {});
-
-				this.touchLayer.addEventListener('click', function (e) {
-					if (_this3.captionVisible) {
-						_this3.captionVisible = false;
-						_this3.captionLayer.style.opacity = 0;
-					} else {
-						_this3.captionVisible = true;
-						_this3.captionLayer.style.opacity = 1;
-					}
-				});
-			}
-		}, {
-			key: 'show',
-			value: function show(delay) {
-				var _this4 = this;
-
-				this._el.style.display = 'block';
-
-				setTimeout(function () {
-					_this4._el.style.opacity = 1;
-					_this4._el.style[window.NS.transform] = 'scale(1)';
-				}, delay + 200);
-			}
-		}, {
-			key: 'hide',
-			value: function hide(delay) {
-				var _this5 = this;
-
-				setTimeout(function () {
-					_this5._el.style.opacity = 0;
-					_this5._el.style[window.NS.transform] = 'scale(.92)';
-				}, delay);
-
-				setTimeout(function () {
-					_this5._el.style.display = 'none';
-				}, delay + 500);
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(x, y, w, h, winW) {
-
-				var isMobile = winW < 768 ? true : false;
-				if (isMobile && !this.isMobile) this.activateMobile();else {
-					this.activateDesktop();
-				}
-
-				this.isMobile = isMobile;
-
-				this._el.style.left = x + 'px';
-				this._el.style.top = y + 'px';
-				this._el.style.width = w + 'px';
-				this._el.style.height = h + 'px';
-
-				this._projectDetail.onResize(winW);
-			}
-		}]);
-
-		return ViewProjectItem;
-	}();
-
-	exports.default = ViewProjectItem;
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ViewSlider = __webpack_require__(22);
-
-	var _ViewSlider2 = _interopRequireDefault(_ViewSlider);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewProjectDetail = function () {
-		function ViewProjectDetail(el, data, closeCallback, loadedCallback, callbackScope) {
-			_classCallCheck(this, ViewProjectDetail);
-
-			this._el = el;
-
-			this.closeCallback = closeCallback;
-			this.callbackScope = callbackScope;
-			this.loadedCallback = loadedCallback;
-
-			this._descrEl = document.createElement('p');
-			this._descrEl.className = 'projectDescr';
-			this._descrEl.innerHTML = data.descr;
-
-			this._el.appendChild(this._descrEl);
-
-			// var projectDetailCloseBtn = document.createElement('img');
-			// projectDetailCloseBtn.className = 'projectDetailCloseBtn';
-			// projectDetailCloseBtn.src = 'assets/icons/cancel.svg';
-
-			// projectDetailCloseBtn.addEventListener('click', (e) => {
-
-			// 	this.hide();
-			// });
-
-			// this._el.appendChild(projectDetailCloseBtn);
-
-			var sliderWrapper = document.createElement('div');
-			sliderWrapper.className = 'projectSlider';
-			this._el.appendChild(sliderWrapper);
-			this._slider = new _ViewSlider2.default(sliderWrapper, data, this.sliderLoaded, this);
-		}
-
-		_createClass(ViewProjectDetail, [{
-			key: 'sliderLoaded',
-			value: function sliderLoaded() {
-
-				this.loadedCallback.call(this.callbackScope);
-			}
-		}, {
-			key: 'isSliderLoaded',
-			value: function isSliderLoaded() {
-
-				return this._slider.isLoaded;
-			}
-		}, {
-			key: 'show',
-			value: function show() {
-				var _this = this;
-
-				this._el.style.display = 'block';
-
-				setTimeout(function () {
-					_this._el.style.opacity = 1;
-					window.scrollTo(0, 0);
-				}, 800);
-
-				// this._slider.currentIdx = 1;
-				if (this._slider.currentIdx > -1) this._slider.hide(this._slider.currentIdx);
-
-				this._slider.show(0);
-			}
-		}, {
-			key: 'hide',
-			value: function hide() {
-				var _this2 = this;
-
-				setTimeout(function () {
-					_this2._el.style.display = 'none';
-				}, 500);
-
-				this._el.style.opacity = 0;
-
-				this.closeCallback.call(this.callbackScope);
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(w) {
-				this._slider.onResize(w);
-			}
-		}]);
-
-		return ViewProjectDetail;
-	}();
-
-	exports.default = ViewProjectDetail;
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewSlider = function () {
-		function ViewSlider(el, data, loadedCallback, callbackScope) {
-			var _this = this;
-
-			_classCallCheck(this, ViewSlider);
-
-			this._el = el;
-
-			this.loadedCallback = loadedCallback;
-			this.callbackScope = callbackScope;
-
-			this._containerEl = document.createElement('div');
-			this._containerEl.className = 'sliderContainer';
-
-			this._el.appendChild(this._containerEl);
-
-			// this._innerEl = document.createElement('div');
-			// this._innerEl.className = 'sliderInner';
-			// this._containerEl.appendChild(this._innerEl);
-
-			var arrowNext = document.createElement('img');
-			arrowNext.className = 'sliderNext sliderNav';
-			arrowNext.src = 'assets/icons/next.svg';
-			arrowNext.addEventListener('click', function () {
-
-				var hideIdx = _this.currentIdx;
-				var nextIdx = _this.currentIdx;
-				if (nextIdx >= _this._items.length - 1) {
-					nextIdx = 0;
-				} else nextIdx++;
-
-				setTimeout(function () {
-					_this.show(nextIdx);
-				}, 600);
-
-				setTimeout(function () {
-					_this.hide(hideIdx, nextIdx);
-				}, 0);
-			});
-
-			var arrowPrev = document.createElement('img');
-			arrowPrev.className = 'sliderPrev sliderNav';
-			arrowPrev.src = 'assets/icons/back.svg';
-			arrowPrev.addEventListener('click', function () {
-				var hideIdx = _this.currentIdx;
-				var nextIdx = _this.currentIdx;
-				if (nextIdx == 0) {
-					nextIdx = _this._items.length - 1;
-				} else nextIdx--;
-
-				setTimeout(function () {
-					_this.show(nextIdx);
-				}, 600);
-
-				setTimeout(function () {
-					_this.hide(hideIdx, nextIdx);
-				}, 0);
-			});
-
-			this._el.appendChild(arrowNext);
-			this._el.appendChild(arrowPrev);
-
-			this._assets = data.assets.slice();
-
-			this.isLoaded = false;
-
-			this._items = [];
-			this.loadedCounter = 0;
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = this._assets[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var asset = _step.value;
-
-					var item = document.createElement('div');
-					item.className = 'sliderItem';
-
-					var img = new Image();
-					img.onload = function () {
-						_this.loadedCounter++;
-						if (_this.loadedCounter == _this._assets.length - 1) {
-							_this.loadedCallback.call(_this.callbackScope);
-							_this.isLoaded = true;
-							_this.onResize(window.innerWidth);
-						}
-					};
-					img.src = 'assets/projects/' + data.assetsFolder + '/' + asset;
-					item.appendChild(img);
-
-					this._containerEl.appendChild(item);
-
-					this._items.push({ item: item, 'img': img });
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			this.currentIdx = -1;
-
-			// this.onResize(window.innerWidth);		
-		}
-
-		_createClass(ViewSlider, [{
-			key: 'show',
-			value: function show(idx) {
-
-				// var translateX = this.currentWidth;
-				// var leftX = -this.currentWidth;
-				// if (idx > this.currentIdx){
-				// 	translateX = -this.currentWidth;
-				// 	leftX = this.currentWidth;
-				// }
-				// console.log('show: ',idx,' leftX: ',leftX, ' transX: ',translateX);
-				// this._items[idx].item.style.left = leftX + 'px';
-				// this._items[idx].item.style.transform = 'translate('+translateX+'px, 0px)';
-
-				// this._el.style.height = this._items[idx].img.height * this._items[idx].ratio + 'px';
-
-				this._items[idx].item.style[window.NS.transform] = 'scale(1)';
-				this._items[idx].item.style.opacity = 1;
-				this.currentIdx = idx;
-			}
-		}, {
-			key: 'hide',
-			value: function hide(idx, nextIdx) {
-
-				// console.log('hide: ',idx, 'curridx: ',this.currentIdx);
-				// var translateX = 0;
-				// // var leftX = 0;
-				// if (nextIdx > idx){
-				// 	// leftX = 0;
-				// 	translateX = -this.currentWidth * 2;
-				// }
-				// // this._items[idx].item.style.left = 0 + 'px';
-				// this._items[idx].item.style.transform = 'translate('+translateX+'px, 0px)';
-
-				this._items[idx].item.style[window.NS.transform] = 'scale(0.4)';
-				this._items[idx].item.style.opacity = 0;
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(w) {
-
-				if (!this.isLoaded) return;
-
-				var maxH = window.innerHeight - 20;
-				var isMobile = w < 768 ? true : false;
-				var wMult = isMobile ? .8 : .5;
-				var outerW = w * wMult;
-
-				this._el.style.width = outerW + 'px';
-
-				this._containerEl.style.width = outerW + 'px';
-
-				var sliderHeight = 0;
-
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
-
-				try {
-					for (var _iterator2 = this._items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var item = _step2.value;
-
-						var ratio = outerW / item.img.width;
-						item.ratio = ratio;
-						var imgHeight = item.img.height * ratio;
-						item.height = imgHeight;
-						item.width = outerW;
-
-						if (imgHeight > maxH) {
-							ratio = maxH / item.img.height;
-							item.ratio = ratio;
-							item.height = maxH;
-							item.width = item.img.width * ratio;
-						}
-						if (sliderHeight < item.height) sliderHeight = item.height;
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
-					}
-				}
-
-				var _iteratorNormalCompletion3 = true;
-				var _didIteratorError3 = false;
-				var _iteratorError3 = undefined;
-
-				try {
-					for (var _iterator3 = this._items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-						var item = _step3.value;
-
-						item.item.style.width = item.width + 'px';
-						if (item.width < outerW) item.item.style.left = outerW / 2 - item.width / 2 + 'px';
-						item.item.style[window.NS.transform] = 'scale(0.4)';
-						item.item.style.opacity = 0;
-
-						item.item.style.top = sliderHeight / 2 - item.height / 2 + 'px';
-						// item.item.style.marginTop = (sliderHeight/2) - (item.img.height)/2 + 'px';
-						// item.item.style.left = -outerW + 'px';
-
-						// var ratio = outerW / item.img.width;
-						// var imgHeight = item.img.height * ratio;
-						// if (sliderHeight < imgHeight)
-						// 	sliderHeight = imgHeight;
-					}
-				} catch (err) {
-					_didIteratorError3 = true;
-					_iteratorError3 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion3 && _iterator3.return) {
-							_iterator3.return();
-						}
-					} finally {
-						if (_didIteratorError3) {
-							throw _iteratorError3;
-						}
-					}
-				}
-
-				this._el.style.height = sliderHeight + 'px';
-
-				this.currentWidth = outerW;
-			}
-		}]);
-
-		return ViewSlider;
-	}();
-
-	exports.default = ViewSlider;
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _ViewOverlay2 = __webpack_require__(18);
-
-	var _ViewOverlay3 = _interopRequireDefault(_ViewOverlay2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ViewContact = function (_ViewOverlay) {
-		_inherits(ViewContact, _ViewOverlay);
-
-		function ViewContact(el, onHideCallback, callbackScope) {
-			_classCallCheck(this, ViewContact);
-
-			return _possibleConstructorReturn(this, (ViewContact.__proto__ || Object.getPrototypeOf(ViewContact)).call(this, el, onHideCallback, callbackScope));
-		}
-
-		return ViewContact;
-	}(_ViewOverlay3.default);
-
-	exports.default = ViewContact;
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _ViewNavItem = __webpack_require__(25);
-
-	var _ViewNavItem2 = _interopRequireDefault(_ViewNavItem);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var DELAY_TIME = 50;
-
-	var ViewMobileMenu = function () {
-		function ViewMobileMenu(el) {
-			var _this = this;
-
-			_classCallCheck(this, ViewMobileMenu);
-
-			this._el = el;
-
-			setTimeout(function () {
-				_this._el.style.opacity = 1;
-			}, 500);
-
-			this.isActive = false;
-
-			this._burgerEl = this._el.querySelector('.menuBurger');
-			this._burgerEl.addEventListener('click', function (e) {
-				_this.onBurgerClick(e);
-			});
-
-			this._navItems = [];
-			var navItems = this._el.querySelectorAll('.nav-item');
-			for (var i = 0; i < navItems.length; i++) {
-				var navItem = new _ViewNavItem2.default(navItems[i]);
-				this._navItems.push(navItem);
-
-				navItems[i].addEventListener('click', function (e) {
-					_this.onItemClick();
-				});
-			}
-
-			this.isOpen = false;
-		}
-
-		_createClass(ViewMobileMenu, [{
-			key: 'onItemClick',
-			value: function onItemClick() {
-
-				if (!this.isActive) return;
-
-				this.hideMenu();
-			}
-		}, {
-			key: 'onBurgerClick',
-			value: function onBurgerClick(e) {
-
-				if (!this.isActive) return;
-
-				e.preventDefault();
-
-				this.isOpen ? this.hideMenu() : this.showMenu();
-			}
-		}, {
-			key: 'showMenu',
-			value: function showMenu() {
-
-				var delay = 0;
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
-
-				try {
-					for (var _iterator = this._navItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var item = _step.value;
-
-						item.show(delay);
-
-						delay += DELAY_TIME;
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
-				}
-
-				this.isOpen = true;
-			}
-		}, {
-			key: 'hideMenu',
-			value: function hideMenu() {
-
-				var delay = (this._navItems.length - 1) * DELAY_TIME;
-				var _iteratorNormalCompletion2 = true;
-				var _didIteratorError2 = false;
-				var _iteratorError2 = undefined;
-
-				try {
-					for (var _iterator2 = this._navItems[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-						var item = _step2.value;
-
-						item.hide(delay);
-
-						delay -= DELAY_TIME;
-					}
-				} catch (err) {
-					_didIteratorError2 = true;
-					_iteratorError2 = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion2 && _iterator2.return) {
-							_iterator2.return();
-						}
-					} finally {
-						if (_didIteratorError2) {
-							throw _iteratorError2;
-						}
-					}
-				}
-
-				this.isOpen = false;
-			}
-		}, {
-			key: 'onResize',
-			value: function onResize(w, h) {
-
-				this.isActive = w < 768 ? true : false;
-			}
-		}]);
-
-		return ViewMobileMenu;
-	}();
-
-	exports.default = ViewMobileMenu;
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ViewNavItem = function () {
-		function ViewNavItem(el) {
-			_classCallCheck(this, ViewNavItem);
-
-			this._el = el;
-
-			this.timer = null;
-		}
-
-		_createClass(ViewNavItem, [{
-			key: 'show',
-			value: function show(delay) {
-				var _this = this;
-
-				clearTimeout(this.timer);
-				this.timer = setTimeout(function () {
-					_this._el.style[window.NS.transform] = 'translate(0,0)';
-				}, delay);
-			}
-		}, {
-			key: 'hide',
-			value: function hide(delay) {
-				var _this2 = this;
-
-				clearTimeout(this.timer);
-				this.timer = setTimeout(function () {
-					_this2._el.style[window.NS.transform] = 'translate(-200px,0)';
-				}, delay);
-			}
-		}]);
-
-		return ViewNavItem;
-	}();
-
-	exports.default = ViewNavItem;
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Data = function Data() {
-		_classCallCheck(this, Data);
-
-		this.featured = ['image_1_small', 'image_2_small', 'image_3_small'];
-
-		this.projects = [{
-			title: "Unfold",
-			frontAsset: "project_dripping",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'dripping',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg']
-			}
-		}, {
-			title: "Indigo",
-			frontAsset: "project_indigo",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'indigo',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg']
-			}
-		}, {
-			title: "Yarn Life",
-			frontAsset: "project_yarn",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'yarn',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg']
-			}
-		}, {
-			title: "Recycle",
-			frontAsset: "project_recycle",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'recycle',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg']
-			}
-		}, {
-			title: "The process",
-			frontAsset: "project_process",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'the_process',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg']
-			}
-		}, {
-			title: "Wrapped",
-			frontAsset: "project_wrapped",
-			detail: {
-				'descr': "",
-				'assetsFolder': 'wrapped',
-				'assets': ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg']
-			}
-		}];
-	};
-
-	exports.default = Data;
+	exports.default = SceneSelectorItem;
 
 /***/ }
 /******/ ]);

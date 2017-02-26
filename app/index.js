@@ -745,9 +745,10 @@ class Starter {
 			this.onResize();
 		});
 
-		this.reqFrame();
+		
 
 		this.createAudio();
+		this.reqFrame();
 
 	}
 
@@ -755,8 +756,14 @@ class Starter {
 
 		this.audioEl = document.createElement('audio');
 		this.audioEl.src = 'assets/audio.mp3';
+		this.audioEl.addEventListener('playing', this.onPlaying.bind(this));
+		// this.audioEl.play();
+	}
 
-		this.audioEl.play();
+	onPlaying() {
+		console.log('sdfsdfsdfs');
+
+		// this.reqFrame();
 	}
 
 	reqFrame() {

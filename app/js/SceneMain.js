@@ -3,6 +3,7 @@ import SceneCloudsMesh from './scenes/SceneCloudsMesh';
 import SceneImport from './scenes/SceneImport';
 import SceneCloudsOverlay from './scenes/SceneCloudsOverlay';
 import Timeline from '../timeline';
+import SceneNoise from './scenes/SceneNoise';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -86,6 +87,7 @@ export default class SceneMain {
 		this.sceneImport = new SceneImport(this.FBO);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
+		this.sceneNoise = new SceneNoise();
 		this.start_time = Date.now();
 
 		this.windowHalfX;
@@ -188,7 +190,7 @@ export default class SceneMain {
 
 
 		// } else {
-		if (!sceneItem || !Timeline.active) {
+		if (!sceneItem || !this.sceneSelector.playTimeline) {
 			sceneItem = this.sceneSelector.currentItem;
 		}
 
@@ -290,6 +292,8 @@ export default class SceneMain {
 		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
 		}
 
+		this.sceneNoise.update();
+
 	}
 
 	render() {
@@ -322,22 +326,20 @@ export default class SceneMain {
 
 
 		this.renderer.clear();
-		// this.renderer.render( this.sceneImport.scene, this.importCamera );
+		
 		this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
 		this.renderer.render( this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true );
-		// this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
-		// this.renderer.clear();
-		// this.renderer.render( this.sceneClouds.scene, this.camera );
-		// this.renderer.clearDepth();
 		this.renderer.render( this.sceneImport.scene, this.importCamera, this.FBOGirl, true );
 
-		if (!this.currentSceneSettings.renderOverlay){
-			this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
-		}
-		else{
-			this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
-			this.renderer.render( this.sceneCloudsOverlay.scene, this.orthoCamera );
-		}
+		// if (!this.currentSceneSettings.renderOverlay){
+		// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
+		// }
+		// else{
+		// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
+		// 	this.renderer.render( this.sceneCloudsOverlay.scene, this.orthoCamera );
+		// }
+
+		this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
 
 
 	}
