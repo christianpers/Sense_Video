@@ -2,6 +2,7 @@
 import './main.scss';
 import SceneMain from "./js/SceneMain";
 import SceneSelector from './js/SceneSelector';
+import scenes from './scenes';
 
 class Starter {
 	constructor() {
@@ -34,67 +35,60 @@ class Starter {
 
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-		const scenePresets = [];
-
 		const sceneInit = {
+			grid: [3,3],
 			boxOne: {
-				width: .5,
-				height: .33,
 				texture: 1.0,
 				scale: 1.0,
-				translateX: 0.5,
-				translateY: 0.2,
-				textureRotation: 90,
+				rotation: 90,
 				specialTextureCoeff: 1.2
 			},
 			boxTwo: {
-				width: .5,
-				height: .33,
 				texture: 1.0,
 				scale: 1.0,
-				translateX: -0.5,
-				translateY: 0.2,
-				textureRotation: 90,
+				rotation: 90,
 				specialTextureCoeff: 1.2
 			},
 			boxThree: {
-				width: .5,
-				height: .33,
 				texture: 1.0,
 				scale: 1.0,
-				translateX: 0.0,
-				translateY: -0.3,
-				textureRotation: 90,
+				rotation: 90,
 				specialTextureCoeff: 1.2
 			},
 			boxFour: {
-				width: .5,
-				height: .33,
 				texture: 1.0,
 				scale: 1.0,
-				translateX: 0.0,
-				translateY: -0.2,
-				textureRotation: 270,
+				rotation: 270,
 				specialTextureCoeff: 1.2
 			},
 			boxFive: {
-				width: .5,
-				height: .33,
 				texture: 0.0,
 				scale: 1.0,
-				translateX: 0.0,
-				translateY: .0,
-				textureRotation: 0,
+				rotation: 0,
 				specialTextureCoeff: 1.2
 			},
 			boxSix: {
-				width: .5,
-				height: .33,
 				texture: .5,
 				scale: 1.0,
-				translateX: 0.0,
-				translateY: .0,
-				textureRotation: 0,
+				rotation: 0,
+				specialTextureCoeff: 1.2
+			},
+			boxSeven: {
+				texture: .5,
+				scale: 1.0,
+				rotation: 0,
+				specialTextureCoeff: 1.2
+			},
+			boxEight: {
+				texture: .5,
+				scale: 1.0,
+				rotation: 0,
+				specialTextureCoeff: 1.2
+			},
+			boxNine: {
+				texture: .5,
+				scale: 1.0,
+				rotation: 0,
 				specialTextureCoeff: 1.2
 			},
 			boxOverlay: {
@@ -111,630 +105,8 @@ class Starter {
 			},
 		}
 
-		const sceneOneA = {
-			title: 'Scene One A',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 0.0,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-
-			cameraSpeed : {
-				cloudNormal: .05,
-				cloudReverse: .01
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.002
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .001
-				}
-			}
-		}
-		const sceneOneB = {
-			title: 'Scene One B',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 0.0,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 180,
-				specialTextureCoeff: 1.5
-			},
-
-			cameraSpeed : {
-				cloudNormal: .05,
-				cloudReverse: .01
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.002
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .001
-				}
-			}
-		}
-		const sceneOneC = {
-			title: 'Scene One C',
-			boxOne: {
-				width: 1.0,
-				height: 0.5,
-				texture: .5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: .4
-			},
-
-			boxTwo: {
-				width: 1.0,
-				height: 0.5,
-				texture: 0.0,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 180,
-				specialTextureCoeff: .2
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneD = {
-			title: 'Scene One D',
-			boxOne: {
-				width: 1.0,
-				height: 0.5,
-				texture: 0.0,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 180,
-				specialTextureCoeff: .2
-			},
-
-			boxTwo: {
-				width: 1.0,
-				height: 0.5,
-				texture: .5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: .4
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneE = {
-			title: 'Scene One E',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: .5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 180,
-				specialTextureCoeff: .4
-			},
-
-			boxOverlay: {
-				x: .05,
-				y: .1,
-				width: .9,
-				height: .8,
-				texture: 0.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneF = {
-			title: 'Scene One F',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 1.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: 0.2
-			},
-
-			boxOverlay: {
-				x: .05,
-				y: .1,
-				width: .9,
-				height: .8,
-				texture: 0.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneG = {
-			title: 'Scene One G',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 1.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: 0.2
-			},
-
-			boxOverlay: {
-				x: .05,
-				y: .1,
-				width: .9,
-				height: .8,
-				texture: 1.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 10,
-				specialTextureCoeff: .7
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneH = {
-			title: 'Scene One H',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 1.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: -0.4,
-				textureRotation: 0.0,
-				specialTextureCoeff: .4
-			},
-			boxOverlay: {
-				x: .05,
-				y: .1,
-				width: .9,
-				height: .8,
-				texture: 1.5,
-				scale: 0.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: -10,
-				specialTextureCoeff: .7
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneI = {
-			title: 'Scene one I',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 0.0,
-				scale: 0.1,
-				translateX: 1.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: 0.2
-			},
-
-			boxOverlay: {
-				x: .05,
-				y: .1,
-				width: .9,
-				height: .8,
-				texture: 0.0,
-				scale: 0.1,
-				translateX: 0.0,
-				translateY: 1.0,
-				textureRotation: 180,
-				specialTextureCoeff: .2
-			},
-
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		const sceneOneJ = {
-			title: 'Scene One J',
-			boxOne: {
-				width: 1.0,
-				height: 1.0,
-				texture: 0.0,
-				scale: 0.1,
-				translateX: 0.2,
-				translateY: -0.3,
-				textureRotation: 50,
-				specialTextureCoeff: .2
-			},
-			boxOverlay: {
-				x: .1,
-				y: .1,
-				width: .8,
-				height: .8,
-				texture: 0.2,
-				scale: 0.0,
-				translateX: 0.2,
-				translateY: -0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-			cameraSpeed : {
-				cloudNormal: .01,
-				cloudReverse: .01
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.002
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .001
-				}
-			}
-		}
-
-		const sceneOneK = {
-			title: 'Scene one K',
-			boxOne: {
-				width: 1.0,
-				height: 0.5,
-				texture: 0.0,
-				scale: 0.15,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 280,
-				specialTextureCoeff: .2
-			},
-			boxTwo: {
-				width: 1.0,
-				height: 0.5,
-				texture: 1.0,
-				scale: 0.15,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 270,
-				specialTextureCoeff: .2
-			},
-			boxOverlay: {
-				x: .05,
-				y: .05,
-				width: 0.9,
-				height: 0.9,
-				texture: 0.2,
-				scale: 0.0,
-				translateX: 0.2,
-				translateY: -0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-			cameraSpeed : {
-				cloudNormal: .01,
-				cloudReverse: .01
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.002
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .001
-				}
-			}
-		}
-
-		const sceneTwo = {
-			title: 'Scene one B',
-			boxOne: {
-				width: 1.0,
-				height: 0.5,
-				texture: 0.0,
-				scale: 0.15,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 280,
-				specialTextureCoeff: .2
-			},
-			boxTwo: {
-				width: 1.0,
-				height: 0.5,
-				texture: 1.0,
-				scale: 0.15,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 270,
-				specialTextureCoeff: .2
-			},
-			boxOverlay: {
-				x: .05,
-				y: .05,
-				width: 0.9,
-				height: 0.9,
-				texture: 0.2,
-				scale: 0.0,
-				translateX: 0.2,
-				translateY: -0.0,
-				textureRotation: 0.0,
-				specialTextureCoeff: .2
-			},
-			cameraSpeed : {
-				cloudNormal: .01,
-				cloudReverse: .01
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.002
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .001
-				}
-			}
-		}
-
-		const sceneThree = {
-			title: 'Scene Three',
-			boxOne: {
-				width: 1,
-				height: 1,
-				texture: 1.5,
-				scale: 1.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: .2
-			},
-			boxOverlay: {
-				x: .1,
-				y: .1,
-				width: .8,
-				height: .8,
-				texture: 1.5,
-				scale: 0.5,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 20,
-				specialTextureCoeff: .2
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			},
-			cameraSpeed : {
-				cloudNormal: .03,
-				cloudReverse: .03
-			}
-		}
-
-		const sceneFour = {
-			title: 'Scene Four',
-			boxOne: {
-				width: 1,
-				height: 1,
-				texture: 1.0,
-				scale: 1.0,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: 2
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: false,
-					axis: 'z',
-					speed: -.1
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .1
-				}
-			},
-			cameraSpeed : {
-				cloudNormal: .03,
-				cloudReverse: .03
-			}
-		}
-
-		const sceneFive = {
-			title: 'Scene five',
-			boxOne: {
-				width: .5,
-				height: 1.0,
-				texture: 1.0,
-				scale: 1.0,
-				translateX: 0.2,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: .4
-			},
-			boxTwo: {
-				width: .5,
-				height: 1.0,
-				texture: .5,
-				scale: 0.5,
-				translateX: 0.0,
-				translateY: 0.0,
-				textureRotation: 0,
-				specialTextureCoeff: .4
-			},
-			cameraSpeed : {
-				cloudNormal: .1,
-				cloudReverse: .1
-			},
-			cameraRotation: {
-				cloudNormal: {
-					rotation: true,
-					axis: 'z',
-					speed: -.01
-				},
-				cloudReverse: {
-					rotation: false,
-					axis: 'z',
-					speed: .01
-				}
-			}
-		}
-
-		scenePresets.push(sceneOneA, sceneOneB, sceneOneC, sceneOneD, sceneOneE, sceneOneF, sceneOneG, sceneOneH, sceneOneI, sceneOneJ, sceneOneK, sceneTwo, sceneThree, sceneFour, sceneFive);
-
-		this.sceneSelector = new SceneSelector(scenePresets, sceneInit);
+		
+		this.sceneSelector = new SceneSelector(scenes, sceneInit);
 		container.appendChild(this.sceneSelector.containerEl);
 
 		this.sceneMain = new SceneMain(container, this.sceneSelector);
@@ -747,7 +119,7 @@ class Starter {
 
 		
 
-		this.createAudio();
+		// this.createAudio();
 		this.reqFrame();
 
 	}

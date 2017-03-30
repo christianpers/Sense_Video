@@ -4,6 +4,10 @@ import SceneImport from './scenes/SceneImport';
 import SceneCloudsOverlay from './scenes/SceneCloudsOverlay';
 import Timeline from '../timeline';
 import SceneNoise from './scenes/SceneNoise';
+import SceneTwitter from './scenes/SceneTwitter';
+import AudioPlayer from './framework/AudioPlayer';
+import SpectrumAnalyzer from './framework/SpectrumAnalyzer';
+import SceneGif from './scenes/SceneGif';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -19,15 +23,23 @@ export default class SceneMain {
 
 		this.sceneSelector = sceneSelector;
 
-		this.introDuration = 250;
+		this.introDuration = 1;
 		this.introStartTime = Date.now();
 
 		this.cubeCameraUpdateInterval = 1000;
 		this.cubeCameraLastUpdate = Date.now();
 
+		this.cloudsImportLoaded = false;
+
+		this._audioCtx = new AudioContext();
+
+		this.audioPlayer = new AudioPlayer(this._audioCtx, this.onAudioLoaded, this);
+		this.audioPlayer.load('assets/audio.mp3');
+
+		this.spectrumAnalyzer = new SpectrumAnalyzer();
+		this.spectrumAnalyzer.init(this._audioCtx);
+
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
-
-
 
 		this.FBO = new THREE.WebGLRenderTarget(
 							window.innerWidth,
@@ -79,15 +91,26 @@ export default class SceneMain {
 							}
 						);
 
-		const sceneVals = this.getCurrentActiveSceneVals();
+		this.FBOTwitter = new THREE.WebGLRenderTarget(
+							window.innerWidth,
+							window.innerHeight,
+							{
+								minFilter: THREE.LinearFilter,
+								magFilter: THREE.NearestFilter,
+								format: THREE.RGBFormat
+							}
+						);
 
+		const sceneVals = this.getCurrentActiveSceneVals();
 
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
-		this.sceneImport = new SceneImport(this.FBO);
+		// this.sceneImport = new SceneImport(this.FBO);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
-		this.sceneNoise = new SceneNoise();
+		this.sceneTwitter = new SceneTwitter();
+		this.sceneNoise = new SceneNoise(this.FBO, this.FBOTwitter, this.sceneSelector.initObj);
+		this.sceneGif = new SceneGif();
 		this.start_time = Date.now();
 
 		this.windowHalfX;
@@ -102,9 +125,14 @@ export default class SceneMain {
 
 		this.createBgCanvas();
 
+		this.twitterCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
+		this.twitterCamera.position.set(0,150,400);
+		// this.twitterCamera.position.z = 0;
+		// this.twitterCamera.position.y = 0;
+
 		this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.camera.position.z = this.sceneClouds.totDepth;
-		this.camera.position.y = -40;
+		this.camera.position.y = -220;
 
 		this.reverseCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.reverseCamera.position.z = 0;
@@ -116,16 +144,28 @@ export default class SceneMain {
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-		this.renderer = new THREE.WebGLRenderer( { antialias: false, alpha: false } );
+		this.renderer = new THREE.WebGLRenderer( { opacity: .06, antialias: false, alpha: true } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-		this.renderer.autoClear = false;
+		// this.renderer.autoClear = false;
 		// this.renderer.setClearColorHex( 0x000000, 1 );
-		// this.renderer.setClearColor( '#e206db' );
-		this.renderer.setClearColor('#d370d0');
+		// this.renderer.setClearColor( '#f644ac' );
+		this.renderer.sortObjects = false;
+		// this.renderer.setClearColor('#6fd271');
+		this.renderer.setClearColor( 0x000000, 0 );
 		this.container.appendChild( this.renderer.domElement );
 
 		this.currentTime = Date.now();
 
+	}
+
+	onAudioLoaded(){
+
+		if (this.cloudsImportLoaded)
+			this.doRender = true;
+
+		// this.audioPlayer.play();
+		// this.spectrumAnalyzer.connect(this.audioPlayer.getSourceNode());
+	
 	}
 
 
@@ -151,8 +191,10 @@ export default class SceneMain {
 
 	enableRender(){
 
+		this.cloudsImportLoaded = true;
 
-		this.doRender = true;
+		if (this.audioPlayer.isLoaded)
+			this.doRender = true;
 	}
 
 	getSceneFromTimeline() {
@@ -182,46 +224,29 @@ export default class SceneMain {
 		const scene = this.getSceneFromTimeline();
 
 
+
 		let sceneItem = this.sceneSelector.items[scene];
 
-
-
-		// console.log(sceneItem);
-
-
-		// } else {
 		if (!sceneItem || !this.sceneSelector.playTimeline) {
 			sceneItem = this.sceneSelector.currentItem;
 		}
-
-		// }
-
 
 		let currentX = 0;
 		let currentY = 0;
 		this.currentSceneSettings.renderOverlay = false;
 		Object.keys(sceneItem).forEach(t => {
 
+			if (t === 'grid') {
+				ret.grid[t] = sceneItem[t];
+			}
+
 			if (t.indexOf('box') > -1 && t !== 'boxOverlay') {
 				const vals = {};
-				vals.x = currentX;
-				vals.y = currentY;
-				vals.w = sceneItem[t].width;
-				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
-				vals.translateX = sceneItem[t].translateX;
-				vals.translateY = sceneItem[t].translateY;
-				vals.rotation = sceneItem[t].textureRotation;
+				vals.rotation = sceneItem[t].rotation;
 				if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
 					vals.textureCoeff = sceneItem[t].specialTextureCoeff;
-				}
-
-				currentX += vals.w;
-				if (currentX >= 0.99) {
-
-					currentX = 0;
-					currentY += sceneItem[t].height;
 				}
 
 				ret.grid[t] = vals;
@@ -230,15 +255,9 @@ export default class SceneMain {
 			if (t === 'boxOverlay') {
 				this.currentSceneSettings.renderOverlay = true;
 				const vals = {};
-				vals.x = sceneItem[t].x;
-				vals.y = sceneItem[t].y;
-				vals.w = sceneItem[t].width;
-				vals.h = sceneItem[t].height;
 				vals.texture = sceneItem[t].texture;
 				vals.scale = sceneItem[t].scale;
-				vals.translateX = sceneItem[t].translateX;
-				vals.translateY = sceneItem[t].translateY;
-				vals.rotation = sceneItem[t].textureRotation;
+				vals.rotation = sceneItem[t].rotation;
 				if (sceneItem[t].hasOwnProperty('specialTextureCoeff')) {
 					vals.textureCoeff = sceneItem[t].specialTextureCoeff;
 				}
@@ -265,6 +284,8 @@ export default class SceneMain {
 
 	update() {
 
+		const audioData = this.spectrumAnalyzer.getAudioData();
+		
 		const now = Date.now();
 		const introDelta = now - this.introStartTime;
 		let introRemain = Math.abs((introDelta / this.introDuration) - 1);
@@ -274,25 +295,36 @@ export default class SceneMain {
 
 		const sceneVals = this.getCurrentActiveSceneVals();
 
-		this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
+
+		// this.sceneCloudsMesh.update(sceneVals.grid, introRemain);
 		if (this.currentSceneSettings.renderOverlay) {
 			this.sceneCloudsOverlay.update(sceneVals.overlay);
 		}
 
-		// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
-		var position = 1000;
+		var position = ( ( now - this.start_time ) * 0.05 ) % this.sceneClouds.totDepth;
 
-		const updateCubeDelta = now - this.cubeCameraLastUpdate;
-		if (updateCubeDelta > 1000) {
-			this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, true);
-			this.cubeCameraLastUpdate = now;
-		} else {
-			this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
+		const cloudCameraDestY = -40;
+		this.camera.position.y -= (this.camera.position.y - cloudCameraDestY) * .005;
 
-		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
-		}
 
-		this.sceneNoise.update();
+	
+		// var position = 1000;
+
+		// const updateCubeDelta = now - this.cubeCameraLastUpdate;
+		// if (updateCubeDelta > 1000) {
+		// 	this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, true);
+		// 	this.cubeCameraLastUpdate = now;
+		// } else {
+		// 	this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
+
+			
+		// }
+
+		this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+
+		this.sceneNoise.update(audioData, sceneVals.grid);
+
+		this.sceneGif.update();
 
 	}
 
@@ -300,27 +332,29 @@ export default class SceneMain {
 
 		if (!this.doRender) return;
 
+
+
 		const now = Date.now();
 
-		var position = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudNormal ) % this.sceneClouds.totDepth;
+		var position = ( ( now - this.start_time ) * .05 ) % this.sceneClouds.totDepth;
 
 		this.camera.position.z = - position + this.sceneClouds.totDepth;
-		if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation){
-			this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
-		}
+		// if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation){
+		// 	this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
+		// }
 
-		var reversePos = ( ( now - this.start_time ) * this.currentSceneSettings.cameraSpeed.cloudReverse ) % this.sceneClouds.totDepth;
+		var reversePos = ( ( now - this.start_time ) * .08 ) % this.sceneClouds.totDepth;
 
 		var reversePos = reversePos;
 		if (reversePos > this.sceneClouds.totDepth) {
 			reversePos = 0;
 		}
 		this.reverseCamera.position.z = reversePos;
-		if (this.currentSceneSettings.cameraRotation.cloudReverse.rotation){
-			this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudReverse.axis] = this.reverseRotation += this.currentSceneSettings.cameraRotation.cloudReverse.speed;
-		}
+		// if (this.currentSceneSettings.cameraRotation.cloudReverse.rotation){
+		// 	this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudReverse.axis] = this.reverseRotation += this.currentSceneSettings.cameraRotation.cloudReverse.speed;
+		// }
 
-		if (!this.sceneImport.render) return;
+		// if (!this.sceneImport.render) return;
 
 		// this.sceneClouds.renderTexture(this.renderer, this.camera, this.FBO);
 
@@ -329,10 +363,11 @@ export default class SceneMain {
 		
 		this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
 		this.renderer.render( this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true );
-		this.renderer.render( this.sceneImport.scene, this.importCamera, this.FBOGirl, true );
+		this.renderer.render( this.sceneTwitter.scene, this.twitterCamera, this.FBOTwitter, true );
+		// this.renderer.render( this.sceneImport.scene, this.importCamera, this.FBOGirl, true );
 
 		// if (!this.currentSceneSettings.renderOverlay){
-		// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
+			// this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
 		// }
 		// else{
 		// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
@@ -341,7 +376,10 @@ export default class SceneMain {
 
 		this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
 
+		// this.renderer.render( this.sceneGif.scene, this.camera );
 
+		// this.renderer.render( this.sceneClouds.scene, this.camera );
+		
 	}
 
 	onResize(w,h) {

@@ -54,7 +54,7 @@
 
 	var _SceneMain2 = _interopRequireDefault(_SceneMain);
 
-	var _SceneSelector = __webpack_require__(17);
+	var _SceneSelector = __webpack_require__(20);
 
 	var _SceneSelector2 = _interopRequireDefault(_SceneSelector);
 
@@ -193,7 +193,7 @@
 				},
 				cameraRotation: {
 					cloudNormal: {
-						rotation: true,
+						rotation: false,
 						axis: 'z',
 						speed: -.002
 					},
@@ -809,6 +809,7 @@
 			});
 
 			this.createAudio();
+			this.reqFrame();
 		}
 
 		_createClass(Starter, [{
@@ -825,7 +826,7 @@
 			value: function onPlaying() {
 				console.log('sdfsdfsdfs');
 
-				this.reqFrame();
+				// this.reqFrame();
 			}
 		}, {
 			key: 'reqFrame',
@@ -893,7 +894,7 @@
 
 
 	// module
-	exports.push([module.id, "html, body {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  position: static;\n  background: #fff; }\n\nbody {\n  height: 100%; }\n\n* {\n  box-sizing: border-box; }\n\na {\n  text-decoration: none;\n  color: rgba(0, 0, 0, 0.8); }\n\nhtml {\n  -webkit-text-size-adjust: none;\n  -moz-text-size-adjust: none;\n  text-size-adjust: none; }\n\nh1, h2, h3, h4, h5, text, p {\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-webkit-font-smoothing: antialiased;\n  font-family: Arial; }\n\n.selector-container {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 200px;\n  height: 400px;\n  padding: 20px; }\n  .selector-container .item-container {\n    margin-bottom: 10px; }\n  .selector-container .select {\n    padding: 10px;\n    background: white;\n    cursor: pointer;\n    font-size: 12px; }\n  .selector-container .timeline-toggler {\n    background: rgba(255, 255, 255, 0.6);\n    color: black;\n    border: 2px solid rgba(220, 20, 100, 0.8);\n    font-weight: 700;\n    position: fixed;\n    left: 20px; }\n\n.mainLoader {\n  position: absolute;\n  z-index: 10;\n  width: 200px;\n  height: 200px;\n  top: 50%;\n  left: 50%;\n  margin-top: -100px;\n  margin-left: -100px; }\n\n.logo {\n  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);\n  color: transparent;\n  font-family: Arial;\n  font-weight: lighter;\n  position: fixed;\n  right: 14px;\n  top: 6px;\n  z-index: 20;\n  margin: 0;\n  font-size: 32px;\n  opacity: 1; }\n  @media only screen and (max-width: 767px) {\n    .logo {\n      top: 10px; } }\n\n.closeBtn {\n  position: fixed;\n  top: 52px;\n  right: 40px;\n  width: 50px;\n  height: 50px;\n  text-indent: -9999px;\n  padding: 0 4px;\n  z-index: 10;\n  cursor: pointer; }\n  @media only screen and (max-width: 767px) {\n    .closeBtn {\n      right: 10px;\n      width: 30px;\n      height: 30px; } }\n\n.container {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 0; }\n\n.Main-Canvas {\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n  position: absolute;\n  z-index: 0; }\n\n.imageContainer {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%; }\n  .imageContainer > img {\n    height: 100%;\n    margin: 0 auto;\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 50%;\n    transform: scale(0);\n    -webkit-transform: scale(0);\n    opacity: 0; }\n\n.nav {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  font-family: \"Arial\";\n  padding: 10px;\n  z-index: 5;\n  color: rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  opacity: 1; }\n  .nav .nav-item {\n    cursor: pointer;\n    padding: 10px;\n    font-size: 10px;\n    position: relative;\n    left: 0;\n    transition: transform .5s;\n    -webkit-transition: transform .5s; }\n    .nav .nav-item:hover {\n      background: white; }\n    @media only screen and (max-width: 767px) {\n      .nav .nav-item {\n        display: block;\n        padding: 4px;\n        margin-bottom: 10px;\n        transform: translate(-200px, 0);\n        background: white; }\n        .nav .nav-item:hover {\n          background: transparent; } }\n  .nav .menuBurger {\n    display: none;\n    width: 39px;\n    height: 35px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    margin-top: 0;\n    margin-bottom: 10px; }\n    @media only screen and (max-width: 767px) {\n      .nav .menuBurger {\n        display: block; } }\n\n.overlay {\n  position: absolute;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transition: opacity .6s, transform .6s;\n  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n  transition: opacity .6s, transform .6s;\n  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n  color: rgba(0, 0, 0, 0.8);\n  -webkit-transform: scale(0.8);\n  /* Chrome, Opera 15+, Safari 3.1+ */\n  transform: scale(0.8);\n  /* Firefox 16+, IE 10+, Opera */\n  padding: 40px 100px; }\n  .overlay .overlayTitle {\n    text-align: center;\n    font-size: 32px; }\n\n.touchLayer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n\n.contact {\n  padding-top: 20%;\n  text-align: center; }\n  .contact > h1 {\n    font-size: 60px;\n    color: rgba(0, 0, 0, 0.8); }\n  @media only screen and (max-width: 767px) {\n    .contact {\n      padding: 40% 0;\n      margin-top: 0; }\n      .contact > h1 {\n        font-size: 20px; } }\n\n.about {\n  margin-top: 100px; }\n  .about .overlayDescr {\n    line-height: 22px;\n    width: 50%; }\n  @media only screen and (max-width: 767px) {\n    .about {\n      padding: 0px 10px;\n      font-size: 10px;\n      line-height: 0px;\n      padding-top: 40px;\n      margin-top: 16%; }\n      .about .overlayDescr {\n        line-height: 18px;\n        font-size: 14px;\n        width: 90%; } }\n\n.projects {\n  padding: 0;\n  margin-top: 80px; }\n  .projects .projectsContainer {\n    width: 80%;\n    margin: 20px auto;\n    position: relative; }\n  .projects .projectDetailWrapper {\n    opacity: 0;\n    display: none;\n    height: 100%;\n    width: 100%;\n    z-index: 8;\n    position: relative;\n    transition: opacity .5s;\n    -webkit-transition: opacity .5s; }\n    .projects .projectDetailWrapper .projectDescr {\n      width: 100%;\n      text-align: center;\n      padding: 0 10%;\n      font-size: 12px;\n      line-height: 20px; }\n    .projects .projectDetailWrapper .projectSlider {\n      margin: 20px auto;\n      position: relative; }\n      .projects .projectDetailWrapper .projectSlider .sliderNav {\n        width: 20px;\n        height: 20px;\n        position: absolute;\n        top: 50%;\n        margin-top: -10px;\n        cursor: pointer;\n        transition: transform .2s;\n        -webkit-transition: transform .2s;\n        transform: scale(1);\n        -webkit-transform: scale(1); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav:hover {\n          transform: scale(1.2);\n          -webkit-transform: scale(1.2); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderNext {\n          right: -30px; }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderPrev {\n          left: -30px; }\n      .projects .projectDetailWrapper .projectSlider .sliderContainer {\n        position: absolute;\n        overflow: hidden;\n        height: 100%; }\n      .projects .projectDetailWrapper .projectSlider .sliderItem {\n        position: absolute;\n        top: 0;\n        width: 100%;\n        height: 100%;\n        transition: transform .5s, opacity .5s;\n        -webkit-transition: transform .5s, opacity .5s;\n        z-index: 2; }\n        .projects .projectDetailWrapper .projectSlider .sliderItem > img {\n          width: 100%;\n          height: auto; }\n  .projects .projectItem {\n    background: rgba(0, 0, 0, 0.2);\n    position: absolute;\n    top: 0;\n    left: 0;\n    cursor: pointer;\n    transition: opacity .4s, transform .3s;\n    -webkit-transition: opacity .4s, transform .3s; }\n    .projects .projectItem > .touchLayer {\n      z-index: 2; }\n    .projects .projectItem .projectItemLoader {\n      z-index: 3; }\n    .projects .projectItem .itemCaption {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      color: white;\n      background: rgba(0, 0, 0, 0.6);\n      z-index: 1;\n      opacity: 0;\n      transition: opacity .4s;\n      -webkit-transition: opacity .4s;\n      padding-top: 22%; }\n      .projects .projectItem .itemCaption > h5 {\n        font-size: 20px;\n        text-align: center;\n        text-transform: uppercase; }\n      .projects .projectItem .itemCaption .projectOpenBtn {\n        font-size: 16px;\n        color: white; }\n    .projects .projectItem > img {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      transform: scale(1);\n      -webkit-transform: scale(1);\n      opacity: 1;\n      z-index: 0; }\n  @media only screen and (max-width: 767px) {\n    .projects {\n      padding-top: 40px;\n      margin-top: 0; } }\n", "", {"version":3,"sources":["/./app/main.scss"],"names":[],"mappings":"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","file":"main.scss","sourcesContent":["$mobile      : 'only screen and (max-width : 767px)';\n\n\nhtml, body {\n\twidth:100%;\n\theight:100%;\n\n\tmargin:0;\n\tpadding:0;\n\n\t// overflow:hidden;\n\tposition: static;\n\tbackground: #fff;\n}\n\nbody{\n\theight: 100%;\n}\n\n*{\n\tbox-sizing: border-box;\n}\n\na{\n\ttext-decoration: none;\n\tcolor: rgba(0,0,0,.8);\n}\n\nhtml {\n\t-webkit-text-size-adjust: none;\n\t-moz-text-size-adjust: none;\n\ttext-size-adjust: none;\n}\n\nh1,h2,h3,h4,h5,text,p {\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-webkit-font-smoothing: antialiased;\n\tfont-family: Arial;\n}\n\n.selector-container{\n\tposition: absolute;\n    top: 0;\n    right: 0;\n    width: 200px;\n    height: 400px;\n    padding: 20px;\n    .item-container{\n    \tmargin-bottom: 10px;\n    }\n    .select{\n    \tpadding: 10px;\n    \tbackground: white;\n    \tcursor: pointer;\n    \tfont-size: 12px;\n\n    }\n\n    .timeline-toggler{\n    \tbackground: rgba(255,255,255,.6);\n    \tcolor: black;\n    \tborder: 2px solid rgba(220, 20, 100, .8);\n    \tfont-weight: 700;\n    \tposition: fixed;\n    \tleft: 20px;\n    \t\n\n    }\n}\n\n.mainLoader{\n\tposition: absolute;\n\tz-index: 10;\n\twidth: 200px;\n\theight: 200px;\n\ttop: 50%;\n\tleft: 50%;\n\tmargin-top: -100px;\n\tmargin-left: -100px;\n}\n\n.logo{\n\t-webkit-text-stroke: 1px rgba(255,255,255,.5);\n    color: rgba(0,0,0,0);\n    font-family: Arial;\n    font-weight: lighter;\n    position: fixed;\n    right: 14px;\n    top: 6px;\n    z-index: 20;\n    margin: 0;\n    font-size: 32px;\n    opacity: 1;\n    @media #{$mobile}{\n    \ttop: 10px;\n    }\n}\n\n.closeBtn{\n\tposition: fixed;\n\ttop: 52px;\n\tright: 40px;\n\t// display: none;\n\twidth: 50px;\n    height: 50px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    z-index: 10;\n    cursor: pointer;\n\n   \n\t@media #{$mobile}{\n\t\tright: 10px;\n\t\twidth: 30px;\n    \theight: 30px;\n\t}\n}\n\n.container{\n\tposition: fixed;\n\ttop: 0;\n\tleft: 0;\n\twidth:100%;\n\theight:100%;\n\topacity: 0;\n\n}\n\n.Main-Canvas {\n\twidth:100%;\n\theight:100%;\n\ttop:0px;\n\tleft:0px;\n\tposition: absolute;\n\tz-index: 0;\n}\n\n.imageContainer{\n\tposition: absolute;\n\tz-index: 2;\n\twidth: 100%;\n\theight: 100%;\n\t> img{\n\t\theight: 100%;\n\t\tmargin: 0 auto;\n\t\tdisplay: block;\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 50%;\n\t\ttransform: scale(0);\n\t\t-webkit-transform: scale(0);\n\t\topacity: 0;\n\n\t}\n}\n\n\n\n.nav{\n\tposition: fixed;\n    top: 0px;\n    left: 0px;\n    font-family: \"Arial\";\n    padding: 10px;\n    z-index: 5;\n    color: rgba(0,0,0,.8);\n    z-index: 10;\n    opacity: 1;\n\n\t.nav-item{\n\t\tcursor: pointer;\n\t\tpadding: 10px;\n\t\tfont-size: 10px;\n\t\tposition: relative;\n\t\tleft: 0;\n\t\ttransition: transform .5s;\n\t\t-webkit-transition: transform .5s;\n\t\t&:hover{\n\t\t\tbackground: white;\n\t\t}\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t\tpadding: 4px;\n\t\t\tmargin-bottom: 10px;\n\t\t\ttransform: translate(-200px, 0);\n\t\t\tbackground: white;\n\t\t\t&:hover{\n\t\t\t\tbackground: transparent;\n\t\t\t}\n\t\t}\n\t}\n\n\t.menuBurger{\n\t\tdisplay: none;\n\t\twidth: 39px;\n\t    height: 35px;\n\t    text-indent: -9999px;\n\t    padding: 0 4px;\n\t    margin-top: 0;\n\t    margin-bottom: 10px;\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t}\n\n\t}\n\n}\n\n.overlay{\n\tposition: absolute;\n\tz-index: 1;\n\twidth: 100%;\n\theight: 100%;\n\tleft: 0;\n\ttop: 0;\n\topacity: 0;\n\tdisplay: none;\n\t-webkit-transition: opacity .6s, transform .6s;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n    transition: opacity .6s, transform .6s;  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n    color: rgba(0,0,0,.8);\n    -webkit-transform: scale(0.8);  /* Chrome, Opera 15+, Safari 3.1+ */\n    //   -ms-transform: scale(0.8);  /* IE 9 */\n    transform: scale(.8);  /* Firefox 16+, IE 10+, Opera */\n    // background: rgba(0,0,0,.3);\n    padding: 40px 100px;\n    // background: rgba(255,255,255,.6);\n    .overlayTitle{\n    \ttext-align: center;\n    \tfont-size: 32px;\n\n    }\n    \n\n\n\t\n}\n\n.touchLayer{\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\n.contact{\n\tpadding-top: 20%;\n\ttext-align: center;\n\t> h1{\n\t\tfont-size: 60px;\n\t\tcolor: rgba(0,0,0,.8);\n\t}\n\n\t@media #{$mobile}{\n\t\t// padding-top: 40px;\n\t\tpadding: 40% 0;\n    \tmargin-top: 0;\n\t\t> h1 {\n\t\t\tfont-size: 20px;\n\t\t}\n\t}\n}\n\n.about{\n\t// background: rgba(250, 40, 40, .7);\n\tmargin-top: 100px;\n\t.overlayDescr{\n    \tline-height: 22px;\n    \twidth: 50%;\n    }\n\n    @media #{$mobile}{\n    \tpadding: 0px 10px;\n\t    font-size: 10px;\n\t    line-height: 0px;\n\t    padding-top: 40px;\n    \tmargin-top: 16%;\n    \t.overlayDescr{\n    \t\tline-height: 18px;\n    \t\tfont-size: 14px;\n    \t\twidth: 90%;\n    \t}\n    }\n}\n\n.projects{\n\t// background: rgba(250, 40, 240, .7);\n\tpadding: 0;\n\tmargin-top: 80px;\n\t.projectsContainer{\n\t\twidth: 80%;\n\t\tmargin: 20px auto;\n\t\tposition: relative;\n\t}\n\t.projectDetailWrapper{\n\t\topacity: 0;\n\t\tdisplay: none;\n\t\theight: 100%;\n\t    width: 100%;\n\t    // background: rgba(0,0,0,.1);\n\t    z-index: 8;\n\t    position: relative;\n\t    transition: opacity .5s;\n\t    -webkit-transition: opacity .5s;\n\t    \n\t    .projectDescr{\n\t    \twidth: 100%;\n\t\t    text-align: center;\n\t\t    padding: 0 10%;\n\t\t    font-size: 12px;\n    \t\tline-height: 20px;\n\t    }\n\t    .projectSlider{\n\t   \t\t\n\t\t\tmargin: 20px auto;\n   \t\t\tposition: relative;\n\t\t    .sliderNav{\n\t\t    \twidth: 20px;\n\t\t    \theight: 20px;\n\t\t    \tposition: absolute;\n\t\t    \ttop: 50%;\n\t\t    \tmargin-top: -10px;\n\t\t    \tcursor: pointer;\n\t\t    \ttransition: transform .2s;\n\t\t    \t-webkit-transition: transform .2s;\n\t\t    \ttransform: scale(1.0);\n\t\t    \t-webkit-transform: scale(1.0);\n\t\t    \t&:hover{\n\t\t    \t\ttransform: scale(1.2);\n\t\t    \t\t-webkit-transform: scale(1.2);\n\t\t    \t}\n\t\t    \t&.sliderNext{\n\t\t    \t\tright: -30px;\n\t\t    \t}\n\t\t    \t&.sliderPrev{\n\t\t    \t\tleft: -30px;\n\t\t    \t}\n\t\t    }\n\t\t    .sliderContainer{\n\t\t    \tposition: absolute;\n\t\t    \toverflow: hidden;\n\t\t    \theight: 100%;\n\t\t    }\n\t\t    \n\t    \t.sliderItem{\n\t    \t\tposition: absolute;\n\t    \t\ttop: 0;\n\t    \t\twidth: 100%;\n\t    \t\theight: 100%;\n\t    \t\ttransition: transform .5s, opacity .5s;\n\t    \t\t-webkit-transition: transform .5s, opacity .5s;\n\t    \t\tz-index: 2;\n\t    \t\t> img{\n\t    \t\t\twidth: 100%;\n\t\t\t\t\theight: auto;\n\t    \t\t}\n\t\t    }\n\t    }\n\n\t}\n\t.projectItem{\n\t\tbackground: rgba(0,0,0,.2);\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\tcursor: pointer;\n\t\ttransition: opacity .4s, transform .3s;\n\t\t-webkit-transition: opacity .4s, transform .3s;\n\t\t> .touchLayer{\n\t\t\tz-index: 2;\n\t\t}\n\t\t.projectItemLoader{\n\t\t\tz-index: 3;\n\t\t}\n\t\t.itemCaption{\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t\tcolor: white;\n\t\t\tbackground: rgba(0,0,0,.6);\n\t\t\tz-index: 1;\n\t\t\topacity: 0;\n\t\t\ttransition: opacity .4s;\n\t\t\t-webkit-transition: opacity .4s;\n\t\t\tpadding-top: 22%;\n\n\t\t\t> h5{\n\t\t\t\tfont-size: 20px;\n\t\t\t\ttext-align: center;\n\t\t\t\ttext-transform: uppercase;\n\t\t\t}\n\t\t\t.projectOpenBtn{\n\t\t\t\tfont-size: 16px;\n    \t\t\tcolor: white;\n    \t\t\t\n\t\t\t}\n\t\t}\n\t\t> img{\n\t\t\tposition: absolute;\n\t\t    top: 0;\n\t\t    left: 0;\n\t\t    width: 100%;\n\t\t    height: 100%;\n\t\t    transform: scale(1);\n\t\t    -webkit-transform: scale(1);\n\t\t    opacity: 1;\n\t\t    z-index: 0;\n\t\t}\n\t}\n\t@media #{$mobile}{\n\t\tpadding-top: 40px;\n    \tmargin-top: 0;\n\t}\n\n}\n\n\n\n\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "html, body {\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  position: static;\n  background: #fff; }\n\nbody {\n  height: 100%; }\n\n* {\n  box-sizing: border-box; }\n\na {\n  text-decoration: none;\n  color: rgba(0, 0, 0, 0.8); }\n\nhtml {\n  -webkit-text-size-adjust: none;\n  -moz-text-size-adjust: none;\n  text-size-adjust: none; }\n\nh1, h2, h3, h4, h5, text, p {\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-webkit-font-smoothing: antialiased;\n  font-family: Arial; }\n\n.selector-container {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 200px;\n  height: 400px;\n  padding: 20px;\n  display: none; }\n  .selector-container .item-container {\n    margin-bottom: 10px; }\n  .selector-container .select {\n    padding: 10px;\n    background: white;\n    cursor: pointer;\n    font-size: 12px; }\n  .selector-container .timeline-toggler {\n    background: rgba(255, 255, 255, 0.6);\n    color: black;\n    border: 2px solid rgba(220, 20, 100, 0.8);\n    font-weight: 700;\n    position: fixed;\n    left: 20px; }\n\n.mainLoader {\n  position: absolute;\n  z-index: 10;\n  width: 200px;\n  height: 200px;\n  top: 50%;\n  left: 50%;\n  margin-top: -100px;\n  margin-left: -100px; }\n\n.logo {\n  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);\n  color: transparent;\n  font-family: Arial;\n  font-weight: lighter;\n  position: fixed;\n  right: 14px;\n  top: 6px;\n  z-index: 20;\n  margin: 0;\n  font-size: 32px;\n  opacity: 1; }\n  @media only screen and (max-width: 767px) {\n    .logo {\n      top: 10px; } }\n\n.closeBtn {\n  position: fixed;\n  top: 52px;\n  right: 40px;\n  width: 50px;\n  height: 50px;\n  text-indent: -9999px;\n  padding: 0 4px;\n  z-index: 10;\n  cursor: pointer; }\n  @media only screen and (max-width: 767px) {\n    .closeBtn {\n      right: 10px;\n      width: 30px;\n      height: 30px; } }\n\n.container {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  opacity: 0; }\n\n.Main-Canvas {\n  width: 100%;\n  height: 100%;\n  top: 0px;\n  left: 0px;\n  position: absolute;\n  z-index: 0; }\n\n.imageContainer {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%; }\n  .imageContainer > img {\n    height: 100%;\n    margin: 0 auto;\n    display: block;\n    position: absolute;\n    top: 0;\n    left: 50%;\n    transform: scale(0);\n    -webkit-transform: scale(0);\n    opacity: 0; }\n\n.nav {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  font-family: \"Arial\";\n  padding: 10px;\n  z-index: 5;\n  color: rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  opacity: 1; }\n  .nav .nav-item {\n    cursor: pointer;\n    padding: 10px;\n    font-size: 10px;\n    position: relative;\n    left: 0;\n    transition: transform .5s;\n    -webkit-transition: transform .5s; }\n    .nav .nav-item:hover {\n      background: white; }\n    @media only screen and (max-width: 767px) {\n      .nav .nav-item {\n        display: block;\n        padding: 4px;\n        margin-bottom: 10px;\n        transform: translate(-200px, 0);\n        background: white; }\n        .nav .nav-item:hover {\n          background: transparent; } }\n  .nav .menuBurger {\n    display: none;\n    width: 39px;\n    height: 35px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    margin-top: 0;\n    margin-bottom: 10px; }\n    @media only screen and (max-width: 767px) {\n      .nav .menuBurger {\n        display: block; } }\n\n.overlay {\n  position: absolute;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transition: opacity .6s, transform .6s;\n  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n  transition: opacity .6s, transform .6s;\n  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n  color: rgba(0, 0, 0, 0.8);\n  -webkit-transform: scale(0.8);\n  /* Chrome, Opera 15+, Safari 3.1+ */\n  transform: scale(0.8);\n  /* Firefox 16+, IE 10+, Opera */\n  padding: 40px 100px; }\n  .overlay .overlayTitle {\n    text-align: center;\n    font-size: 32px; }\n\n.touchLayer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%; }\n\n.contact {\n  padding-top: 20%;\n  text-align: center; }\n  .contact > h1 {\n    font-size: 60px;\n    color: rgba(0, 0, 0, 0.8); }\n  @media only screen and (max-width: 767px) {\n    .contact {\n      padding: 40% 0;\n      margin-top: 0; }\n      .contact > h1 {\n        font-size: 20px; } }\n\n.about {\n  margin-top: 100px; }\n  .about .overlayDescr {\n    line-height: 22px;\n    width: 50%; }\n  @media only screen and (max-width: 767px) {\n    .about {\n      padding: 0px 10px;\n      font-size: 10px;\n      line-height: 0px;\n      padding-top: 40px;\n      margin-top: 16%; }\n      .about .overlayDescr {\n        line-height: 18px;\n        font-size: 14px;\n        width: 90%; } }\n\n.projects {\n  padding: 0;\n  margin-top: 80px; }\n  .projects .projectsContainer {\n    width: 80%;\n    margin: 20px auto;\n    position: relative; }\n  .projects .projectDetailWrapper {\n    opacity: 0;\n    display: none;\n    height: 100%;\n    width: 100%;\n    z-index: 8;\n    position: relative;\n    transition: opacity .5s;\n    -webkit-transition: opacity .5s; }\n    .projects .projectDetailWrapper .projectDescr {\n      width: 100%;\n      text-align: center;\n      padding: 0 10%;\n      font-size: 12px;\n      line-height: 20px; }\n    .projects .projectDetailWrapper .projectSlider {\n      margin: 20px auto;\n      position: relative; }\n      .projects .projectDetailWrapper .projectSlider .sliderNav {\n        width: 20px;\n        height: 20px;\n        position: absolute;\n        top: 50%;\n        margin-top: -10px;\n        cursor: pointer;\n        transition: transform .2s;\n        -webkit-transition: transform .2s;\n        transform: scale(1);\n        -webkit-transform: scale(1); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav:hover {\n          transform: scale(1.2);\n          -webkit-transform: scale(1.2); }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderNext {\n          right: -30px; }\n        .projects .projectDetailWrapper .projectSlider .sliderNav.sliderPrev {\n          left: -30px; }\n      .projects .projectDetailWrapper .projectSlider .sliderContainer {\n        position: absolute;\n        overflow: hidden;\n        height: 100%; }\n      .projects .projectDetailWrapper .projectSlider .sliderItem {\n        position: absolute;\n        top: 0;\n        width: 100%;\n        height: 100%;\n        transition: transform .5s, opacity .5s;\n        -webkit-transition: transform .5s, opacity .5s;\n        z-index: 2; }\n        .projects .projectDetailWrapper .projectSlider .sliderItem > img {\n          width: 100%;\n          height: auto; }\n  .projects .projectItem {\n    background: rgba(0, 0, 0, 0.2);\n    position: absolute;\n    top: 0;\n    left: 0;\n    cursor: pointer;\n    transition: opacity .4s, transform .3s;\n    -webkit-transition: opacity .4s, transform .3s; }\n    .projects .projectItem > .touchLayer {\n      z-index: 2; }\n    .projects .projectItem .projectItemLoader {\n      z-index: 3; }\n    .projects .projectItem .itemCaption {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      color: white;\n      background: rgba(0, 0, 0, 0.6);\n      z-index: 1;\n      opacity: 0;\n      transition: opacity .4s;\n      -webkit-transition: opacity .4s;\n      padding-top: 22%; }\n      .projects .projectItem .itemCaption > h5 {\n        font-size: 20px;\n        text-align: center;\n        text-transform: uppercase; }\n      .projects .projectItem .itemCaption .projectOpenBtn {\n        font-size: 16px;\n        color: white; }\n    .projects .projectItem > img {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      transform: scale(1);\n      -webkit-transform: scale(1);\n      opacity: 1;\n      z-index: 0; }\n  @media only screen and (max-width: 767px) {\n    .projects {\n      padding-top: 40px;\n      margin-top: 0; } }\n", "", {"version":3,"sources":["/./app/main.scss"],"names":[],"mappings":"AAGA;EACC,YAAW;EACX,aAAY;EAEZ,UAAS;EACT,WAAU;EAGV,iBAAiB;EACjB,iBAAiB,EACjB;;AAED;EACC,aAAa,EACb;;AAED;EACC,uBAAuB,EACvB;;AAED;EACC,sBAAsB;EACtB,0BAAW,EACX;;AAED;EACC,+BAA+B;EAC/B,4BAA4B;EAC5B,uBAAuB,EACvB;;AAED;EACC,oCAAoC;EACpC,4CAA4C;EAC5C,mBAAmB,EACnB;;AAED;EACC,mBAAmB;EAChB,OAAO;EACP,SAAS;EACT,aAAa;EACb,cAAc;EACd,cAAc;EACd,cAAc,EAsBjB;EA7BD;IASK,oBAAoB,EACpB;EAVL;IAYK,cAAc;IACd,kBAAkB;IAClB,gBAAgB;IAChB,gBAAgB,EAEhB;EAjBL;IAoBK,qCAAgB;IAChB,aAAa;IACb,0CAAsB;IACtB,iBAAiB;IACjB,gBAAgB;IAChB,WAAW,EAGX;;AAGL;EACC,mBAAmB;EACnB,YAAY;EACZ,aAAa;EACb,cAAc;EACd,SAAS;EACT,UAAU;EACV,mBAAmB;EACnB,oBAAoB,EACpB;;AAED;EACC,kDAA6B;EAC1B,mBAAW;EACX,mBAAmB;EACnB,qBAAqB;EACrB,gBAAgB;EAChB,YAAY;EACZ,SAAS;EACT,YAAY;EACZ,UAAU;EACV,gBAAgB;EAChB,WAAW,EAId;EAHG;IAZJ;MAaK,UAAU,EAEd,EAAA;;AAED;EACC,gBAAgB;EAChB,UAAU;EACV,YAAY;EAEZ,YAAY;EACT,aAAa;EACb,qBAAqB;EACrB,eAAe;EACf,YAAY;EACZ,gBAAgB,EAQnB;EALA;IAbD;MAcE,YAAY;MACZ,YAAY;MACT,aAAa,EAEjB,EAAA;;AAED;EACC,gBAAgB;EAChB,OAAO;EACP,QAAQ;EACR,YAAW;EACX,aAAY;EACZ,WAAW,EAEX;;AAED;EACC,YAAW;EACX,aAAY;EACZ,SAAQ;EACR,UAAS;EACT,mBAAmB;EACnB,WAAW,EACX;;AAED;EACC,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,aAAa,EAab;EAjBD;IAME,aAAa;IACb,eAAe;IACf,eAAe;IACf,mBAAmB;IACnB,OAAO;IACP,UAAU;IACV,oBAAgB;IAChB,4BAAwB;IACxB,WAAW,EAEX;;AAKF;EACC,gBAAgB;EACb,SAAS;EACT,UAAU;EACV,qBAAqB;EACrB,cAAc;EACd,WAAW;EACX,0BAAW;EACX,YAAY;EACZ,WAAW,EAyCd;EAlDD;IAYE,gBAAgB;IAChB,cAAc;IACd,gBAAgB;IAChB,mBAAmB;IACnB,QAAQ;IACR,0BAA0B;IAC1B,kCAAkC,EAelC;IAjCF;MAoBG,kBAAkB,EAClB;IAED;MAvBF;QAwBG,eAAe;QACf,aAAa;QACb,oBAAoB;QACpB,gCAAoB;QACpB,kBAAkB,EAKnB;QAjCF;UA8BI,wBAAwB,EACxB,EAAA;EA/BJ;IAoCE,cAAc;IACd,YAAY;IACT,aAAa;IACb,qBAAqB;IACrB,eAAe;IACf,cAAc;IACd,oBAAoB,EAMvB;IAJA;MA5CF;QA6CG,eAAe,EAGhB,EAAA;;AAIF;EACC,mBAAmB;EACnB,WAAW;EACX,YAAY;EACZ,aAAa;EACb,QAAQ;EACR,OAAO;EACP,WAAW;EACX,cAAc;EACd,+CAA+C;EAAG,2DAA2D;EAC1G,uCAAuC;EAAG,iEAAiE;EAC3G,0BAAW;EACX,8BAAwB;EAAQ,oCAAoC;EAEpE,sBAAgB;EAAO,gCAAgC;EAEvD,oBAAoB,EAWvB;EA3BD;IAmBK,mBAAmB;IACnB,gBAAgB,EAEhB;;AAOL;EACC,mBAAmB;EACnB,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,aAAa,EACb;;AAED;EACC,iBAAiB;EACjB,mBAAmB,EAcnB;EAhBD;IAIE,gBAAgB;IAChB,0BAAW,EACX;EAED;IARD;MAUE,eAAe;MACZ,cAAc,EAKlB;MAhBD;QAaG,gBAAgB,EAChB,EAAA;;AAIH;EAEC,kBAAkB,EAkBlB;EApBD;IAIK,kBAAkB;IAClB,WAAW,EACX;EAED;IARJ;MASK,kBAAkB;MAClB,gBAAgB;MAChB,iBAAiB;MACjB,kBAAkB;MAClB,gBAAgB,EAOpB;MApBD;QAeM,kBAAkB;QAClB,gBAAgB;QAChB,WAAW,EACX,EAAA;;AAIN;EAEC,WAAW;EACX,iBAAiB,EAgIjB;EAnID;IAKE,WAAW;IACX,kBAAkB;IAClB,mBAAmB,EACnB;EARF;IAUE,WAAW;IACX,cAAc;IACd,aAAa;IACV,YAAY;IAEZ,WAAW;IACX,mBAAmB;IACnB,wBAAwB;IACxB,gCAAgC,EAwDnC;IA1EF;MAqBM,YAAY;MACZ,mBAAmB;MACnB,eAAe;MACf,gBAAgB;MAChB,kBAAkB,EAClB;IA1BN;MA6BG,kBAAkB;MACf,mBAAmB,EA0CnB;MAxEN;QAgCO,YAAY;QACZ,aAAa;QACb,mBAAmB;QACnB,SAAS;QACT,kBAAkB;QAClB,gBAAgB;QAChB,0BAA0B;QAC1B,kCAAkC;QAClC,oBAAgB;QAChB,4BAAwB,EAWxB;QApDP;UA2CQ,sBAAgB;UAChB,8BAAwB,EACxB;QA7CR;UA+CQ,aAAa,EACb;QAhDR;UAkDQ,YAAY,EACZ;MAnDR;QAsDO,mBAAmB;QACnB,iBAAiB;QACjB,aAAa,EACb;MAzDP;QA4DO,mBAAmB;QACnB,OAAO;QACP,YAAY;QACZ,aAAa;QACb,uCAAuC;QACvC,+CAA+C;QAC/C,WAAW,EAKX;QAvEP;UAoEQ,YAAY;UACf,aAAa,EACV;EAtER;IA4EE,+BAAgB;IAChB,mBAAmB;IACnB,OAAO;IACP,QAAQ;IACR,gBAAgB;IAChB,uCAAuC;IACvC,+CAA+C,EA2C/C;IA7HF;MAoFG,WAAW,EACX;IArFH;MAuFG,WAAW,EACX;IAxFH;MA0FG,mBAAmB;MACnB,OAAO;MACP,QAAQ;MACR,YAAY;MACZ,aAAa;MACb,aAAa;MACb,+BAAgB;MAChB,WAAW;MACX,WAAW;MACX,wBAAwB;MACxB,gCAAgC;MAChC,iBAAiB,EAYjB;MAjHH;QAwGI,gBAAgB;QAChB,mBAAmB;QACnB,0BAA0B,EAC1B;MA3GJ;QA6GI,gBAAgB;QACb,aAAa,EAEhB;IAhHJ;MAmHG,mBAAmB;MAChB,OAAO;MACP,QAAQ;MACR,YAAY;MACZ,aAAa;MACb,oBAAgB;MAChB,4BAAwB;MACxB,WAAW;MACX,WAAW,EACd;EAEF;IA9HD;MA+HE,kBAAkB;MACf,cAAc,EAGlB,EAAA","file":"main.scss","sourcesContent":["$mobile      : 'only screen and (max-width : 767px)';\n\n\nhtml, body {\n\twidth:100%;\n\theight:100%;\n\n\tmargin:0;\n\tpadding:0;\n\n\t// overflow:hidden;\n\tposition: static;\n\tbackground: #fff;\n}\n\nbody{\n\theight: 100%;\n}\n\n*{\n\tbox-sizing: border-box;\n}\n\na{\n\ttext-decoration: none;\n\tcolor: rgba(0,0,0,.8);\n}\n\nhtml {\n\t-webkit-text-size-adjust: none;\n\t-moz-text-size-adjust: none;\n\ttext-size-adjust: none;\n}\n\nh1,h2,h3,h4,h5,text,p {\n\t-webkit-font-smoothing: antialiased;\n\t-moz-osx-webkit-font-smoothing: antialiased;\n\tfont-family: Arial;\n}\n\n.selector-container{\n\tposition: absolute;\n    top: 0;\n    right: 0;\n    width: 200px;\n    height: 400px;\n    padding: 20px;\n    display: none;\n    .item-container{\n    \tmargin-bottom: 10px;\n    }\n    .select{\n    \tpadding: 10px;\n    \tbackground: white;\n    \tcursor: pointer;\n    \tfont-size: 12px;\n\n    }\n\n    .timeline-toggler{\n    \tbackground: rgba(255,255,255,.6);\n    \tcolor: black;\n    \tborder: 2px solid rgba(220, 20, 100, .8);\n    \tfont-weight: 700;\n    \tposition: fixed;\n    \tleft: 20px;\n    \t\n\n    }\n}\n\n.mainLoader{\n\tposition: absolute;\n\tz-index: 10;\n\twidth: 200px;\n\theight: 200px;\n\ttop: 50%;\n\tleft: 50%;\n\tmargin-top: -100px;\n\tmargin-left: -100px;\n}\n\n.logo{\n\t-webkit-text-stroke: 1px rgba(255,255,255,.5);\n    color: rgba(0,0,0,0);\n    font-family: Arial;\n    font-weight: lighter;\n    position: fixed;\n    right: 14px;\n    top: 6px;\n    z-index: 20;\n    margin: 0;\n    font-size: 32px;\n    opacity: 1;\n    @media #{$mobile}{\n    \ttop: 10px;\n    }\n}\n\n.closeBtn{\n\tposition: fixed;\n\ttop: 52px;\n\tright: 40px;\n\t// display: none;\n\twidth: 50px;\n    height: 50px;\n    text-indent: -9999px;\n    padding: 0 4px;\n    z-index: 10;\n    cursor: pointer;\n\n   \n\t@media #{$mobile}{\n\t\tright: 10px;\n\t\twidth: 30px;\n    \theight: 30px;\n\t}\n}\n\n.container{\n\tposition: fixed;\n\ttop: 0;\n\tleft: 0;\n\twidth:100%;\n\theight:100%;\n\topacity: 0;\n\n}\n\n.Main-Canvas {\n\twidth:100%;\n\theight:100%;\n\ttop:0px;\n\tleft:0px;\n\tposition: absolute;\n\tz-index: 0;\n}\n\n.imageContainer{\n\tposition: absolute;\n\tz-index: 2;\n\twidth: 100%;\n\theight: 100%;\n\t> img{\n\t\theight: 100%;\n\t\tmargin: 0 auto;\n\t\tdisplay: block;\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 50%;\n\t\ttransform: scale(0);\n\t\t-webkit-transform: scale(0);\n\t\topacity: 0;\n\n\t}\n}\n\n\n\n.nav{\n\tposition: fixed;\n    top: 0px;\n    left: 0px;\n    font-family: \"Arial\";\n    padding: 10px;\n    z-index: 5;\n    color: rgba(0,0,0,.8);\n    z-index: 10;\n    opacity: 1;\n\n\t.nav-item{\n\t\tcursor: pointer;\n\t\tpadding: 10px;\n\t\tfont-size: 10px;\n\t\tposition: relative;\n\t\tleft: 0;\n\t\ttransition: transform .5s;\n\t\t-webkit-transition: transform .5s;\n\t\t&:hover{\n\t\t\tbackground: white;\n\t\t}\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t\tpadding: 4px;\n\t\t\tmargin-bottom: 10px;\n\t\t\ttransform: translate(-200px, 0);\n\t\t\tbackground: white;\n\t\t\t&:hover{\n\t\t\t\tbackground: transparent;\n\t\t\t}\n\t\t}\n\t}\n\n\t.menuBurger{\n\t\tdisplay: none;\n\t\twidth: 39px;\n\t    height: 35px;\n\t    text-indent: -9999px;\n\t    padding: 0 4px;\n\t    margin-top: 0;\n\t    margin-bottom: 10px;\n\n\t\t@media #{$mobile}{\n\t\t\tdisplay: block;\n\t\t}\n\n\t}\n\n}\n\n.overlay{\n\tposition: absolute;\n\tz-index: 1;\n\twidth: 100%;\n\theight: 100%;\n\tleft: 0;\n\ttop: 0;\n\topacity: 0;\n\tdisplay: none;\n\t-webkit-transition: opacity .6s, transform .6s;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */\n    transition: opacity .6s, transform .6s;  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */\n    color: rgba(0,0,0,.8);\n    -webkit-transform: scale(0.8);  /* Chrome, Opera 15+, Safari 3.1+ */\n    //   -ms-transform: scale(0.8);  /* IE 9 */\n    transform: scale(.8);  /* Firefox 16+, IE 10+, Opera */\n    // background: rgba(0,0,0,.3);\n    padding: 40px 100px;\n    // background: rgba(255,255,255,.6);\n    .overlayTitle{\n    \ttext-align: center;\n    \tfont-size: 32px;\n\n    }\n    \n\n\n\t\n}\n\n.touchLayer{\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\n.contact{\n\tpadding-top: 20%;\n\ttext-align: center;\n\t> h1{\n\t\tfont-size: 60px;\n\t\tcolor: rgba(0,0,0,.8);\n\t}\n\n\t@media #{$mobile}{\n\t\t// padding-top: 40px;\n\t\tpadding: 40% 0;\n    \tmargin-top: 0;\n\t\t> h1 {\n\t\t\tfont-size: 20px;\n\t\t}\n\t}\n}\n\n.about{\n\t// background: rgba(250, 40, 40, .7);\n\tmargin-top: 100px;\n\t.overlayDescr{\n    \tline-height: 22px;\n    \twidth: 50%;\n    }\n\n    @media #{$mobile}{\n    \tpadding: 0px 10px;\n\t    font-size: 10px;\n\t    line-height: 0px;\n\t    padding-top: 40px;\n    \tmargin-top: 16%;\n    \t.overlayDescr{\n    \t\tline-height: 18px;\n    \t\tfont-size: 14px;\n    \t\twidth: 90%;\n    \t}\n    }\n}\n\n.projects{\n\t// background: rgba(250, 40, 240, .7);\n\tpadding: 0;\n\tmargin-top: 80px;\n\t.projectsContainer{\n\t\twidth: 80%;\n\t\tmargin: 20px auto;\n\t\tposition: relative;\n\t}\n\t.projectDetailWrapper{\n\t\topacity: 0;\n\t\tdisplay: none;\n\t\theight: 100%;\n\t    width: 100%;\n\t    // background: rgba(0,0,0,.1);\n\t    z-index: 8;\n\t    position: relative;\n\t    transition: opacity .5s;\n\t    -webkit-transition: opacity .5s;\n\t    \n\t    .projectDescr{\n\t    \twidth: 100%;\n\t\t    text-align: center;\n\t\t    padding: 0 10%;\n\t\t    font-size: 12px;\n    \t\tline-height: 20px;\n\t    }\n\t    .projectSlider{\n\t   \t\t\n\t\t\tmargin: 20px auto;\n   \t\t\tposition: relative;\n\t\t    .sliderNav{\n\t\t    \twidth: 20px;\n\t\t    \theight: 20px;\n\t\t    \tposition: absolute;\n\t\t    \ttop: 50%;\n\t\t    \tmargin-top: -10px;\n\t\t    \tcursor: pointer;\n\t\t    \ttransition: transform .2s;\n\t\t    \t-webkit-transition: transform .2s;\n\t\t    \ttransform: scale(1.0);\n\t\t    \t-webkit-transform: scale(1.0);\n\t\t    \t&:hover{\n\t\t    \t\ttransform: scale(1.2);\n\t\t    \t\t-webkit-transform: scale(1.2);\n\t\t    \t}\n\t\t    \t&.sliderNext{\n\t\t    \t\tright: -30px;\n\t\t    \t}\n\t\t    \t&.sliderPrev{\n\t\t    \t\tleft: -30px;\n\t\t    \t}\n\t\t    }\n\t\t    .sliderContainer{\n\t\t    \tposition: absolute;\n\t\t    \toverflow: hidden;\n\t\t    \theight: 100%;\n\t\t    }\n\t\t    \n\t    \t.sliderItem{\n\t    \t\tposition: absolute;\n\t    \t\ttop: 0;\n\t    \t\twidth: 100%;\n\t    \t\theight: 100%;\n\t    \t\ttransition: transform .5s, opacity .5s;\n\t    \t\t-webkit-transition: transform .5s, opacity .5s;\n\t    \t\tz-index: 2;\n\t    \t\t> img{\n\t    \t\t\twidth: 100%;\n\t\t\t\t\theight: auto;\n\t    \t\t}\n\t\t    }\n\t    }\n\n\t}\n\t.projectItem{\n\t\tbackground: rgba(0,0,0,.2);\n\t\tposition: absolute;\n\t\ttop: 0;\n\t\tleft: 0;\n\t\tcursor: pointer;\n\t\ttransition: opacity .4s, transform .3s;\n\t\t-webkit-transition: opacity .4s, transform .3s;\n\t\t> .touchLayer{\n\t\t\tz-index: 2;\n\t\t}\n\t\t.projectItemLoader{\n\t\t\tz-index: 3;\n\t\t}\n\t\t.itemCaption{\n\t\t\tposition: absolute;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\twidth: 100%;\n\t\t\theight: 100%;\n\t\t\tcolor: white;\n\t\t\tbackground: rgba(0,0,0,.6);\n\t\t\tz-index: 1;\n\t\t\topacity: 0;\n\t\t\ttransition: opacity .4s;\n\t\t\t-webkit-transition: opacity .4s;\n\t\t\tpadding-top: 22%;\n\n\t\t\t> h5{\n\t\t\t\tfont-size: 20px;\n\t\t\t\ttext-align: center;\n\t\t\t\ttext-transform: uppercase;\n\t\t\t}\n\t\t\t.projectOpenBtn{\n\t\t\t\tfont-size: 16px;\n    \t\t\tcolor: white;\n    \t\t\t\n\t\t\t}\n\t\t}\n\t\t> img{\n\t\t\tposition: absolute;\n\t\t    top: 0;\n\t\t    left: 0;\n\t\t    width: 100%;\n\t\t    height: 100%;\n\t\t    transform: scale(1);\n\t\t    -webkit-transform: scale(1);\n\t\t    opacity: 1;\n\t\t    z-index: 0;\n\t\t}\n\t}\n\t@media #{$mobile}{\n\t\tpadding-top: 40px;\n    \tmargin-top: 0;\n\t}\n\n}\n\n\n\n\n"],"sourceRoot":"webpack://"}]);
 
 	// exports
 
@@ -1238,6 +1239,10 @@
 
 	var _timeline2 = _interopRequireDefault(_timeline);
 
+	var _SceneNoise = __webpack_require__(17);
+
+	var _SceneNoise2 = _interopRequireDefault(_SceneNoise);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1302,6 +1307,7 @@
 			this.sceneImport = new _SceneImport2.default(this.FBO);
 			this.sceneCloudsOverlay = new _SceneCloudsOverlay2.default(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
+			this.sceneNoise = new _SceneNoise2.default();
 			this.start_time = Date.now();
 
 			this.windowHalfX;
@@ -1331,10 +1337,10 @@
 
 			this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			this.renderer.autoClear = false;
+			// this.renderer.autoClear = false;
 			// this.renderer.setClearColorHex( 0x000000, 1 );
-			// this.renderer.setClearColor( '#e206db' );
-			this.renderer.setClearColor('#d370d0');
+			this.renderer.setClearColor('#e206db');
+			// this.renderer.setClearColor('#d370d0');
 			this.container.appendChild(this.renderer.domElement);
 
 			this.currentTime = Date.now();
@@ -1492,8 +1498,9 @@
 					this.sceneCloudsOverlay.update(sceneVals.overlay);
 				}
 
-				// var position = ( ( Date.now() - this.start_time ) * 0.03 ) % this.sceneClouds.totDepth;
-				var position = 1000;
+				var position = (now - this.start_time) * this.currentSceneSettings.cameraSpeed.cloudNormal % this.sceneClouds.totDepth;
+
+				// var position = 1000;
 
 				var updateCubeDelta = now - this.cubeCameraLastUpdate;
 				if (updateCubeDelta > 1000) {
@@ -1501,9 +1508,11 @@
 					this.cubeCameraLastUpdate = now;
 				} else {
 					this.sceneImport.update(this.renderer, this.sceneClouds.scene, -position + this.sceneClouds.totDepth, false);
-
-					// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
 				}
+
+				this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+
+				this.sceneNoise.update();
 			}
 		}, {
 			key: 'render',
@@ -1537,21 +1546,22 @@
 
 
 				this.renderer.clear();
-				// this.renderer.render( this.sceneImport.scene, this.importCamera );
-				this.renderer.render(this.sceneClouds.scene, this.camera, this.FBO, true);
-				this.renderer.render(this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true);
-				// this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
-				// this.renderer.clear();
-				// this.renderer.render( this.sceneClouds.scene, this.camera );
-				// this.renderer.clearDepth();
-				this.renderer.render(this.sceneImport.scene, this.importCamera, this.FBOGirl, true);
 
-				if (!this.currentSceneSettings.renderOverlay) {
-					this.renderer.render(this.sceneCloudsMesh.scene, this.orthoCamera);
-				} else {
-					this.renderer.render(this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true);
-					this.renderer.render(this.sceneCloudsOverlay.scene, this.orthoCamera);
-				}
+				// this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
+				// this.renderer.render( this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true );
+				// this.renderer.render( this.sceneImport.scene, this.importCamera, this.FBOGirl, true );
+
+				// if (!this.currentSceneSettings.renderOverlay){
+				// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
+				// }
+				// else{
+				// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
+				// 	this.renderer.render( this.sceneCloudsOverlay.scene, this.orthoCamera );
+				// }
+
+				// this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
+
+				this.renderer.render(this.sceneClouds.scene, this.camera);
 			}
 		}, {
 			key: 'onResize',
@@ -1601,8 +1611,8 @@
 
 			this.geometry = new THREE.Geometry();
 
-			// var jsonLoader = new THREE.JSONLoader();
-			//       jsonLoader.load( "assets/imports/test.js", this.onLoaded.bind(this) );
+			var jsonLoader = new THREE.JSONLoader();
+			jsonLoader.load("assets/imports/test.js", this.onLoaded.bind(this));
 
 			this.texture = THREE.ImageUtils.loadTexture('assets/cloud10.png', null, function () {
 				return enableRenderCallback.call(callbackScope);
@@ -1699,7 +1709,7 @@
 				// this.mesh.rotation.z = this.rotation+Math.random() * Math.PI / 180;
 
 				this.mesh.visible = false;
-				this.mesh.position.z = pos - 50;
+				this.mesh.position.z = pos - 70;
 				this.cubeCamera.position.copy({ x: 0, y: -40, z: pos });
 				this.cubeCamera.updateCubeMap(renderer, this.scene);
 
@@ -2406,6 +2416,89 @@
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var SceneImport = function () {
+		function SceneImport() {
+			_classCallCheck(this, SceneImport);
+
+			this.scene = new THREE.Scene();
+
+			this.lastMousePos = new THREE.Vector2(0.0, 0.0);
+
+			this.timestamp = Date.now();
+
+			var resUniforms = {};
+			resUniforms.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
+
+			var interactiveUniforms = {};
+			interactiveUniforms.u_mouse = { value: this.lastMousePos };
+			interactiveUniforms.u_time = { value: Date.now() - this.timestamp };
+
+			var uniformsObj = Object.assign({}, interactiveUniforms, resUniforms);
+
+			var material = new THREE.ShaderMaterial({
+				uniforms: uniformsObj,
+				vertexShader: __webpack_require__(18),
+				fragmentShader: __webpack_require__(19)
+			});
+
+			var plane = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerHeight);
+
+			this.quad = new THREE.Mesh(plane, material);
+			this.quad.position.z = 0;
+			this.scene.add(this.quad);
+
+			window.addEventListener('mousemove', this.onMouseMove.bind(this));
+		}
+
+		_createClass(SceneImport, [{
+			key: "onMouseMove",
+			value: function onMouseMove(e) {
+
+				this.lastMousePos.x = e.clientX;
+				this.lastMousePos.y = e.clientY;
+			}
+		}, {
+			key: "update",
+			value: function update() {
+
+				this.quad.material.uniforms.u_mouse.value = this.lastMousePos;
+				this.quad.material.uniforms.u_time.value = (Date.now() - this.timestamp) / 10000;
+				// console.log(this.quad.material.uniforms);
+
+			}
+		}]);
+
+		return SceneImport;
+	}();
+
+	exports.default = SceneImport;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = "#define GLSLIFY 1\nvoid main() {\n\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	module.exports = "#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\n#define PI 3.14159265359\n#define TWO_PI 6.28318530718\n\nuniform vec2 u_res;\nuniform vec2 u_mouse;\nuniform float u_time;\n\nfloat plot(vec2 st, float pct){\n  return  smoothstep( pct-0.01, pct, st.y) - \n          smoothstep( pct, pct+0.01, st.y);\n}\n\nvec3 colorA = vec3(0.149,0.141,0.912);\nvec3 colorB = vec3(1.000,0.833,0.224);\n\nvec3 hsb2rgb( in vec3 c ){\n    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),\n                             6.0)-3.0)-1.0, \n                     0.0, \n                     1.0 );\n    rgb = rgb*rgb*(3.0-2.0*rgb);\n    return c.z * mix(vec3(1.0), rgb, c.y);\n}\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy/u_res.xy;\n    vec3 color = vec3(0.0);\n\n    vec2 mouse = u_mouse.xy / u_res.xy;\n  \n    // Each result will return 1.0 (white) or 0.0 (black).\n  \t// bottom-left\n\n    vec2 bl = smoothstep(vec2(0.1), max(vec2(.1),vec2(mouse.y/2.0)),st); \n    float pct = bl.x * bl.y;\n\n    // top-right \n    vec2 tr = smoothstep(vec2(0.1), max(vec2(.1),vec2(mouse.y/2.0)),1.0 - st);\n    pct *= tr.x * tr.y;\n    \n    color = vec3(pct); \n\n    gl_FragColor = vec4(color,1.0);\n}"
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -2414,7 +2507,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _SceneSelectorItem = __webpack_require__(18);
+	var _SceneSelectorItem = __webpack_require__(21);
 
 	var _SceneSelectorItem2 = _interopRequireDefault(_SceneSelectorItem);
 
@@ -2489,7 +2582,7 @@
 	exports.default = SceneSelector;
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';

@@ -44,6 +44,22 @@ uniform float boxSixScale;
 uniform float boxSixRotDegree;
 uniform float boxSixCoeff;
 
+uniform float boxSevenTexture;
+uniform float boxSevenScale;
+uniform float boxSevenRotDegree;
+uniform float boxSevenCoeff;
+
+uniform float boxEightTexture;
+uniform float boxEightScale;
+uniform float boxEightRotDegree;
+uniform float boxEightCoeff;
+
+uniform float boxNineTexture;
+uniform float boxNineScale;
+uniform float boxNineRotDegree;
+uniform float boxNineCoeff;
+
+
 // 2D Random
 float random (in vec2 st) { 
     return fract(sin(dot(st.xy,
@@ -140,36 +156,85 @@ void main() {
     // mouse.y -= 1.0;
 
     vec3 textureColor = texture2D( uTexture, st ).rgb;
+
+    st *= grid;
+
+    vec2 fractSt = fract(st);
+
+    vec2 intSt = floor(st);
+
+    if (intSt.x == 0.0 && intSt.y == 0.0) {
+        fractSt = rotate2D(fractSt, boxOneRotDegree * PI);
+    }
+
+    if (intSt.x == 0.0 && intSt.y == 1.0) {
+        fractSt = rotate2D(fractSt, boxTwoRotDegree * PI);
+    }
+
+    if (intSt.x == 0.0 && intSt.y == 2.0) {
+        fractSt = rotate2D(fractSt, boxThreeRotDegree * PI);
+    }
+
+
+    if (intSt.x == 1.0 && intSt.y == 0.0) {
+        fractSt = rotate2D(fractSt, boxFourRotDegree * PI);
+    }
+
+    if (intSt.x == 1.0 && intSt.y == 1.0) {
+        fractSt = rotate2D(fractSt, boxFiveRotDegree * PI);
+    }
+
+    if (intSt.x == 1.0 && intSt.y == 2.0) {
+        fractSt = rotate2D(fractSt, boxSixRotDegree * PI);
+    }
+
+
+    if (intSt.x == 2.0 && intSt.y == 0.0) {
+        fractSt = rotate2D(fractSt, boxSevenRotDegree * PI);
+    }
+
+    if (intSt.x == 2.0 && intSt.y == 1.0) {
+        fractSt = rotate2D(fractSt, boxEightRotDegree * PI);
+    }
+
+    if (intSt.x == 2.0 && intSt.y == 2.0) {
+        fractSt = rotate2D(fractSt, boxNineRotDegree * PI);
+    }
+
+    textureColor = texture2D( uTexture,fractSt ).rgb;
     
 
     // st.x *= u_res.x/u_res.y;
 
-    vec3 color = vec3(0.0);
+    // vec3 color = vec3(0.0);
 
-    // Cell positions
-    vec2 point[5];
-    point[0] = vec2(0.83,0.75);
-    point[1] = vec2(0.60 + abs(cos(u_time *PI)/10.0),0.07 + abs(sin(u_time *PI)/.8));
-    point[2] = vec2(0.28 + sin(u_time *PI)/2.0,0.64 + cos(u_time *PI/3.0));
-    point[3] =  vec2(0.31 + sin(u_time *PI)/1.5,0.26 + sin(u_time *PI/.5));
-    point[4] = vec2(abs(sin(u_time *PI)/1.0), abs(sin(u_time *PI)/1.0));
+    // // Cell positions
+    // vec2 point[5];
+    // point[0] = vec2(0.83,0.75);
+    // point[1] = vec2(0.60 + abs(cos(u_time *PI)/10.0),0.07 + abs(sin(u_time *PI)/.8));
+    // point[2] = vec2(0.28 + sin(u_time *PI)/2.0,0.64 + cos(u_time *PI/3.0));
+    // point[3] =  vec2(0.31 + sin(u_time *PI)/1.5,0.26 + sin(u_time *PI/.5));
+    // point[4] = vec2(abs(sin(u_time *PI)/1.0), abs(sin(u_time *PI)/1.0));
     
-    float m_dist = 1.0;  // minimun distance
+    // float m_dist = 1.0;  // minimun distance
 
-    // Iterate through the points positions
-    for (int i = 0; i < 5; i++) {
-        float dist = distance(st, point[i]);
+    // // Iterate through the points positions
+    // for (int i = 0; i < 5; i++) {
+    //     float dist = distance(st, point[i]);
         
-        // Keep the closer distance
-        m_dist = min(m_dist, dist);
-    }
+    //     // Keep the closer distance
+    //     m_dist = min(m_dist, dist);
+    // }
     
-    // Draw the min distance (distance field)
-    // color += m_dist * audio_high;
+    // // Draw the min distance (distance field)
+    // color += m_dist;
 
-    color += textureColor;
+    // color += textureColor;
 
-    color *= hsb2rgb(vec3(1.0, .5, max(.7, .5)));
+    // color *= hsb2rgb(vec3(1.0, .5, max(.7, audio_high)));
+
+    
+    vec3 color = textureColor;
 
     
     gl_FragColor = vec4(color,1.0);

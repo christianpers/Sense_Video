@@ -5,44 +5,15 @@ precision mediump float;
 #define PI 3.14159265359
 #define TWO_PI 6.28318530718
 
+// #define dirt_purple vec3(240.0/255.0, 125.0/255.0, 192.0/255.0);
+// #define deep_blue_sea vec3(161.0/255.0, 214.0/255.0, 252.0/255.0);
+
 uniform vec2 u_res;
 uniform vec2 u_mouse;
 uniform float u_time;
 uniform sampler2D uTexture;
-uniform sampler2D uTwitterTexture;
 uniform float audio_deep;
 uniform float audio_high;
-uniform vec2 grid;
-
-uniform float boxOneTexture;
-uniform float boxOneScale;
-uniform float boxOneRotDegree;
-uniform float boxOneCoeff;
-
-uniform float boxTwoTexture;
-uniform float boxTwoScale;
-uniform float boxTwoRotDegree;
-uniform float boxTwoCoeff;
-
-uniform float boxThreeTexture;
-uniform float boxThreeScale;
-uniform float boxThreeRotDegree;
-uniform float boxThreeCoeff;
-
-uniform float boxFourTexture;
-uniform float boxFourScale;
-uniform float boxFourRotDegree;
-uniform float boxFourCoeff;
-
-uniform float boxFiveTexture;
-uniform float boxFiveScale;
-uniform float boxFiveRotDegree;
-uniform float boxFiveCoeff;
-
-uniform float boxSixTexture;
-uniform float boxSixScale;
-uniform float boxSixRotDegree;
-uniform float boxSixCoeff;
 
 // 2D Random
 float random (in vec2 st) { 
@@ -130,46 +101,57 @@ mat2 scale(vec2 _scale){
                 0.0,_scale.y);
 }
 
-
 void main() {
-	vec2 st = gl_FragCoord.xy/u_res.xy;
+	  vec2 st = gl_FragCoord.xy/u_res.xy;
     vec2 origSt = st;
     
-
     vec2 mouse = u_mouse.xy / u_res.xy;
-    // mouse.y -= 1.0;
 
     vec3 textureColor = texture2D( uTexture, st ).rgb;
+
+    vec2 pos = vec2(st * abs(sin(u_time / 10.0)) * 10.0);
+
+    // Use the noise function
+    float n = noise(pos);
+
+    st *= vec2(1.0, floor(u_res.y/2.0));
+
+    vec2 fractSt = fract(st);
+
+    vec2 intSt = floor(st);
+
+    float lineStep = step(1.0,mod(st.y,2.0));
+
+    lineStep *= -.1 + audio_high * .04;
+    // lineStep *= .01;
+
+
+    // fractSt.x += lineStep;
+
+    // origSt -= vec2(0.5);
+    // origSt = scale( vec2(n/.5)) * origSt;
+    // origSt += vec2(0.5);
+
+    // vec3 color = vec3(circle(fractSt,0.1, .05));
+    vec3 color = vec3(box(fractSt));
+
+    vec2 rotatedOrigSt = rotate2D(origSt, 0.0 * PI);
+
+    vec3 textureColorStep = texture2D( uTexture, vec2(rotatedOrigSt.x += lineStep , rotatedOrigSt.y)).rgb;
+    //vec3 textureColorStep = texture2D( uTexture, vec2(rotatedOrigSt.x , rotatedOrigSt.y)).rgb;
+    vec3 textureColorFucked = texture2D( uTexture, origSt).rgb;
+
     
+    // color = textureColor;
+    // vec3 fractTextureColor = texture2D( uTexture, fractSt ).rgb;
 
-    // st.x *= u_res.x/u_res.y;
+    // vec3 finalTextureColor = mix(fractTextureColor, textureColor, vec3(abs(cos(u_time * PI / 10.0))));
 
-    vec3 color = vec3(0.0);
+    // color *= mix(color, finalTextureColor, vec3(n));
 
-    // Cell positions
-    vec2 point[5];
-    point[0] = vec2(0.83,0.75);
-    point[1] = vec2(0.60 + abs(cos(u_time *PI)/10.0),0.07 + abs(sin(u_time *PI)/.8));
-    point[2] = vec2(0.28 + sin(u_time *PI)/2.0,0.64 + cos(u_time *PI/3.0));
-    point[3] =  vec2(0.31 + sin(u_time *PI)/1.5,0.26 + sin(u_time *PI/.5));
-    point[4] = vec2(abs(sin(u_time *PI)/1.0), abs(sin(u_time *PI)/1.0));
-    
-    float m_dist = 1.0;  // minimun distance
-
-    // Iterate through the points positions
-    for (int i = 0; i < 5; i++) {
-        float dist = distance(st, point[i]);
-        
-        // Keep the closer distance
-        m_dist = min(m_dist, dist);
-    }
-    
-    // Draw the min distance (distance field)
-    // color += m_dist * audio_high;
-
-    color += textureColor;
-
-    color *= hsb2rgb(vec3(1.0, .5, max(.7, .5)));
+    // color = textureColor;
+    color = mix(textureColor, textureColorStep, vec3(audio_high/8.0, audio_high/8.0, audio_high/8.0) );
+    // color *= mix(textureColorFucked, textureColor, vec3(n));
 
     
     gl_FragColor = vec4(color,1.0);

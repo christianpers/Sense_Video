@@ -3,9 +3,11 @@ export default class SceneClouds{
 	constructor(enableRenderCallback, callbackScope){
 
 		this.nrClouds = 1000;
-		this.totDepth = 2000;
+		this.totDepth = 4000;
 
 		this.scene = new THREE.Scene();
+
+		this.start_time = Date.now();
 
 		this.render = false;
 
@@ -13,8 +15,10 @@ export default class SceneClouds{
 
 		this.geometry = new THREE.Geometry();
 
-		// var jsonLoader = new THREE.JSONLoader();
-  //       jsonLoader.load( "assets/imports/test.js", this.onLoaded.bind(this) );
+		this.lastCubemapUpdate = 0;
+
+		var jsonLoader = new THREE.JSONLoader();
+        jsonLoader.load( "assets/imports/test.js", this.onLoaded.bind(this) );
 
 		this.texture = THREE.ImageUtils.loadTexture( 'assets/cloud10.png', null, () => enableRenderCallback.call(callbackScope) );
 		this.texture.magFilter = THREE.LinearFilter;
@@ -59,6 +63,50 @@ export default class SceneClouds{
 			// this.clouds.push(plane);
 
 		}
+
+		this.video = document.createElement( 'video' );
+		this.video.src = "assets/test.mp4";
+		this.video.load(); // must call after setting/changing source
+		this.video.play();
+		this.video.loop = true;
+		const videoImage = document.createElement( 'canvas' );
+		videoImage.width = 480;
+		videoImage.height = 480;
+
+		this.videoImageContext = videoImage.getContext( '2d' );
+		// background color if no video present
+		this.videoImageContext.fillStyle = '#000000';
+		this.videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+		this.videoTexture = new THREE.Texture( videoImage );
+		this.videoTexture.minFilter = THREE.LinearFilter;
+		this.videoTexture.magFilter = THREE.LinearFilter;
+
+		const resUniforms = {};
+		resUniforms.u_res = {value: new THREE.Vector2(400, 400)};
+
+		const textureUniforms = {};
+		textureUniforms.uTexture = {value: this.videoTexture};
+		
+		const uniformsObj = Object.assign({}, resUniforms, textureUniforms);
+
+		var material = new THREE.ShaderMaterial({
+			uniforms: uniformsObj,
+			vertexShader: require("../../shaders/noise.vert"),
+			fragmentShader: require("../../shaders/gif.frag")
+		});
+
+		// var plane = new THREE.PlaneBufferGeometry(400, 400);
+		var movieMaterial = new THREE.MeshBasicMaterial( { map: this.videoTexture, opacity: .5, transparent: true, side:THREE.DoubleSide } );
+		// movieMaterial.depthWrite = false
+		var movieGeometry = new THREE.PlaneGeometry( 200, 200, 1, 1 );
+
+		// var materialTest = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+		this.quad = new THREE.Mesh( movieGeometry, movieMaterial );
+		this.quad.position.y = 0;
+		this.quad.position.z = 1000;
+		this.scene.add( this.quad );
 	}
 
 	onLoaded(geometry, materials){
@@ -82,13 +130,15 @@ export default class SceneClouds{
 		
 		this.mesh = new THREE.Mesh( geometry, material );
 
-		this.mesh.position.z = this.totDepth - 10;
-		this.mesh.position.y = -50;
-		// this.mesh.scale.x = 2;
-		// this.mesh.scale.y = 2;
-		// this.mesh.scale.z = 2;
+		this.mesh.position.z = this.totDepth;
+		this.mesh.position.y = -55;
+		this.mesh.scale.x = 2;
+		this.mesh.scale.y = 2;
+		this.mesh.scale.z = 2;
 
 		this.scene.add(this.mesh);
+
+		this.mesh.visible = false;
 
 
 		// var plane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 200, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffff00, opacity: 0.25 } ) );
@@ -105,15 +155,33 @@ export default class SceneClouds{
 
 		this.rotation += .5;
 		this.mesh.rotation.y = (this.rotation + .02) * Math.PI / 180;
-		this.mesh.rotation.x = (this.rotation / 10) * Math.PI / 180;
+		// this.mesh.rotation.x = (this.rotation / 50) * Math.PI / 180;
 		// this.mesh.rotation.z = this.rotation+Math.random() * Math.PI / 180;
 
 		this.mesh.visible = false;
-		this.mesh.position.z = pos-50;
-		this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
-		this.cubeCamera.updateCubeMap(renderer, this.scene);
+		this.mesh.position.z = pos-70;
 
-		this.mesh.visible = true;
+		const now = Date.now();
+		const delta = now - this.lastCubemapUpdate;
+		if (delta > 1000) {
+			this.cubeCamera.position.copy( {x: 0, y: -40, z: pos} );
+			this.cubeCamera.updateCubeMap(renderer, this.scene);
+			
+			this.lastCubemapUpdate = now;
+		}
+
+		var reversePos = ( ( now - this.start_time ) * .3 ) % this.totDepth;
+		this.quad.position.z = reversePos;
+
+		if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
+			
+			this.videoImageContext.drawImage(this.video, 0, 0);
+			this.videoTexture.needsUpdate = true;
+			// this.quad.position.z = 1000;
+		}
+		
+
+		// this.mesh.visible = true;
 	}
 
 	renderTexture(renderer, camera, FBO){
