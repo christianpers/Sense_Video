@@ -43,7 +43,7 @@ export default class SceneCube{
 			depthWrite: false
 		});
 
-		var geometry = new THREE.BoxGeometry( 10000, 10000, 10000 );
+		var geometry = new THREE.CubeGeometry( 5000, 5000, 5000 );
         // var skybox = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
         // skybox.flipSided = true;
         var skybox = new THREE.Mesh( geometry, material );

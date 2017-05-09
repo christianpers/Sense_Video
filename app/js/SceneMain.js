@@ -42,6 +42,8 @@ export default class SceneMain {
 
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
+
+
 		this.FBO = new THREE.WebGLRenderTarget(
 							window.innerWidth,
 							window.innerHeight,
@@ -160,6 +162,9 @@ export default class SceneMain {
 		// this.renderer.setClearColor('#6fd271');
 		this.renderer.setClearColor( 0x000000, 0 );
 		this.container.appendChild( this.renderer.domElement );
+
+
+		this.controls = new THREE.OrbitControls( this.staticCamera, this.renderer.domElement );
 
 		this.currentTime = Date.now();
 
@@ -331,7 +336,7 @@ export default class SceneMain {
 
 		this.sceneNoise.update(audioData, sceneVals.grid);
 
-	
+		this.controls.update();
 	}
 
 	render() {
@@ -360,12 +365,13 @@ export default class SceneMain {
 
 		// this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
 
-		this.staticCamera.position.z = 7990;
+		this.staticCamera.position.y = 150;
+		this.staticCamera.position.z = 400;
 
 		// this.staticCamera.position.x = Math.sin(now / 10000) * 900;
   //       this.staticCamera.position.z = Math.cos(now / 10000) * 900;
 		const origin = new THREE.Vector3();
-		this.staticCamera.lookAt(origin);
+		this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
 		
