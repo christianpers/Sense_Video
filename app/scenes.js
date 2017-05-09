@@ -102,6 +102,16 @@ const sceneC = {
 	}
 }
 
-const scenes = [sceneA, sceneB, sceneC];
+const sceneD = {
+	title: 'Scene D',
+	grid: [1, 1],
+	boxOne: {
+		texture: 0.0,
+		scale: 1.0,
+		rotation: 0.0
+	}
+}
+
+const scenes = [sceneA, sceneB, sceneC, sceneD];
 
 export default scenes;

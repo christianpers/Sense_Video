@@ -8,6 +8,7 @@ import SceneTwitter from './scenes/SceneTwitter';
 import AudioPlayer from './framework/AudioPlayer';
 import SpectrumAnalyzer from './framework/SpectrumAnalyzer';
 import SceneGif from './scenes/SceneGif';
+import SceneCube from './scenes/SceneCube';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -105,13 +106,15 @@ export default class SceneMain {
 
 		this.sceneCloudsMesh = new SceneCloudsMesh(sceneVals.grid, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl);
 		this.sceneClouds = new SceneClouds(this.enableRender, this);
-		// this.sceneImport = new SceneImport(this.FBO);
+		this.sceneImport = new SceneImport(this.FBO);
 		this.sceneCloudsOverlay = new SceneCloudsOverlay(sceneVals.overlay, this.sceneSelector.initObj, this.FBO, this.FBOStill, this.FBOReverse, this.FBOGirl, this.FBOBg);
 
 		this.sceneTwitter = new SceneTwitter();
-		this.sceneNoise = new SceneNoise(this.FBO, this.FBOTwitter, this.sceneSelector.initObj);
+		this.sceneNoise = new SceneNoise(this.FBO, this.FBOReverse, this.sceneSelector.initObj);
 		this.sceneGif = new SceneGif();
 		this.start_time = Date.now();
+
+		this.sceneCubeTest = new SceneCube();
 
 		this.windowHalfX;
 		this.windowHalfY;
@@ -129,6 +132,10 @@ export default class SceneMain {
 		this.twitterCamera.position.set(0,150,400);
 		// this.twitterCamera.position.z = 0;
 		// this.twitterCamera.position.y = 0;
+
+		this.staticCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
+		// this.staticCamera.position.z = -2;
+		// this.camera.position.y = -220;
 
 		this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.camera.position.z = this.sceneClouds.totDepth;
@@ -324,25 +331,19 @@ export default class SceneMain {
 
 		this.sceneNoise.update(audioData, sceneVals.grid);
 
-		this.sceneGif.update();
-
+	
 	}
 
 	render() {
 
 		if (!this.doRender) return;
 
-
-
 		const now = Date.now();
 
 		var position = ( ( now - this.start_time ) * .05 ) % this.sceneClouds.totDepth;
 
 		this.camera.position.z = - position + this.sceneClouds.totDepth;
-		// if (this.currentSceneSettings.cameraRotation.cloudNormal.rotation){
-		// 	this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudNormal.axis] = this.normalRotation += this.currentSceneSettings.cameraRotation.cloudNormal.speed;
-		// }
-
+		
 		var reversePos = ( ( now - this.start_time ) * .08 ) % this.sceneClouds.totDepth;
 
 		var reversePos = reversePos;
@@ -350,35 +351,23 @@ export default class SceneMain {
 			reversePos = 0;
 		}
 		this.reverseCamera.position.z = reversePos;
-		// if (this.currentSceneSettings.cameraRotation.cloudReverse.rotation){
-		// 	this.camera.rotation[this.currentSceneSettings.cameraRotation.cloudReverse.axis] = this.reverseRotation += this.currentSceneSettings.cameraRotation.cloudReverse.speed;
-		// }
-
-		// if (!this.sceneImport.render) return;
-
-		// this.sceneClouds.renderTexture(this.renderer, this.camera, this.FBO);
-
-
+		
 		this.renderer.clear();
 		
-		this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
-		this.renderer.render( this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true );
-		this.renderer.render( this.sceneTwitter.scene, this.twitterCamera, this.FBOTwitter, true );
+		// this.renderer.render( this.sceneClouds.scene, this.camera, this.FBO, true );
+		// this.renderer.render( this.sceneClouds.scene, this.reverseCamera, this.FBOReverse, true );
 		// this.renderer.render( this.sceneImport.scene, this.importCamera, this.FBOGirl, true );
 
-		// if (!this.currentSceneSettings.renderOverlay){
-			// this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera );
-		// }
-		// else{
-		// 	this.renderer.render( this.sceneCloudsMesh.scene, this.orthoCamera, this.FBOBg, true );
-		// 	this.renderer.render( this.sceneCloudsOverlay.scene, this.orthoCamera );
-		// }
+		// this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
 
-		this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
+		this.staticCamera.position.z = 7990;
 
-		// this.renderer.render( this.sceneGif.scene, this.camera );
+		// this.staticCamera.position.x = Math.sin(now / 10000) * 900;
+  //       this.staticCamera.position.z = Math.cos(now / 10000) * 900;
+		const origin = new THREE.Vector3();
+		this.staticCamera.lookAt(origin);
+		this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-		// this.renderer.render( this.sceneClouds.scene, this.camera );
 		
 	}
 
