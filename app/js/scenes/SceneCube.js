@@ -36,18 +36,31 @@ export default class SceneCube{
 
 		const uniformsObj = Object.assign({}, textureUniforms);
 
+		// var material = new THREE.ShaderMaterial({
+		// 	uniforms: uniformsObj,
+		// 	vertexShader: require("../../shaders/cube.vert"),
+		// 	fragmentShader: require("../../shaders/cube.frag"),
+		// 	depthWrite: false
+		// });
+
+		// var geometry = new THREE.CubeGeometry( 50, 50, 50 );
+  //       // var skybox = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
+  //       // skybox.flipSided = true;
+  //       var skybox = new THREE.Mesh( geometry, material );
+
+  		// skybox
+		var shader = THREE.ShaderLib["cube"];
+		shader.uniforms["tCube"].value = cubemap;
 		var material = new THREE.ShaderMaterial({
-			uniforms: uniformsObj,
-			vertexShader: require("../../shaders/cube.vert"),
-			fragmentShader: require("../../shaders/cube.frag"),
-			depthWrite: false
+		  fragmentShader: shader.fragmentShader,
+		  vertexShader: shader.vertexShader,
+		  uniforms: shader.uniforms,
+		  depthWrite: false,
+		  side: THREE.BackSide
 		});
 
-		var geometry = new THREE.CubeGeometry( 5000, 5000, 5000 );
-        // var skybox = new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
-        // skybox.flipSided = true;
-        var skybox = new THREE.Mesh( geometry, material );
-
+		var skybox = new THREE.Mesh(new THREE.CubeGeometry(5000, 5000, 5000), material);
+		
 		this.scene.add(skybox);
 
 		

@@ -135,9 +135,9 @@ export default class SceneMain {
 		// this.twitterCamera.position.z = 0;
 		// this.twitterCamera.position.y = 0;
 
-		this.staticCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
-		// this.staticCamera.position.z = -2;
-		// this.camera.position.y = -220;
+		this.staticCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 6000 );
+		this.staticCamera.position.set(0, 500, 1000);
+    	this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 
 		this.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.camera.position.z = this.sceneClouds.totDepth;
@@ -365,12 +365,12 @@ export default class SceneMain {
 
 		// this.renderer.render( this.sceneNoise.scene, this.orthoCamera );
 
-		this.staticCamera.position.y = 150;
-		this.staticCamera.position.z = 400;
+		// this.staticCamera.position.y = 150;
+		// this.staticCamera.position.z = 0;
 
 		// this.staticCamera.position.x = Math.sin(now / 10000) * 900;
   //       this.staticCamera.position.z = Math.cos(now / 10000) * 900;
-		const origin = new THREE.Vector3();
+		// const origin = new THREE.Vector3();
 		this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
