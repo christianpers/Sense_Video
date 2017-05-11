@@ -9,6 +9,7 @@ import AudioPlayer from './framework/AudioPlayer';
 import SpectrumAnalyzer from './framework/SpectrumAnalyzer';
 import SceneGif from './scenes/SceneGif';
 import SceneCube from './scenes/SceneCube';
+import SceneSphere from './scenes/SceneSphere';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -117,6 +118,9 @@ export default class SceneMain {
 		this.start_time = Date.now();
 
 		this.sceneCubeTest = new SceneCube();
+
+		this.sceneSphere = new SceneSphere();
+
 
 		this.windowHalfX;
 		this.windowHalfY;
@@ -336,6 +340,10 @@ export default class SceneMain {
 
 		this.sceneNoise.update(audioData, sceneVals.grid);
 
+		// var timer = - new Date().getTime() * 0.0005; 
+		// this.staticCamera.position.x = 200 * Math.cos(timer);
+		// this.staticCamera.position.y = 200 * Math.sin(timer);
+
 		this.controls.update();
 	}
 
@@ -372,7 +380,10 @@ export default class SceneMain {
   //       this.staticCamera.position.z = Math.cos(now / 10000) * 900;
 		// const origin = new THREE.Vector3();
 		// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
-		this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
+		// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
+
+
+		this.renderer.render( this.sceneSphere.scene, this.staticCamera );
 
 		
 	}
