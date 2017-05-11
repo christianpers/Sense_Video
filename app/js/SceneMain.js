@@ -371,7 +371,7 @@ export default class SceneMain {
 		// this.staticCamera.position.x = Math.sin(now / 10000) * 900;
   //       this.staticCamera.position.z = Math.cos(now / 10000) * 900;
 		// const origin = new THREE.Vector3();
-		this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
+		// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
 		

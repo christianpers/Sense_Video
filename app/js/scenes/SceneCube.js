@@ -63,6 +63,26 @@ export default class SceneCube{
 		
 		this.scene.add(skybox);
 
+
+
+		// const uniformsObj = {};
+
+		var materialBase = new THREE.ShaderMaterial({
+			uniforms: uniformsObj,
+			vertexShader: require("../../shaders/noise.vert"),
+			fragmentShader: require("../../shaders/base.frag")
+		});
+
+		material.depthWrite = false;
+
+		var plane = new THREE.PlaneBufferGeometry(window.innerWidth / 2, window.innerHeight / 2);
+
+		this.quad = new THREE.Mesh( plane, materialBase );
+		// this.quad.position.x = 300;
+		this.quad.position.y = -480;
+		this.quad.position.z = -4000;
+		this.scene.add( this.quad );
+
 		
 
 
