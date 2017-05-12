@@ -11,26 +11,35 @@ export default class SceneSphere{
        
 
         // wrap it up into the object that we need
-        // var texture = THREE.ImageUtils.loadTexture('assets/test.jpg');
+        var texture = THREE.ImageUtils.loadTexture('assets/test2.jpg');
 
-    
+    	
 
-  //       const textureUniforms = {};
-		// textureUniforms.texture = {value: texture};
+        const textureUniforms = {};
+		textureUniforms.texture = {value: texture};
 
-		// const resUniforms = {};
-		// resUniforms.u_res = {value: new THREE.Vector2(window.innerWidth, window.innerHeight)};
+		const resUniforms = {};
+		resUniforms.u_res = {value: new THREE.Vector2(window.innerWidth, window.innerHeight)};
 		// // textureUniforms.uTextureReverse = {value: FBOReverse.texture};
 		// // textureUniforms.uTextureGirl = {value: FBOGirl.texture};
 
-		// const uniformsObj = Object.assign({}, textureUniforms, resUniforms);
+		const uniformsObj = Object.assign({}, textureUniforms, resUniforms);
 
-		var ambientLight = new THREE.AmbientLight(0x333333);
-		this.scene.add(ambientLight);
+		// var ambientLight = new THREE.AmbientLight(0x333333);
+		// this.scene.add(ambientLight);
 
 		var geometry = new THREE.SphereGeometry(2000, 120, 80);
-		var material = new THREE.MeshBasicMaterial();
-		material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
+		// var material = new THREE.MeshBasicMaterial();
+		// material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
+		// material.side = THREE.BackSide;
+
+		
+		var material = new THREE.ShaderMaterial({
+			uniforms: uniformsObj,
+			vertexShader: require("../../shaders/noise.vert"),
+			fragmentShader: require("../../shaders/base.frag")
+		});
+
 		material.side = THREE.BackSide;
 		var skydome = new THREE.Mesh(geometry, material);
 
