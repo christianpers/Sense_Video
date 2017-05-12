@@ -382,7 +382,7 @@ export default class SceneMain {
 		// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-
+		// debugger;
 		this.renderer.render( this.sceneSphere.scene, this.staticCamera );
 
 		
