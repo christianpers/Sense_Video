@@ -739,14 +739,14 @@
 
 			this.container.style.opacity = 1;
 
-			this.createBgCanvas();
+			// this.createBgCanvas();
 
 			this.twitterCamera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 3000);
 			this.twitterCamera.position.set(0, 150, 400);
 			// this.twitterCamera.position.z = 0;
 			// this.twitterCamera.position.y = 0;
 
-			this.staticCamera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 6000);
+			this.staticCamera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 1, 6000);
 			this.staticCamera.position.set(0, 500, 1000);
 			this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 
@@ -764,17 +764,18 @@
 
 			this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-			this.renderer = new THREE.WebGLRenderer({ opacity: .06, antialias: false, alpha: true });
+			this.renderer = new THREE.WebGLRenderer({ opacity: 1, antialias: true, alpha: true });
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 			// this.renderer.autoClear = false;
 			// this.renderer.setClearColorHex( 0x000000, 1 );
 			// this.renderer.setClearColor( '#f644ac' );
-			this.renderer.sortObjects = false;
+			// this.renderer.sortObjects = false;
 			// this.renderer.setClearColor('#6fd271');
-			this.renderer.setClearColor(0x000000, 0);
+			this.renderer.setClearColor(0x000000, 1);
 			this.container.appendChild(this.renderer.domElement);
 
 			this.controls = new THREE.OrbitControls(this.staticCamera, this.renderer.domElement);
+			this.controls.enableZoom = false;
 
 			this.currentTime = Date.now();
 		}
@@ -946,7 +947,7 @@
 				// var timer = - new Date().getTime() * 0.0005; 
 				// this.staticCamera.position.x = 200 * Math.cos(timer);
 				// this.staticCamera.position.y = 200 * Math.sin(timer);
-
+				this.sceneSphere.update();
 				this.controls.update();
 			}
 		}, {
@@ -986,7 +987,7 @@
 				// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 				// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-
+				// debugger;
 				this.renderer.render(this.sceneSphere.scene, this.staticCamera);
 			}
 		}, {
@@ -2086,7 +2087,7 @@
 /* 18 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nvoid main() {\n\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
+	module.exports = "#define GLSLIFY 1\nvarying vec3 pos;\nvoid main() {\n\n\tpos = position;\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}"
 
 /***/ },
 /* 19 */
@@ -3030,13 +3031,13 @@
 /* 26 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nvoid main() {\n\n\tgl_FragColor = vec4(1.0, .4, 1.0, 1.0);\n\n}\n\n"
+	module.exports = "#define GLSLIFY 1\nuniform vec2 u_res;\n\nuniform sampler2D texture_one;\nuniform sampler2D texture_two;\nuniform sampler2D texture_three;\n\nuniform float u_time;\n\nvarying vec3 pos;\n\nvec2 random2( vec2 p ) {\n    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);\n}\n\n\nvoid main() {\n\n\tvec3 pos_norm = normalize(pos);\n\n\t// float s = .2;\n\t// float t = .2;\n\t// float r = 2000.0;\n\n\t// float x = r * cos(s) * sin(t);\n\t// float y = r * sin(s) * sin(t);\n\t// float z = r * cos(t);\n\n\n\tvec3 targetPoints[4];\n\n\ttargetPoints[0] = vec3(10.0, 100.0, 200.0);\n\ttargetPoints[1] = vec3(100.0, 1000.0, 10.0);\n\ttargetPoints[2] = vec3(1.0, 10.0, 1000.0);\n\ttargetPoints[3] = vec3(100.0, 300.0, 400.0);\n\n\n\t// vec3 testPoint = vec3(10.0, 10.0, 200.0);\n\n\t// vec3 testPointNorm = normalize(testPoint);\n\n\t// vec3 point = vec3(x, y, z);\n\n    vec2 coord = vec2(((atan(pos_norm.z, pos_norm.x) + .0001) / 3.14159265 + 1.0) * 0.5, asin(pos_norm.y) / 3.14159265 + 0.5 );\n\n    // Scale \n    vec2 scaledCoord = coord * 20.0;\n\n    vec3 voronoiOne = vec3(.0);\n    vec3 voronoiTwo = vec3(.0);\n\n\n    vec2 i_st = floor(scaledCoord);\n    vec2 f_st = fract(scaledCoord);\n\n    // vec2 point = random2(i_st);\n    // vec3 spherePoint = vec3(point, 2000.0);\n    // vec3 normSpherePoint = normalize(spherePoint);\n    // vec2 sphereCoord = vec2(((atan(normSpherePoint.z, normSpherePoint.x) + .0001) / 3.14159265 + 1.0) * 0.5, asin(normSpherePoint.y) / 3.14159265 + 0.5 );\n\n\n    float m_dist = 5.;  // minimun distance\n    vec2 m_point;        // minimum point\n    \n    for (int j=-1; j<=1; j++ ) {\n        for (int i=-1; i<=1; i++ ) {\n            vec2 neighbor = vec2(float(i),float(j));\n            vec2 point = random2(i_st + neighbor);\n            // vec3 spherePoint = vec3(point, 200.0);\n            point = 0.5 + 0.5*sin((u_time * 3.0) + 6.2831*point);\n            vec2 diff = neighbor + point - f_st;\n            float dist = length(diff);\n\n            if( dist < m_dist ) {\n                m_dist = dist;\n                m_point = point;\n            }\n        }\n    }\n\n    for (int j=-1; j<=1; j++ ) {\n        for (int i=-1; i<=1; i++ ) {\n            vec2 neighbor = vec2(float(i),float(j));\n            vec2 point = random2(i_st * 1.05 + neighbor);\n            // vec3 spherePoint = vec3(point, 200.0);\n            point = 0.5 + 0.5*sin((u_time * 3.0) + 6.2831*point);\n            vec2 diff = neighbor + point - f_st;\n            float dist = length(diff);\n\n            if( dist < m_dist ) {\n                m_dist = dist;\n                m_point = point;\n            }\n        }\n    }\n\n    // Assign a color using the closest point position\n    voronoiOne += dot(m_point, vec2(.0, 4.0));\n    voronoiTwo += dot(m_point, vec2(.0, 4.0));\n\n\n    // float m_dist = 1.;  // minimun distance\n\n    // Iterate through the points positions\n    // for (int i = 0; i < 4; i++) {\n\n    // \tvec3 targetPointNorm = normalize(targetPoints[i]);\n\n    // \tvec2 spherePoint = vec2(((atan(targetPointNorm.z, targetPointNorm.x) + .0001) / 3.14159265 + 1.0) * 0.5, asin(targetPointNorm.y) / 3.14159265 + 0.5 );\n\n    // \tfloat dist = distance(coord, spherePoint);\n    \n    // \tm_dist = min(m_dist, dist);\n    // }\n\n    // vec3 color = vec3(.0);\n\n    // color += m_dist;\n\n\tvec4 textureColorOne = texture2D( texture_one, coord ).rgba;\n\tvec4 textureColorTwo = texture2D( texture_two, coord ).rgba;\n\tvec4 textureColorThree = texture2D( texture_three, coord ).rgba;\n\n\t// vec3 invertedColor = vec3(1.0 - color.r, 1.0 - color.g, 1.0 - color.b);\n\n\tvec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb/2.0, 1.0), clamp(1.0 - voronoiOne.r, 0.0, 1.0));\n\tvec4 finalColorTwo = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorThree.rgb, 1.0), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));\n\n\tgl_FragColor = finalColorTwo + finalColorOne;\n\t// gl_FragColor = vec4(voronoiTwo + voronoiOne, 1.0);\n\n\t// gl_FragColor = vec4(1.0 - color.r , 1.0 - color.g, 1.0 - color.b, 1.0);\n\n}\n\n"
 
 /***/ },
 /* 27 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -3056,37 +3057,59 @@
 
 			// urls of the images,
 			// one per half axis
-
+			this.timestamp = Date.now();
 
 			// wrap it up into the object that we need
-			// var texture = THREE.ImageUtils.loadTexture('assets/test.jpg');
+			var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
+			var layer2 = THREE.ImageUtils.loadTexture('assets/newtest/layer2.jpg');
+			var layer3 = THREE.ImageUtils.loadTexture('assets/newtest/layer3.jpg');
 
+			layer1.format = THREE.RGBAFormat;
+			layer2.format = THREE.RGBAFormat;
+			layer3.format = THREE.RGBAFormat;
 
-			//       const textureUniforms = {};
-			// textureUniforms.texture = {value: texture};
+			var textureUniforms = {};
+			textureUniforms.texture_one = { value: layer1 };
+			textureUniforms.texture_two = { value: layer2 };
+			textureUniforms.texture_three = { value: layer3 };
 
-			// const resUniforms = {};
-			// resUniforms.u_res = {value: new THREE.Vector2(window.innerWidth, window.innerHeight)};
+			var resUniforms = {};
+			resUniforms.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
 			// // textureUniforms.uTextureReverse = {value: FBOReverse.texture};
 			// // textureUniforms.uTextureGirl = {value: FBOGirl.texture};
+			resUniforms.u_time = { value: Date.now() - this.timestamp };
 
-			// const uniformsObj = Object.assign({}, textureUniforms, resUniforms);
+			var uniformsObj = Object.assign({}, textureUniforms, resUniforms);
 
-			var ambientLight = new THREE.AmbientLight(0x333333);
-			this.scene.add(ambientLight);
+			// var ambientLight = new THREE.AmbientLight(0x333333);
+			// this.scene.add(ambientLight);
 
 			var geometry = new THREE.SphereGeometry(2000, 120, 80);
-			var material = new THREE.MeshBasicMaterial();
-			material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
-			material.side = THREE.BackSide;
-			var skydome = new THREE.Mesh(geometry, material);
+			// var material = new THREE.MeshBasicMaterial();
+			// material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
+			// material.side = THREE.BackSide;
 
-			this.scene.add(skydome);
+
+			var material = new THREE.ShaderMaterial({
+				uniforms: uniformsObj,
+				vertexShader: __webpack_require__(18),
+				fragmentShader: __webpack_require__(26),
+				transparent: true,
+				blending: THREE.AdditiveBlending
+			});
+
+			material.side = THREE.BackSide;
+			this.skydome = new THREE.Mesh(geometry, material);
+
+			this.scene.add(this.skydome);
 		}
 
 		_createClass(SceneSphere, [{
-			key: "update",
-			value: function update(renderer, pos) {}
+			key: 'update',
+			value: function update(renderer, pos) {
+
+				this.skydome.material.uniforms.u_time.value = (Date.now() - this.timestamp) / 10000;
+			}
 		}]);
 
 		return SceneSphere;

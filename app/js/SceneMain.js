@@ -132,14 +132,14 @@ export default class SceneMain {
 
 		this.container.style.opacity = 1;
 
-		this.createBgCanvas();
+		// this.createBgCanvas();
 
 		this.twitterCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 3000 );
 		this.twitterCamera.position.set(0,150,400);
 		// this.twitterCamera.position.z = 0;
 		// this.twitterCamera.position.y = 0;
 
-		this.staticCamera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 6000 );
+		this.staticCamera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 1, 6000 );
 		this.staticCamera.position.set(0, 500, 1000);
     	this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 
@@ -157,18 +157,19 @@ export default class SceneMain {
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-		this.renderer = new THREE.WebGLRenderer( { opacity: .06, antialias: false, alpha: true } );
+		this.renderer = new THREE.WebGLRenderer( { opacity: 1, antialias: true, alpha: true } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		// this.renderer.autoClear = false;
 		// this.renderer.setClearColorHex( 0x000000, 1 );
 		// this.renderer.setClearColor( '#f644ac' );
-		this.renderer.sortObjects = false;
+		// this.renderer.sortObjects = false;
 		// this.renderer.setClearColor('#6fd271');
-		this.renderer.setClearColor( 0x000000, 0 );
+		this.renderer.setClearColor( 0x000000, 1 );
 		this.container.appendChild( this.renderer.domElement );
 
 
 		this.controls = new THREE.OrbitControls( this.staticCamera, this.renderer.domElement );
+		this.controls.enableZoom = false;
 
 		this.currentTime = Date.now();
 
@@ -343,7 +344,7 @@ export default class SceneMain {
 		// var timer = - new Date().getTime() * 0.0005; 
 		// this.staticCamera.position.x = 200 * Math.cos(timer);
 		// this.staticCamera.position.y = 200 * Math.sin(timer);
-
+		this.sceneSphere.update();
 		this.controls.update();
 	}
 
