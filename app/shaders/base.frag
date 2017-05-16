@@ -3,6 +3,7 @@ uniform vec2 u_res;
 uniform sampler2D texture_one;
 uniform sampler2D texture_two;
 uniform sampler2D texture_three;
+uniform sampler2D texture_tubes;
 
 uniform float voronoiOneSize;
 uniform float voronoiTwoSize;
@@ -129,16 +130,25 @@ void main() {
 
     // color += m_dist;
 
+    float midNormalizedX = (.5 - abs((f_st_one.x - .5))) * 2.0; 
+    float yCoord = coord.y + sin(u_time * 2.0) * (midNormalizedX / 120.0);
+
+    float midNormalizedY = (.5 - abs((f_st_one.y - .5))) * 1.5; 
+    float xCoord = coord.x + sin(u_time * 5.0) * (midNormalizedY / 120.0);
+
+
+
 	vec4 textureColorOne = texture2D( texture_one, coord ).rgba;
 	vec4 textureColorTwo = texture2D( texture_two, coord ).rgba;
 	vec4 textureColorThree = texture2D( texture_three, coord ).rgba;
+	vec4 textureTubes = texture2D( texture_tubes, vec2(xCoord, yCoord) ).rgba;
 
 	// vec3 invertedColor = vec3(1.0 - color.r, 1.0 - color.g, 1.0 - color.b);
 
-	vec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb, 1.0), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
-	vec4 finalColorTwo = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorThree.rgb, 1.0), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));
+	vec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb, .5), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
+	vec4 finalColorTwo = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorThree.rgb, .5), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));
 
-	gl_FragColor = finalColorTwo + finalColorOne;
+	gl_FragColor = vec4(finalColorTwo.rgb/2.0 + finalColorOne.rgb/2.0, 1.0) + textureTubes;
 	// gl_FragColor = vec4(voronoiTwo + voronoiOne, 1.0);
 
 	// gl_FragColor = vec4(1.0 - color.r , 1.0 - color.g, 1.0 - color.b, 1.0);

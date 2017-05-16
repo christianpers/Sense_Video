@@ -16,10 +16,12 @@ export default class SceneSphere{
         var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
         var layer2 = THREE.ImageUtils.loadTexture('assets/newtest/layer2.jpg');
         var layer3 = THREE.ImageUtils.loadTexture('assets/newtest/layer3.jpg');
+        var tubes = THREE.ImageUtils.loadTexture('assets/newtest/tubes.png');
 
         layer1.format = THREE.RGBAFormat;
         layer2.format = THREE.RGBAFormat;
         layer3.format = THREE.RGBAFormat;
+        tubes.format = THREE.RGBAFormat;
 
     	
 
@@ -27,6 +29,7 @@ export default class SceneSphere{
 		textureUniforms.texture_one = {value: layer1};
 		textureUniforms.texture_two = {value: layer2};
 		textureUniforms.texture_three = {value: layer3};
+		textureUniforms.texture_tubes = {value: tubes};
 
 		const resUniforms = {};
 		resUniforms.u_res = {value: new THREE.Vector2(window.innerWidth, window.innerHeight)};
@@ -55,8 +58,8 @@ export default class SceneSphere{
 			uniforms: uniformsObj,
 			vertexShader: require("../../shaders/noise.vert"),
 			fragmentShader: require("../../shaders/base.frag"),
-			transparent: true,
-			blending: THREE.AdditiveBlending
+			// transparent: true,
+			// blending: THREE.AdditiveBlending
 		});
 
 		material.side = THREE.BackSide;

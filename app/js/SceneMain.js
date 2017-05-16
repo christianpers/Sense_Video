@@ -44,12 +44,12 @@ export default class SceneMain {
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
 		const SceneBaseVals = function(){
-			this.voronoiOneSize = 30;
-			this.voronoiTwoSize = 30;
+			this.voronoiOneSize = 10;
+			this.voronoiTwoSize = 10;
 			// this.voronoiOneOffset = 1;
 			// this.voronoiTwoOffset = 1;
 			this.voronoiOneSpeed = 3.0;
-			this.voronoiTwoSpeed = 3.0;
+			this.voronoiTwoSpeed = 3.42;
 			// this.bOffsetMultiplier = 0.01;
 			// this.xFract = 1.0;
 			// this.yFract = 8.0;
@@ -187,7 +187,7 @@ export default class SceneMain {
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-		this.renderer = new THREE.WebGLRenderer( { opacity: 1, antialias: true, alpha: true } );
+		this.renderer = new THREE.WebGLRenderer( { opacity: 1, antialias: false, alpha: false } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		// this.renderer.autoClear = false;
 		// this.renderer.setClearColorHex( 0x000000, 1 );
