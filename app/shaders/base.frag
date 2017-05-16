@@ -4,6 +4,13 @@ uniform sampler2D texture_one;
 uniform sampler2D texture_two;
 uniform sampler2D texture_three;
 
+uniform float voronoiOneSize;
+uniform float voronoiTwoSize;
+uniform float voronoiOneOffset;
+uniform float voronoiTwoOffset;
+uniform float voronoiOneSpeed;
+uniform float voronoiTwoSpeed;
+
 uniform float u_time;
 
 varying vec3 pos;
@@ -43,14 +50,18 @@ void main() {
     vec2 coord = vec2(((atan(pos_norm.z, pos_norm.x) + .0001) / 3.14159265 + 1.0) * 0.5, asin(pos_norm.y) / 3.14159265 + 0.5 );
 
     // Scale 
-    vec2 scaledCoord = coord * 20.0;
+    vec2 scaledCoordOne = coord * voronoiOneSize;
+    vec2 scaledCoordTwo = coord * voronoiTwoSize;
 
     vec3 voronoiOne = vec3(.0);
     vec3 voronoiTwo = vec3(.0);
 
 
-    vec2 i_st = floor(scaledCoord);
-    vec2 f_st = fract(scaledCoord);
+    vec2 i_st_one = floor(scaledCoordOne);
+    vec2 f_st_one = fract(scaledCoordOne);
+
+    vec2 i_st_two = floor(scaledCoordTwo);
+    vec2 f_st_two = fract(scaledCoordTwo);
 
     // vec2 point = random2(i_st);
     // vec3 spherePoint = vec3(point, 2000.0);
@@ -59,15 +70,15 @@ void main() {
 
 
     float m_dist = 5.;  // minimun distance
-    vec2 m_point;        // minimum point
+    vec2 m_point;
     
     for (int j=-1; j<=1; j++ ) {
         for (int i=-1; i<=1; i++ ) {
             vec2 neighbor = vec2(float(i),float(j));
-            vec2 point = random2(i_st + neighbor);
+            vec2 point = random2(i_st_one + neighbor);
             // vec3 spherePoint = vec3(point, 200.0);
-            point = 0.5 + 0.5*sin((u_time * 3.0) + 6.2831*point);
-            vec2 diff = neighbor + point - f_st;
+            point = 0.5 + 0.5*sin((u_time * voronoiOneSpeed) + 6.2831*point);
+            vec2 diff = neighbor + point - f_st_one;
             float dist = length(diff);
 
             if( dist < m_dist ) {
@@ -77,13 +88,15 @@ void main() {
         }
     }
 
+    voronoiOne += dot(m_point, vec2(.0, 4.0));
+
     for (int j=-1; j<=1; j++ ) {
         for (int i=-1; i<=1; i++ ) {
             vec2 neighbor = vec2(float(i),float(j));
-            vec2 point = random2(i_st * 1.05 + neighbor);
+            vec2 point = random2(i_st_two + neighbor);
             // vec3 spherePoint = vec3(point, 200.0);
-            point = 0.5 + 0.5*sin((u_time * 3.0) + 6.2831*point);
-            vec2 diff = neighbor + point - f_st;
+            point = 0.5 + 0.5*sin((u_time * voronoiTwoSpeed) + 6.2831*point);
+            vec2 diff = neighbor + point - f_st_two;
             float dist = length(diff);
 
             if( dist < m_dist ) {
@@ -94,7 +107,7 @@ void main() {
     }
 
     // Assign a color using the closest point position
-    voronoiOne += dot(m_point, vec2(.0, 4.0));
+    
     voronoiTwo += dot(m_point, vec2(.0, 4.0));
 
 
@@ -122,7 +135,7 @@ void main() {
 
 	// vec3 invertedColor = vec3(1.0 - color.r, 1.0 - color.g, 1.0 - color.b);
 
-	vec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb/2.0, 1.0), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
+	vec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb, 1.0), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
 	vec4 finalColorTwo = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorThree.rgb, 1.0), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));
 
 	gl_FragColor = finalColorTwo + finalColorOne;

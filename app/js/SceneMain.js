@@ -43,6 +43,36 @@ export default class SceneMain {
 
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
+		const SceneBaseVals = function(){
+			this.voronoiOneSize = 30;
+			this.voronoiTwoSize = 30;
+			// this.voronoiOneOffset = 1;
+			// this.voronoiTwoOffset = 1;
+			this.voronoiOneSpeed = 3.0;
+			this.voronoiTwoSpeed = 3.0;
+			// this.bOffsetMultiplier = 0.01;
+			// this.xFract = 1.0;
+			// this.yFract = 8.0;
+			// this.useYFract = true;
+		};
+
+		this.sceneBaseGui = new SceneBaseVals();
+
+		this.gui = new dat.GUI();
+
+		this.gui.add(this.sceneBaseGui, 'voronoiOneSize', 10.0, 40.0).step(1);
+		this.gui.add(this.sceneBaseGui, 'voronoiTwoSize', 10.0, 40.0).step(1);
+		// this.gui.add(this.sceneBaseGui, 'voronoiOneOffset', 0.1, 4.0).step(.001);
+		// this.gui.add(this.sceneBaseGui, 'voronoiTwoOffset', 0.1, 4.0).step(.001);
+		this.gui.add(this.sceneBaseGui, 'voronoiOneSpeed', 1.0, 10.0).step(.01);
+		this.gui.add(this.sceneBaseGui, 'voronoiTwoSpeed', 1.0, 10.0).step(.01);
+
+		// this.gui.add(this.sceneBaseGui, 'gOffsetMultiplier', 0.0, 1.0).step(.00001);
+		// this.gui.add(this.sceneBaseGui, 'bOffsetMultiplier', 0.0, 1.0).step(.00001);
+		// this.gui.add(this.sceneBaseGui, 'xFract', 1.0, 20.0).step(1.0);
+		// this.gui.add(this.sceneBaseGui, 'yFract', 1.0, 20.0).step(1.0);
+		// this.gui.add(this.sceneBaseGui, 'useYFract');
+
 
 
 		this.FBO = new THREE.WebGLRenderTarget(
@@ -119,7 +149,7 @@ export default class SceneMain {
 
 		this.sceneCubeTest = new SceneCube();
 
-		this.sceneSphere = new SceneSphere();
+		this.sceneSphere = new SceneSphere(this.sceneBaseGui);
 
 
 		this.windowHalfX;

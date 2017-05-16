@@ -1,6 +1,6 @@
 export default class SceneSphere{
 	
-	constructor(){
+	constructor(gui){
 
 		this.scene = new THREE.Scene();
 
@@ -9,6 +9,8 @@ export default class SceneSphere{
 		 // urls of the images,
         // one per half axis
        	this.timestamp = Date.now();
+
+       	this.gui = gui;
 
         // wrap it up into the object that we need
         var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
@@ -32,7 +34,13 @@ export default class SceneSphere{
 		// // textureUniforms.uTextureGirl = {value: FBOGirl.texture};
 		resUniforms.u_time = {value: Date.now() - this.timestamp};
 
-		const uniformsObj = Object.assign({}, textureUniforms, resUniforms);
+		const interactiveUniforms = {};
+
+		for (const key in this.gui) {
+			interactiveUniforms[key] = {value: this.gui[key]};
+		}
+
+		const uniformsObj = Object.assign({}, textureUniforms, resUniforms, interactiveUniforms);
 
 		// var ambientLight = new THREE.AmbientLight(0x333333);
 		// this.scene.add(ambientLight);
@@ -62,6 +70,10 @@ export default class SceneSphere{
 	update(renderer, pos){
 
 		this.skydome.material.uniforms.u_time.value = (Date.now() - this.timestamp) / 10000;
+
+		for (const key in this.gui) {
+			this.skydome.material.uniforms[key].value = this.gui[key];
+		}
 		
 	}
 
