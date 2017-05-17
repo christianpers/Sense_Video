@@ -10,6 +10,7 @@ import SpectrumAnalyzer from './framework/SpectrumAnalyzer';
 import SceneGif from './scenes/SceneGif';
 import SceneCube from './scenes/SceneCube';
 import SceneSphere from './scenes/SceneSphere';
+import SceneRefract from './scenes/SceneRefract';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -149,7 +150,8 @@ export default class SceneMain {
 
 		this.sceneCubeTest = new SceneCube();
 
-		this.sceneSphere = new SceneSphere(this.sceneBaseGui);
+		this.sceneSphere = new SceneSphere(this.sceneBaseGui, this.FBO);
+		this.sceneRefract = new SceneRefract();
 
 
 		this.windowHalfX;
@@ -413,7 +415,8 @@ export default class SceneMain {
 		// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-		// debugger;
+		this.renderer.render( this.sceneRefract.scene, this.orthoCamera, this.FBO, true );
+
 		this.renderer.render( this.sceneSphere.scene, this.staticCamera );
 
 		

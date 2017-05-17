@@ -145,10 +145,11 @@ void main() {
 
 	// vec3 invertedColor = vec3(1.0 - color.r, 1.0 - color.g, 1.0 - color.b);
 
-	vec4 finalColorOne = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorTwo.rgb, .5), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
-	vec4 finalColorTwo = mix(vec4(textureColorOne.rgb/2.0, 1.0), vec4(textureColorThree.rgb, .5), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));
+	vec4 finalColorOne = mix(vec4(textureColorOne.rgb, 1.0), vec4(textureColorTwo.rgb, 1.0), clamp(1.0 - voronoiOne.r, 0.0, 1.0));
+	vec4 finalColorTwo = mix(vec4(textureColorOne.rgb, 1.0), vec4(textureColorThree.rgb, 1.0), clamp(1.0 - voronoiTwo.r, 0.0, 1.0));
 
-	gl_FragColor = vec4(finalColorTwo.rgb/2.0 + finalColorOne.rgb/2.0, 1.0) + textureTubes;
+    gl_FragColor = mix(mix(finalColorTwo, finalColorOne, finalColorOne.a - .5), textureTubes, textureTubes.a);
+	// gl_FragColor = vec4(finalColorTwo.rgb/2.0 + finalColorOne.rgb/2.0, 1.0) + textureTubes;
 	// gl_FragColor = vec4(voronoiTwo + voronoiOne, 1.0);
 
 	// gl_FragColor = vec4(1.0 - color.r , 1.0 - color.g, 1.0 - color.b, 1.0);
