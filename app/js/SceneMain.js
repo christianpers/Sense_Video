@@ -55,6 +55,9 @@ export default class SceneMain {
 			// this.xFract = 1.0;
 			// this.yFract = 8.0;
 			// this.useYFract = true;
+			this.refractX = 2.0;
+			this.refractY = 2.0;
+			this.refractFreq = .115;
 		};
 
 		this.sceneBaseGui = new SceneBaseVals();
@@ -67,6 +70,12 @@ export default class SceneMain {
 		// this.gui.add(this.sceneBaseGui, 'voronoiTwoOffset', 0.1, 4.0).step(.001);
 		this.gui.add(this.sceneBaseGui, 'voronoiOneSpeed', 1.0, 10.0).step(.01);
 		this.gui.add(this.sceneBaseGui, 'voronoiTwoSpeed', 1.0, 10.0).step(.01);
+
+		this.gui.add(this.sceneBaseGui, 'refractX', 1.0, 20.0).step(.1);
+
+		this.gui.add(this.sceneBaseGui, 'refractY', 1.0, 20.0).step(.1);
+
+		this.gui.add(this.sceneBaseGui, 'refractFreq', 0.0, 2.0).step(.0001);
 
 		// this.gui.add(this.sceneBaseGui, 'gOffsetMultiplier', 0.0, 1.0).step(.00001);
 		// this.gui.add(this.sceneBaseGui, 'bOffsetMultiplier', 0.0, 1.0).step(.00001);
@@ -151,7 +160,7 @@ export default class SceneMain {
 		this.sceneCubeTest = new SceneCube();
 
 		this.sceneSphere = new SceneSphere(this.sceneBaseGui, this.FBO);
-		this.sceneRefract = new SceneRefract();
+		this.sceneRefract = new SceneRefract(this.sceneBaseGui);
 
 
 		this.windowHalfX;
@@ -377,6 +386,7 @@ export default class SceneMain {
 		// this.staticCamera.position.x = 200 * Math.cos(timer);
 		// this.staticCamera.position.y = 200 * Math.sin(timer);
 		this.sceneSphere.update();
+		this.sceneRefract.update();
 		this.controls.update();
 	}
 

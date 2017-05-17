@@ -1,12 +1,14 @@
 export default class SceneRefract{
 
-	constructor(){
+	constructor(gui){
 
 		this.scene = new THREE.Scene();
 
 		this.lastMousePos = new THREE.Vector2(0.0,0.0);
 
 		this.timestamp = Date.now();
+
+		this.gui = gui;
 
 		const resUniforms = {};
 		resUniforms.u_res = {value: new THREE.Vector2(window.innerWidth, window.innerHeight)};
@@ -21,6 +23,10 @@ export default class SceneRefract{
 
 		const textureUniforms = {};
 		textureUniforms.uTexture = {value: bg};
+
+		for (const key in this.gui) {
+			interactiveUniforms[key] = {value: this.gui[key]};
+		}
 		
 		const uniformsObj = Object.assign({}, interactiveUniforms, resUniforms, textureUniforms);
 
@@ -58,7 +64,9 @@ export default class SceneRefract{
 		this.quad.material.uniforms.u_time.value = (Date.now() - this.timestamp) / 10000;
 		this.quad.material.uniforms.u_res.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
 
-		
+		for (const key in this.gui) {
+			this.quad.material.uniforms[key].value = this.gui[key];
+		}
 
 
 	}

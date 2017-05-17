@@ -54,11 +54,11 @@
 
 	var _SceneMain2 = _interopRequireDefault(_SceneMain);
 
-	var _SceneSelector = __webpack_require__(28);
+	var _SceneSelector = __webpack_require__(30);
 
 	var _SceneSelector2 = _interopRequireDefault(_SceneSelector);
 
-	var _scenes = __webpack_require__(30);
+	var _scenes = __webpack_require__(32);
 
 	var _scenes2 = _interopRequireDefault(_scenes);
 
@@ -641,6 +641,10 @@
 
 	var _SceneSphere2 = _interopRequireDefault(_SceneSphere);
 
+	var _SceneRefract = __webpack_require__(28);
+
+	var _SceneRefract2 = _interopRequireDefault(_SceneRefract);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -689,6 +693,9 @@
 				// this.xFract = 1.0;
 				// this.yFract = 8.0;
 				// this.useYFract = true;
+				this.refractX = 2.0;
+				this.refractY = 2.0;
+				this.refractFreq = .115;
 			};
 
 			this.sceneBaseGui = new SceneBaseVals();
@@ -701,6 +708,12 @@
 			// this.gui.add(this.sceneBaseGui, 'voronoiTwoOffset', 0.1, 4.0).step(.001);
 			this.gui.add(this.sceneBaseGui, 'voronoiOneSpeed', 1.0, 10.0).step(.01);
 			this.gui.add(this.sceneBaseGui, 'voronoiTwoSpeed', 1.0, 10.0).step(.01);
+
+			this.gui.add(this.sceneBaseGui, 'refractX', 1.0, 20.0).step(.1);
+
+			this.gui.add(this.sceneBaseGui, 'refractY', 1.0, 20.0).step(.1);
+
+			this.gui.add(this.sceneBaseGui, 'refractFreq', 0.0, 2.0).step(.0001);
 
 			// this.gui.add(this.sceneBaseGui, 'gOffsetMultiplier', 0.0, 1.0).step(.00001);
 			// this.gui.add(this.sceneBaseGui, 'bOffsetMultiplier', 0.0, 1.0).step(.00001);
@@ -759,7 +772,8 @@
 
 			this.sceneCubeTest = new _SceneCube2.default();
 
-			this.sceneSphere = new _SceneSphere2.default(this.sceneBaseGui);
+			this.sceneSphere = new _SceneSphere2.default(this.sceneBaseGui, this.FBO);
+			this.sceneRefract = new _SceneRefract2.default(this.sceneBaseGui);
 
 			this.windowHalfX;
 			this.windowHalfY;
@@ -979,6 +993,7 @@
 				// this.staticCamera.position.x = 200 * Math.cos(timer);
 				// this.staticCamera.position.y = 200 * Math.sin(timer);
 				this.sceneSphere.update();
+				this.sceneRefract.update();
 				this.controls.update();
 			}
 		}, {
@@ -1018,7 +1033,8 @@
 				// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 				// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-				// debugger;
+				this.renderer.render(this.sceneRefract.scene, this.orthoCamera, this.FBO, true);
+
 				this.renderer.render(this.sceneSphere.scene, this.staticCamera);
 			}
 		}, {
@@ -3079,7 +3095,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SceneSphere = function () {
-		function SceneSphere(gui) {
+		function SceneSphere(gui, FBO) {
 			_classCallCheck(this, SceneSphere);
 
 			this.scene = new THREE.Scene();
@@ -3093,18 +3109,18 @@
 			this.gui = gui;
 
 			// wrap it up into the object that we need
-			var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
+			// var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
 			var layer2 = THREE.ImageUtils.loadTexture('assets/newtest/layer2.jpg');
 			var layer3 = THREE.ImageUtils.loadTexture('assets/newtest/layer3.jpg');
 			var tubes = THREE.ImageUtils.loadTexture('assets/newtest/tubes.png');
 
-			layer1.format = THREE.RGBAFormat;
+			// layer1.format = THREE.RGBAFormat;
 			layer2.format = THREE.RGBAFormat;
 			layer3.format = THREE.RGBAFormat;
 			tubes.format = THREE.RGBAFormat;
 
 			var textureUniforms = {};
-			textureUniforms.texture_one = { value: layer1 };
+			textureUniforms.texture_one = { value: FBO.texture };
 			textureUniforms.texture_two = { value: layer2 };
 			textureUniforms.texture_three = { value: layer3 };
 			textureUniforms.texture_tubes = { value: tubes };
@@ -3165,6 +3181,101 @@
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var SceneRefract = function () {
+		function SceneRefract(gui) {
+			_classCallCheck(this, SceneRefract);
+
+			this.scene = new THREE.Scene();
+
+			this.lastMousePos = new THREE.Vector2(0.0, 0.0);
+
+			this.timestamp = Date.now();
+
+			this.gui = gui;
+
+			var resUniforms = {};
+			resUniforms.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
+
+			var interactiveUniforms = {};
+			interactiveUniforms.u_mouse = { value: this.lastMousePos };
+			interactiveUniforms.u_time = { value: Date.now() - this.timestamp };
+
+			var bg = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
+
+			bg.format = THREE.RGBAFormat;
+
+			var textureUniforms = {};
+			textureUniforms.uTexture = { value: bg };
+
+			for (var key in this.gui) {
+				interactiveUniforms[key] = { value: this.gui[key] };
+			}
+
+			var uniformsObj = Object.assign({}, interactiveUniforms, resUniforms, textureUniforms);
+
+			var material = new THREE.ShaderMaterial({
+				uniforms: uniformsObj,
+				vertexShader: __webpack_require__(18),
+				fragmentShader: __webpack_require__(29)
+			});
+
+			material.depthWrite = false;
+
+			var plane = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerHeight);
+
+			this.quad = new THREE.Mesh(plane, material);
+			this.quad.position.z = 0;
+			this.scene.add(this.quad);
+
+			window.addEventListener('mousemove', this.onMouseMove.bind(this));
+		}
+
+		_createClass(SceneRefract, [{
+			key: "onMouseMove",
+			value: function onMouseMove(e) {
+
+				this.lastMousePos.x = e.clientX;
+				this.lastMousePos.y = e.clientY;
+			}
+		}, {
+			key: "update",
+			value: function update(audioData, sceneVals) {
+
+				this.quad.material.uniforms.u_mouse.value = this.lastMousePos;
+				this.quad.material.uniforms.u_time.value = (Date.now() - this.timestamp) / 10000;
+				this.quad.material.uniforms.u_res.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+
+				for (var key in this.gui) {
+					this.quad.material.uniforms[key].value = this.gui[key];
+				}
+			}
+		}]);
+
+		return SceneRefract;
+	}();
+
+	exports.default = SceneRefract;
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	module.exports = "#define GLSLIFY 1\nuniform sampler2D uTexture;\nuniform vec2 u_res;\nuniform float u_time;\n\nuniform float refractX;\nuniform float refractY;\nuniform float refractFreq;\n\n\nvec4 spline(float x, vec4 c1, vec4 c2, vec4 c3, vec4 c4, vec4 c5, vec4 c6, vec4 c7, vec4 c8, vec4 c9)\n{\n  float w1, w2, w3, w4, w5, w6, w7, w8, w9;\n  w1 = 0.0;\n  w2 = 0.0;\n  w3 = 0.0;\n  w4 = 0.0;\n  w5 = 0.0;\n  w6 = 0.0;\n  w7 = 0.0;\n  w8 = 0.0;\n  w9 = 0.0;\n  float tmp = x * 8.0;\n  if (tmp<=1.0) {\n    w1 = 1.0 - tmp;\n    w2 = tmp;\n  }\n  else if (tmp<=2.0) {\n    tmp = tmp - 1.0;\n    w2 = 1.0 - tmp;\n    w3 = tmp;\n  }\n  else if (tmp<=3.0) {\n    tmp = tmp - 2.0;\n    w3 = 1.0-tmp;\n    w4 = tmp;\n  }\n  else if (tmp<=4.0) {\n    tmp = tmp - 3.0;\n    w4 = 1.0-tmp;\n    w5 = tmp;\n  }\n  else if (tmp<=5.0) {\n    tmp = tmp - 4.0;\n    w5 = 1.0-tmp;\n    w6 = tmp;\n  }\n  else if (tmp<=6.0) {\n    tmp = tmp - 5.0;\n    w6 = 1.0-tmp;\n    w7 = tmp;\n  }\n  else if (tmp<=7.0) {\n    tmp = tmp - 6.0;\n    w7 = 1.0 - tmp;\n    w8 = tmp;\n  }\n  else \n  {\n    //tmp = saturate(tmp - 7.0);\n    // http://www.ozone3d.net/blogs/lab/20080709/saturate-function-in-glsl/\n    tmp = clamp(tmp - 7.0, 0.0, 1.0);\n    w8 = 1.0-tmp;\n    w9 = tmp;\n  }\n  return w1*c1 + w2*c2 + w3*c3 + w4*c4 + w5*c5 + w6*c6 + w7*c7 + w8*c8 + w9*c9;\n}\n\n\nvec2 random2( vec2 p ) {\n    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);\n}\n\n \nvoid main() {\n\n\tfloat PixelX = refractX;\n\tfloat PixelY = refractY;\n\tfloat Freq = refractFreq;\n\n\tvec2 st = gl_FragCoord.xy/u_res.xy;\n\n\tvec2 uv = st;\n\tvec3 tc = vec3(1.0, 0.0, 0.0);\n\n\tfloat DeltaX = PixelX / u_res.x;\n\tfloat DeltaY = PixelY / u_res.y;\n\tvec2 ox = vec2(DeltaX,0.0);\n\tvec2 oy = vec2(0.0,DeltaY);\n\tvec2 PP = uv - oy;\n\tvec4 C00 = texture2D(uTexture,PP - ox);\n\tvec4 C01 = texture2D(uTexture,PP);\n\tvec4 C02 = texture2D(uTexture,PP + ox);\n\tPP = uv;\n\tvec4 C10 = texture2D(uTexture,PP - ox);\n\tvec4 C11 = texture2D(uTexture,PP);\n\tvec4 C12 = texture2D(uTexture,PP + ox);\n\tPP = uv + oy;\n\tvec4 C20 = texture2D(uTexture,PP - ox);\n\tvec4 C21 = texture2D(uTexture,PP);\n\tvec4 C22 = texture2D(uTexture,PP + ox);\n\n\tfloat n = random2(Freq * uv).y;\n\tn = mod(n, 0.111111)/0.111111;\n\tvec4 result = spline(n,C00,C01,C02,C10,C11,C12,C20,C21,C22);\n\ttc = mix(result.rgb, vec3(1.0, 0.0, .8), .1);\n\n\tgl_FragColor = vec4(tc, 1.0);\n\n\t// gl_FragColor = texture2D(uTexture, st);\n\n}\n"
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -3173,7 +3284,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _SceneSelectorItem = __webpack_require__(29);
+	var _SceneSelectorItem = __webpack_require__(31);
 
 	var _SceneSelectorItem2 = _interopRequireDefault(_SceneSelectorItem);
 
@@ -3248,7 +3359,7 @@
 	exports.default = SceneSelector;
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3298,7 +3409,7 @@
 	exports.default = SceneSelectorItem;
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports) {
 
 	'use strict';
