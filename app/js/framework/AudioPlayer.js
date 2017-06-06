@@ -5,6 +5,7 @@ export default class AudioPlayer{
 		this._ctx = ctx;
 		this._buffer = null;
 		this._sourceNode = null;
+		this._gainNode = null;
 		this.paused = false;
 		this.pausedTimestamp = undefined;
 		this.startedTimestamp = undefined;
@@ -59,12 +60,17 @@ export default class AudioPlayer{
 		return this._sourceNode;
 	}
 
-	play(wait){
+	play(wait, vol){
 
 		this.triggeredPlay = true;
 
+		this._gainNode = this._ctx.createGain();
+		this._gainNode.gain.value = vol;
+
 		this._sourceNode = this._ctx.createBufferSource();
-		this._sourceNode.connect(this._ctx.destination);
+		this._sourceNode.connect(this._gainNode);
+		this._gainNode.connect(this._ctx.destination);
+		// this._sourceNode.connect(this._ctx.destination);
 		this._sourceNode.buffer = this._buffer;
 		this.paused = false;
 

@@ -13,12 +13,12 @@ export default class SceneSphere{
        	this.gui = gui;
 
         // wrap it up into the object that we need
-        // var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
+        var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
         var layer2 = THREE.ImageUtils.loadTexture('assets/newtest/layer2.jpg');
         var layer3 = THREE.ImageUtils.loadTexture('assets/newtest/layer3.jpg');
         var tubes = THREE.ImageUtils.loadTexture('assets/newtest/tubes.png');
 
-        // layer1.format = THREE.RGBAFormat;
+        layer1.format = THREE.RGBAFormat;
         layer2.format = THREE.RGBAFormat;
         layer3.format = THREE.RGBAFormat;
         tubes.format = THREE.RGBAFormat;
@@ -26,7 +26,7 @@ export default class SceneSphere{
     	
 
         const textureUniforms = {};
-		textureUniforms.texture_one = {value: FBO.texture};
+		textureUniforms.texture_one = {value: layer1};
 		textureUniforms.texture_two = {value: layer2};
 		textureUniforms.texture_three = {value: layer3};
 		textureUniforms.texture_tubes = {value: tubes};
@@ -48,7 +48,7 @@ export default class SceneSphere{
 		// var ambientLight = new THREE.AmbientLight(0x333333);
 		// this.scene.add(ambientLight);
 
-		var geometry = new THREE.SphereGeometry(2000, 120, 80);
+		var geometry = new THREE.SphereGeometry(4000, 120, 80);
 		// var material = new THREE.MeshBasicMaterial();
 		// material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
 		// material.side = THREE.BackSide;

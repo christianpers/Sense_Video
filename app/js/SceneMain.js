@@ -11,6 +11,7 @@ import SceneGif from './scenes/SceneGif';
 import SceneCube from './scenes/SceneCube';
 import SceneSphere from './scenes/SceneSphere';
 import SceneRefract from './scenes/SceneRefract';
+import SceneHero from './scenes/SceneHero';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -34,13 +35,40 @@ export default class SceneMain {
 
 		this.cloudsImportLoaded = false;
 
-		this._audioCtx = new AudioContext();
 
-		this.audioPlayer = new AudioPlayer(this._audioCtx, this.onAudioLoaded, this);
-		this.audioPlayer.load('assets/audio.mp3');
+		this.bassAudioLoaded = false;
+		this.drumsAudioLoaded = false;
+		this.voicesAudioLoaded = false;
+		this.mainAudioLoaded = false;
 
-		this.spectrumAnalyzer = new SpectrumAnalyzer();
-		this.spectrumAnalyzer.init(this._audioCtx);
+		this._bassAudioCtx = new AudioContext();
+		this._drumsAudioCtx = new AudioContext();
+		this._voicesAudioCtx = new AudioContext();
+		this._mainAudioCtx = new AudioContext();
+
+		this.bassAudioPlayer = new AudioPlayer(this._bassAudioCtx, this.onBassLoaded, this);
+		this.bassAudioPlayer.load('assets/stems/bass.mp3');
+
+		this.drumsAudioPlayer = new AudioPlayer(this._drumsAudioCtx, this.onDrumsLoaded, this);
+		this.drumsAudioPlayer.load('assets/stems/drums.mp3');
+
+		this.voicesAudioPlayer = new AudioPlayer(this._voicesAudioCtx, this.onVoicesLoaded, this);
+		this.voicesAudioPlayer.load('assets/stems/voices.mp3');
+
+		this.mainAudioPlayer = new AudioPlayer(this._mainAudioCtx, this.onMainAudioLoaded, this);
+		this.mainAudioPlayer.load('assets/audio.mp3');
+
+		// this.spectrumAnalyzer = new SpectrumAnalyzer();
+		// this.spectrumAnalyzer.init(this._audioCtx);
+
+		this.bassAnalyser = new SpectrumAnalyzer();
+		this.bassAnalyser.init(this._bassAudioCtx);
+
+		this.drumsAnalyser = new SpectrumAnalyzer();
+		this.drumsAnalyser.init(this._drumsAudioCtx);
+
+		this.voicesAnalyser = new SpectrumAnalyzer();
+		this.voicesAnalyser.init(this._voicesAudioCtx);
 
 		this.currentSceneSettings = {renderOverlay: false, cameraSpeed: {}};
 
@@ -162,6 +190,8 @@ export default class SceneMain {
 		this.sceneSphere = new SceneSphere(this.sceneBaseGui, this.FBO);
 		this.sceneRefract = new SceneRefract(this.sceneBaseGui);
 
+		this.sceneHero = new SceneHero();
+
 
 		this.windowHalfX;
 		this.windowHalfY;
@@ -198,9 +228,9 @@ export default class SceneMain {
 
 		this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-		this.renderer = new THREE.WebGLRenderer( { opacity: 1, antialias: false, alpha: false } );
+		this.renderer = new THREE.WebGLRenderer( { opacity: 1, antialias: false, alpha: true } );
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-		// this.renderer.autoClear = false;
+		this.renderer.autoClear = false;
 		// this.renderer.setClearColorHex( 0x000000, 1 );
 		// this.renderer.setClearColor( '#f644ac' );
 		// this.renderer.sortObjects = false;
@@ -216,14 +246,58 @@ export default class SceneMain {
 
 	}
 
-	onAudioLoaded(){
+	onMainAudioLoaded() {
+
+		this.mainAudioLoaded = true;
+		
+		if (this.bassAudioLoaded && this.drumsAudioLoaded && this.voicesAudioLoaded) {
+			this.initAudio();
+		}
+
+
+	}
+
+	onVoicesLoaded() {
+
+		this.voicesAudioLoaded = true;
+
+		if (this.bassAudioLoaded && this.drumsAudioLoaded && this.mainAudioLoaded) {
+			this.initAudio();
+		}
+	}
+
+	onDrumsLoaded() {
+
+		this.drumsAudioLoaded = true;
+
+		if (this.bassAudioLoaded && this.voicesAudioLoaded && this.mainAudioLoaded) {
+			this.initAudio();
+		}
+	}
+
+	onBassLoaded() {
+
+		this.bassAudioLoaded = true;
+		if (this.drumsAudioLoaded && this.voicesAudioLoaded && this.mainAudioLoaded) {
+			this.initAudio();
+		}
+
+	}
+
+	initAudio() {
+
+		this.mainAudioPlayer.play(undefined, .5);
+		this.bassAudioPlayer.play(undefined, 0);
+		this.drumsAudioPlayer.play(undefined, 0);
+		this.voicesAudioPlayer.play(undefined, 0);
+		
+
+		this.bassAnalyser.connect(this.bassAudioPlayer.getSourceNode());
+		this.drumsAnalyser.connect(this.drumsAudioPlayer.getSourceNode());
+		this.voicesAnalyser.connect(this.voicesAudioPlayer.getSourceNode());
 
 		if (this.cloudsImportLoaded)
 			this.doRender = true;
-
-		// this.audioPlayer.play();
-		// this.spectrumAnalyzer.connect(this.audioPlayer.getSourceNode());
-	
 	}
 
 
@@ -251,8 +325,8 @@ export default class SceneMain {
 
 		this.cloudsImportLoaded = true;
 
-		if (this.audioPlayer.isLoaded)
-			this.doRender = true;
+		// if (this.audioPlayer.isLoaded)
+		// 	this.doRender = true;
 	}
 
 	getSceneFromTimeline() {
@@ -342,7 +416,10 @@ export default class SceneMain {
 
 	update() {
 
-		const audioData = this.spectrumAnalyzer.getAudioData();
+		const audioDataBass = this.bassAnalyser.getAudioData();
+		const audioDataDrums = this.drumsAnalyser.getAudioData();
+		const audioDataVoices = this.voicesAnalyser.getAudioData();
+
 		
 		const now = Date.now();
 		const introDelta = now - this.introStartTime;
@@ -378,15 +455,16 @@ export default class SceneMain {
 			
 		// }
 
-		this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+		// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
 
-		this.sceneNoise.update(audioData, sceneVals.grid);
+		// this.sceneNoise.update(audioData, sceneVals.grid);
 
 		// var timer = - new Date().getTime() * 0.0005; 
 		// this.staticCamera.position.x = 200 * Math.cos(timer);
 		// this.staticCamera.position.y = 200 * Math.sin(timer);
 		this.sceneSphere.update();
 		this.sceneRefract.update();
+		this.sceneHero.update(audioDataBass, audioDataDrums, audioDataVoices);
 		this.controls.update();
 	}
 
@@ -425,9 +503,16 @@ export default class SceneMain {
 		// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 		// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-		this.renderer.render( this.sceneRefract.scene, this.orthoCamera, this.FBO, true );
+		// this.renderer.render( this.sceneRefract.scene, this.orthoCamera, this.FBO, true );
 
+		
 		this.renderer.render( this.sceneSphere.scene, this.staticCamera );
+		// this.renderer.clearDepth();
+		if (this.sceneHero.render){
+			this.renderer.render( this.sceneHero.scene, this.staticCamera );
+		}
+
+
 
 		
 	}

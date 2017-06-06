@@ -54,11 +54,11 @@
 
 	var _SceneMain2 = _interopRequireDefault(_SceneMain);
 
-	var _SceneSelector = __webpack_require__(30);
+	var _SceneSelector = __webpack_require__(33);
 
 	var _SceneSelector2 = _interopRequireDefault(_SceneSelector);
 
-	var _scenes = __webpack_require__(32);
+	var _scenes = __webpack_require__(35);
 
 	var _scenes2 = _interopRequireDefault(_scenes);
 
@@ -645,6 +645,10 @@
 
 	var _SceneRefract2 = _interopRequireDefault(_SceneRefract);
 
+	var _SceneHero = __webpack_require__(30);
+
+	var _SceneHero2 = _interopRequireDefault(_SceneHero);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -672,13 +676,39 @@
 
 			this.cloudsImportLoaded = false;
 
-			this._audioCtx = new AudioContext();
+			this.bassAudioLoaded = false;
+			this.drumsAudioLoaded = false;
+			this.voicesAudioLoaded = false;
+			this.mainAudioLoaded = false;
 
-			this.audioPlayer = new _AudioPlayer2.default(this._audioCtx, this.onAudioLoaded, this);
-			this.audioPlayer.load('assets/audio.mp3');
+			this._bassAudioCtx = new AudioContext();
+			this._drumsAudioCtx = new AudioContext();
+			this._voicesAudioCtx = new AudioContext();
+			this._mainAudioCtx = new AudioContext();
 
-			this.spectrumAnalyzer = new _SpectrumAnalyzer2.default();
-			this.spectrumAnalyzer.init(this._audioCtx);
+			this.bassAudioPlayer = new _AudioPlayer2.default(this._bassAudioCtx, this.onBassLoaded, this);
+			this.bassAudioPlayer.load('assets/stems/bass.mp3');
+
+			this.drumsAudioPlayer = new _AudioPlayer2.default(this._drumsAudioCtx, this.onDrumsLoaded, this);
+			this.drumsAudioPlayer.load('assets/stems/drums.mp3');
+
+			this.voicesAudioPlayer = new _AudioPlayer2.default(this._voicesAudioCtx, this.onVoicesLoaded, this);
+			this.voicesAudioPlayer.load('assets/stems/voices.mp3');
+
+			this.mainAudioPlayer = new _AudioPlayer2.default(this._mainAudioCtx, this.onMainAudioLoaded, this);
+			this.mainAudioPlayer.load('assets/audio.mp3');
+
+			// this.spectrumAnalyzer = new SpectrumAnalyzer();
+			// this.spectrumAnalyzer.init(this._audioCtx);
+
+			this.bassAnalyser = new _SpectrumAnalyzer2.default();
+			this.bassAnalyser.init(this._bassAudioCtx);
+
+			this.drumsAnalyser = new _SpectrumAnalyzer2.default();
+			this.drumsAnalyser.init(this._drumsAudioCtx);
+
+			this.voicesAnalyser = new _SpectrumAnalyzer2.default();
+			this.voicesAnalyser.init(this._voicesAudioCtx);
 
 			this.currentSceneSettings = { renderOverlay: false, cameraSpeed: {} };
 
@@ -775,6 +805,8 @@
 			this.sceneSphere = new _SceneSphere2.default(this.sceneBaseGui, this.FBO);
 			this.sceneRefract = new _SceneRefract2.default(this.sceneBaseGui);
 
+			this.sceneHero = new _SceneHero2.default();
+
 			this.windowHalfX;
 			this.windowHalfY;
 
@@ -809,9 +841,9 @@
 
 			this.orthoCamera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -10000, 10000);
 
-			this.renderer = new THREE.WebGLRenderer({ opacity: 1, antialias: false, alpha: false });
+			this.renderer = new THREE.WebGLRenderer({ opacity: 1, antialias: false, alpha: true });
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			// this.renderer.autoClear = false;
+			this.renderer.autoClear = false;
 			// this.renderer.setClearColorHex( 0x000000, 1 );
 			// this.renderer.setClearColor( '#f644ac' );
 			// this.renderer.sortObjects = false;
@@ -826,13 +858,58 @@
 		}
 
 		_createClass(SceneMain, [{
-			key: 'onAudioLoaded',
-			value: function onAudioLoaded() {
+			key: 'onMainAudioLoaded',
+			value: function onMainAudioLoaded() {
+
+				this.mainAudioLoaded = true;
+
+				if (this.bassAudioLoaded && this.drumsAudioLoaded && this.voicesAudioLoaded) {
+					this.initAudio();
+				}
+			}
+		}, {
+			key: 'onVoicesLoaded',
+			value: function onVoicesLoaded() {
+
+				this.voicesAudioLoaded = true;
+
+				if (this.bassAudioLoaded && this.drumsAudioLoaded && this.mainAudioLoaded) {
+					this.initAudio();
+				}
+			}
+		}, {
+			key: 'onDrumsLoaded',
+			value: function onDrumsLoaded() {
+
+				this.drumsAudioLoaded = true;
+
+				if (this.bassAudioLoaded && this.voicesAudioLoaded && this.mainAudioLoaded) {
+					this.initAudio();
+				}
+			}
+		}, {
+			key: 'onBassLoaded',
+			value: function onBassLoaded() {
+
+				this.bassAudioLoaded = true;
+				if (this.drumsAudioLoaded && this.voicesAudioLoaded && this.mainAudioLoaded) {
+					this.initAudio();
+				}
+			}
+		}, {
+			key: 'initAudio',
+			value: function initAudio() {
+
+				this.mainAudioPlayer.play(undefined, .5);
+				this.bassAudioPlayer.play(undefined, 0);
+				this.drumsAudioPlayer.play(undefined, 0);
+				this.voicesAudioPlayer.play(undefined, 0);
+
+				this.bassAnalyser.connect(this.bassAudioPlayer.getSourceNode());
+				this.drumsAnalyser.connect(this.drumsAudioPlayer.getSourceNode());
+				this.voicesAnalyser.connect(this.voicesAudioPlayer.getSourceNode());
 
 				if (this.cloudsImportLoaded) this.doRender = true;
-
-				// this.audioPlayer.play();
-				// this.spectrumAnalyzer.connect(this.audioPlayer.getSourceNode());
 			}
 		}, {
 			key: 'createBgCanvas',
@@ -860,7 +937,8 @@
 
 				this.cloudsImportLoaded = true;
 
-				if (this.audioPlayer.isLoaded) this.doRender = true;
+				// if (this.audioPlayer.isLoaded)
+				// 	this.doRender = true;
 			}
 		}, {
 			key: 'getSceneFromTimeline',
@@ -952,7 +1030,9 @@
 			key: 'update',
 			value: function update() {
 
-				var audioData = this.spectrumAnalyzer.getAudioData();
+				var audioDataBass = this.bassAnalyser.getAudioData();
+				var audioDataDrums = this.drumsAnalyser.getAudioData();
+				var audioDataVoices = this.voicesAnalyser.getAudioData();
 
 				var now = Date.now();
 				var introDelta = now - this.introStartTime;
@@ -985,15 +1065,16 @@
 
 				// }
 
-				this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
+				// this.sceneClouds.update(this.renderer, -position + this.sceneClouds.totDepth);
 
-				this.sceneNoise.update(audioData, sceneVals.grid);
+				// this.sceneNoise.update(audioData, sceneVals.grid);
 
 				// var timer = - new Date().getTime() * 0.0005; 
 				// this.staticCamera.position.x = 200 * Math.cos(timer);
 				// this.staticCamera.position.y = 200 * Math.sin(timer);
 				this.sceneSphere.update();
 				this.sceneRefract.update();
+				this.sceneHero.update(audioDataBass, audioDataDrums, audioDataVoices);
 				this.controls.update();
 			}
 		}, {
@@ -1033,9 +1114,14 @@
 				// this.staticCamera.lookAt(this.sceneCubeTest.scene.position);
 				// this.renderer.render( this.sceneCubeTest.scene, this.staticCamera );
 
-				this.renderer.render(this.sceneRefract.scene, this.orthoCamera, this.FBO, true);
+				// this.renderer.render( this.sceneRefract.scene, this.orthoCamera, this.FBO, true );
+
 
 				this.renderer.render(this.sceneSphere.scene, this.staticCamera);
+				// this.renderer.clearDepth();
+				if (this.sceneHero.render) {
+					this.renderer.render(this.sceneHero.scene, this.staticCamera);
+				}
 			}
 		}, {
 			key: 'onResize',
@@ -2243,6 +2329,7 @@
 			this._ctx = ctx;
 			this._buffer = null;
 			this._sourceNode = null;
+			this._gainNode = null;
 			this.paused = false;
 			this.pausedTimestamp = undefined;
 			this.startedTimestamp = undefined;
@@ -2300,12 +2387,17 @@
 			}
 		}, {
 			key: 'play',
-			value: function play(wait) {
+			value: function play(wait, vol) {
 
 				this.triggeredPlay = true;
 
+				this._gainNode = this._ctx.createGain();
+				this._gainNode.gain.value = vol;
+
 				this._sourceNode = this._ctx.createBufferSource();
-				this._sourceNode.connect(this._ctx.destination);
+				this._sourceNode.connect(this._gainNode);
+				this._gainNode.connect(this._ctx.destination);
+				// this._sourceNode.connect(this._ctx.destination);
 				this._sourceNode.buffer = this._buffer;
 				this.paused = false;
 
@@ -3109,18 +3201,18 @@
 			this.gui = gui;
 
 			// wrap it up into the object that we need
-			// var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
+			var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1.jpg');
 			var layer2 = THREE.ImageUtils.loadTexture('assets/newtest/layer2.jpg');
 			var layer3 = THREE.ImageUtils.loadTexture('assets/newtest/layer3.jpg');
 			var tubes = THREE.ImageUtils.loadTexture('assets/newtest/tubes.png');
 
-			// layer1.format = THREE.RGBAFormat;
+			layer1.format = THREE.RGBAFormat;
 			layer2.format = THREE.RGBAFormat;
 			layer3.format = THREE.RGBAFormat;
 			tubes.format = THREE.RGBAFormat;
 
 			var textureUniforms = {};
-			textureUniforms.texture_one = { value: FBO.texture };
+			textureUniforms.texture_one = { value: layer1 };
 			textureUniforms.texture_two = { value: layer2 };
 			textureUniforms.texture_three = { value: layer3 };
 			textureUniforms.texture_tubes = { value: tubes };
@@ -3142,7 +3234,7 @@
 			// var ambientLight = new THREE.AmbientLight(0x333333);
 			// this.scene.add(ambientLight);
 
-			var geometry = new THREE.SphereGeometry(2000, 120, 80);
+			var geometry = new THREE.SphereGeometry(4000, 120, 80);
 			// var material = new THREE.MeshBasicMaterial();
 			// material.map = THREE.ImageUtils.loadTexture("assets/test2.jpg");
 			// material.side = THREE.BackSide;
@@ -3276,6 +3368,171 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var SceneHero = function () {
+		function SceneHero(gui) {
+			_classCallCheck(this, SceneHero);
+
+			this.scene = new THREE.Scene();
+
+			this.lastMousePos = new THREE.Vector2(0.0, 0.0);
+
+			this.timestamp = Date.now();
+
+			this.gui = gui;
+
+			this.render = false;
+
+			var jsonLoader = new THREE.JSONLoader();
+			jsonLoader.load("assets/imports/mech-flower.js", this.onLoaded.bind(this));
+
+			window.addEventListener('mousemove', this.onMouseMove.bind(this));
+		}
+
+		_createClass(SceneHero, [{
+			key: "onLoaded",
+			value: function onLoaded(geometry, materials) {
+
+				// this.scene.add(this.cubeCamera);
+
+				var resUniforms = {};
+				resUniforms.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
+
+				var interactiveUniforms = {};
+				interactiveUniforms.u_mouse = { value: this.lastMousePos };
+				interactiveUniforms.u_time = { value: Date.now() - this.timestamp };
+				interactiveUniforms.audioVal = { value: 0 };
+				interactiveUniforms.color = { value: new THREE.Vector3(1.0, .2, 1.0) };
+				interactiveUniforms.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
+				// interactiveUniforms.drumsVal = {value: 0};
+				// interactiveUniforms.voicesVal = {value: 0};
+
+				var textureUniforms = {};
+
+				var uniformsObj = Object.assign({}, interactiveUniforms, resUniforms, textureUniforms);
+
+				var material = new THREE.ShaderMaterial({
+					uniforms: uniformsObj,
+					vertexShader: __webpack_require__(31),
+					fragmentShader: __webpack_require__(32)
+				});
+
+				this.mesh = new THREE.Mesh(geometry, material);
+
+				// this.mesh.position.y = -55;
+				this.mesh.scale.x = .5;
+				this.mesh.scale.y = .5;
+				this.mesh.scale.z = .5;
+				this.mesh.position.y = -130;
+				this.mesh.position.z = 0;
+
+				this.scene.add(this.mesh);
+
+				var resUniformsVoices = {};
+				resUniformsVoices.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
+
+				var interactiveUniformsVoices = {};
+				interactiveUniformsVoices.u_mouse = { value: this.lastMousePos };
+				interactiveUniformsVoices.u_time = { value: Date.now() - this.timestamp };
+				interactiveUniformsVoices.audioVal = { value: 0 };
+				interactiveUniformsVoices.color = { value: new THREE.Vector3(0.0, 0.0, 1.0) };
+				interactiveUniformsVoices.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
+				// interactiveUniforms.drumsVal = {value: 0};
+				// interactiveUniforms.voicesVal = {value: 0};
+
+				var textureUniformsVoices = {};
+
+				var uniformsObjVoices = Object.assign({}, interactiveUniformsVoices, resUniformsVoices, textureUniformsVoices);
+
+				var materialVoices = new THREE.ShaderMaterial({
+					uniforms: uniformsObjVoices,
+					vertexShader: __webpack_require__(31),
+					fragmentShader: __webpack_require__(32)
+				});
+
+				this.meshVoices = new THREE.Mesh(geometry, materialVoices);
+
+				this.meshVoices.scale.x = .5;
+				this.meshVoices.scale.y = .2;
+				this.meshVoices.scale.z = .5;
+				this.meshVoices.position.y = -130;
+				this.meshVoices.position.z = 0;
+
+				this.scene.add(this.meshVoices);
+
+				// this.mesh.visible = false;
+
+
+				// var plane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 200, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffff00, opacity: 0.25 } ) );
+				// plane.visible = true;
+				// plane.position.z = this.totDepth - 500;
+				// this.scene.add( plane );
+
+				this.render = true;
+			}
+		}, {
+			key: "onMouseMove",
+			value: function onMouseMove(e) {
+
+				this.lastMousePos.x = e.clientX;
+				this.lastMousePos.y = e.clientY;
+			}
+		}, {
+			key: "update",
+			value: function update(audioDataBass, audioDataDrums, audioDataVoices) {
+
+				var bass = audioDataBass[5];
+				var drums = audioDataDrums[5];
+				var voices = audioDataVoices[3];
+				// console.log(audioDataBass);
+				// this.quad.material.uniforms.u_mouse.value = this.lastMousePos;
+				var time = (Date.now() - this.timestamp) / 1000;
+				if (this.mesh) {
+					this.mesh.material.uniforms.u_time.value = time;
+					this.mesh.material.uniforms.audioVal.value = drums;
+
+					this.meshVoices.material.uniforms.u_time.value = time * 10.0;
+					this.meshVoices.material.uniforms.audioVal.value = voices;
+				}
+				// this.quad.material.uniforms.u_res.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+
+				// for (const key in this.gui) {
+				// 	this.quad.material.uniforms[key].value = this.gui[key];
+				// }
+
+			}
+		}]);
+
+		return SceneHero;
+	}();
+
+	exports.default = SceneHero;
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	module.exports = "#define GLSLIFY 1\nuniform float u_time;\nuniform float audioVal;\nuniform vec3 color;\nuniform vec3 noiseOffset;\n\nvarying vec3 vColor;\n\n// 2D Random\nfloat random (in vec2 st) { \n    return fract(sin(dot(st.xy,\n                         vec2(12.9898,78.233)))\n                 * 43758.5453123);\n}\n\n// 2D Noise based on Morgan McGuire @morgan3d\n// https://www.shadertoy.com/view/4dS3Wd\nfloat noise (in vec2 st) {\n    vec2 i = floor(st);\n    vec2 f = fract(st);\n\n    // Four corners in 2D of a tile\n    float a = random(i);\n    float b = random(i + vec2(1.0, 0.0));\n    float c = random(i + vec2(0.0, 1.0));\n    float d = random(i + vec2(1.0, 1.0));\n\n    // Smooth Interpolation\n\n    // Cubic Hermine Curve.  Same as SmoothStep()\n    vec2 u = f*f*(3.0-2.0*f);\n    // u = smoothstep(0.,1.,f);\n\n    // Mix 4 coorners porcentages\n    return mix(a, b, u.x) + \n            (c - a)* u.y * (1.0 - u.x) + \n            (d - b) * u.x * u.y;\n}\n\nvoid main() {\n\n\t// transform normal to camera space and normalize it\n    vec3 n = normalize(normalMatrix * normal);\n\n    vec3 l_dir = vec3(0.0, 2.0, 0.0);\n \n    // compute the intensity as the dot product\n    // the max prevents negative intensity values\n    float intensity = max(dot(n, l_dir), 0.0);\n \n    // Compute the color per vertex\n    // DataOut.color = intensity * diffuse;\n    vColor = intensity * color;\n\n    float noiseData = noise(vec2(audioVal, audioVal));\n\n    float noiseVal = noise(vec2(u_time));\n\n    vec3 pos = position;\n    pos.xyz *= noiseData + .5;\n    pos.x -= noiseVal * noiseOffset.x;\n    pos.y += noiseVal * noiseOffset.y;\n    // pos.z += sin(u_time) * 50.0;\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n\n}"
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	module.exports = "#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\n#define PI 3.14159265359\n#define TWO_PI 6.28318530718\n\nuniform vec2 u_res;\nuniform vec2 u_mouse;\n// uniform float u_time;\nuniform sampler2D uTexture;\n\nvarying vec3 vColor;\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy/u_res.xy;\n    vec2 origSt = st;\n    \n    gl_FragColor = vec4(vColor, 1.0);\n}"
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -3284,7 +3541,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _SceneSelectorItem = __webpack_require__(31);
+	var _SceneSelectorItem = __webpack_require__(34);
 
 	var _SceneSelectorItem2 = _interopRequireDefault(_SceneSelectorItem);
 
@@ -3359,7 +3616,7 @@
 	exports.default = SceneSelector;
 
 /***/ },
-/* 31 */
+/* 34 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3409,7 +3666,7 @@
 	exports.default = SceneSelectorItem;
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';

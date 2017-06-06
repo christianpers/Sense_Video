@@ -158,6 +158,7 @@ export default class SceneImport{
 
 		this.quad.material.uniforms.audio_high.value = audioData[6];
 		this.quad.material.uniforms.audio_deep.value = audioData[3];
+
 		
 
 
