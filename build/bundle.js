@@ -849,6 +849,7 @@
 			// this.renderer.sortObjects = false;
 			// this.renderer.setClearColor('#6fd271');
 			this.renderer.setClearColor(0x000000, 1);
+			this.renderer.setPixelRatio(2);
 			this.container.appendChild(this.renderer.domElement);
 
 			this.controls = new THREE.OrbitControls(this.staticCamera, this.renderer.domElement);
@@ -900,7 +901,7 @@
 			key: 'initAudio',
 			value: function initAudio() {
 
-				this.mainAudioPlayer.play(undefined, .5);
+				this.mainAudioPlayer.play(undefined, 0);
 				this.bassAudioPlayer.play(undefined, 0);
 				this.drumsAudioPlayer.play(undefined, 0);
 				this.voicesAudioPlayer.play(undefined, 0);
@@ -3368,7 +3369,7 @@
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -3379,7 +3380,9 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SceneHero = function () {
-		function SceneHero(gui) {
+		function SceneHero() {
+			var _this = this;
+
 			_classCallCheck(this, SceneHero);
 
 			this.scene = new THREE.Scene();
@@ -3388,125 +3391,198 @@
 
 			this.timestamp = Date.now();
 
-			this.gui = gui;
-
 			this.render = false;
 
-			var jsonLoader = new THREE.JSONLoader();
-			jsonLoader.load("assets/imports/mech-flower.js", this.onLoaded.bind(this));
+			this.meshes = [];
+
+			var interactiveUniformsOne = {};
+			interactiveUniformsOne.u_mouse = { value: this.lastMousePos };
+			interactiveUniformsOne.u_time = { value: Date.now() - this.timestamp };
+			interactiveUniformsOne.audioVal = { value: 0 };
+			interactiveUniformsOne.color = { value: new THREE.Vector3(1.0, 1.0, 1.0) };
+			interactiveUniformsOne.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
+			interactiveUniformsOne.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
+
+			var interactiveUniformsTwo = {};
+			interactiveUniformsTwo.u_mouse = { value: this.lastMousePos };
+			interactiveUniformsTwo.u_time = { value: Date.now() - this.timestamp };
+			interactiveUniformsTwo.audioVal = { value: 0 };
+			interactiveUniformsTwo.color = { value: new THREE.Vector3(1.0, 1.0, 1.0) };
+			interactiveUniformsTwo.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
+
+			var interactiveUniformsThree = {};
+			interactiveUniformsThree.u_mouse = { value: this.lastMousePos };
+			interactiveUniformsThree.u_time = { value: Date.now() - this.timestamp };
+			interactiveUniformsThree.audioVal = { value: 0 };
+			interactiveUniformsThree.color = { value: new THREE.Vector3(1.0, 1.0, 1.0) };
+			interactiveUniformsThree.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
+
+			this.imports = [{
+				path: 'assets/imports/mech-flower.js',
+				interactiveUniforms: interactiveUniformsOne,
+				backSide: true
+			}];
+
+			// this.imports = [{
+			// 	path: 'assets/imports/1.js',
+			// 	interactiveUniforms: interactiveUniformsOne,
+			// 	backSide: true
+			// }, {
+			// 	path: 'assets/imports/2.js',
+			// 	interactiveUniforms: interactiveUniformsTwo,
+			// 	backSide: true
+			// }, {
+			// 	path: 'assets/imports/3.js',
+			// 	interactiveUniforms: interactiveUniformsThree,
+			// 	backSide: false
+			// }];
+
+			this.imports.forEach(function (t, i) {
+				var jsonLoader = new THREE.JSONLoader();
+				jsonLoader.load(t.path, _this.onLoaded.bind(_this, i));
+			});
 
 			window.addEventListener('mousemove', this.onMouseMove.bind(this));
 		}
 
 		_createClass(SceneHero, [{
-			key: "onLoaded",
-			value: function onLoaded(geometry, materials) {
+			key: 'onLoaded',
+			value: function onLoaded(idx, geometry, materials) {
 
 				// this.scene.add(this.cubeCamera);
 
 				var resUniforms = {};
 				resUniforms.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
 
-				var interactiveUniforms = {};
-				interactiveUniforms.u_mouse = { value: this.lastMousePos };
-				interactiveUniforms.u_time = { value: Date.now() - this.timestamp };
-				interactiveUniforms.audioVal = { value: 0 };
-				interactiveUniforms.color = { value: new THREE.Vector3(1.0, .2, 1.0) };
-				interactiveUniforms.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
-				// interactiveUniforms.drumsVal = {value: 0};
-				// interactiveUniforms.voicesVal = {value: 0};
+				var settings = this.imports[idx];
+
+				var interactiveUniforms = settings.interactiveUniforms;
+
+				var layer1 = THREE.ImageUtils.loadTexture('assets/newtest/layer1_lowres.jpg');
+
+				layer1.format = THREE.RGBAFormat;
 
 				var textureUniforms = {};
 
+				textureUniforms.refl_texture = { value: layer1 };
+
 				var uniformsObj = Object.assign({}, interactiveUniforms, resUniforms, textureUniforms);
+
+				// console.log(geometry);
+
 
 				var material = new THREE.ShaderMaterial({
 					uniforms: uniformsObj,
 					vertexShader: __webpack_require__(31),
-					fragmentShader: __webpack_require__(32)
+					fragmentShader: __webpack_require__(32),
+					transparent: true
 				});
 
-				this.mesh = new THREE.Mesh(geometry, material);
+				if (settings.backSide) material.side = THREE.BackSide;
+
+				var modifier = new Float32Array(geometry.vertices.length);
+
+				var faces = geometry.faces;
+				var vertices = geometry.vertices;
+
+				var extra = [];
+				var finalVertices = [];
+
+				for (var i = 0; i < faces.length; i++) {
+					var v0 = vertices[faces[i].a];
+					var v1 = vertices[faces[i].b];
+					var v2 = vertices[faces[i].c];
+
+					var verts = [v0, v1, v2];
+
+					verts.forEach(function (t) {
+						finalVertices.push(t.x);
+						finalVertices.push(t.y);
+						finalVertices.push(t.z);
+
+						var random = Math.random();
+
+						extra.push(random);
+					});
+
+					// verts.forEach(t => {
+
+
+					// });
+				}
+
+				// for (let i = 0; i < vertices.length; i++) {
+
+				// 	extra.push(Math.random());
+				// 	finalVertices.push(vertices[0].x);
+				// 	finalVertices.push(vertices[0].y);
+				// 	finalVertices.push(vertices[0].z);
+				// }
+
+				// console.log(finalVertices);
+				console.log(geometry);
+
+				var extraArray = new Float32Array(extra);
+
+				var vertArray = new Float32Array(finalVertices);
+
+				var finalGeometry = new THREE.BufferGeometry();
+
+				// finalGeometry.fromGeometry(geometry);
+				finalGeometry.addAttribute('position', new THREE.BufferAttribute(vertArray, 3));
+				finalGeometry.addAttribute('extra', new THREE.BufferAttribute(extraArray, 1));
+
+				var mesh = new THREE.Mesh(finalGeometry, material);
 
 				// this.mesh.position.y = -55;
-				this.mesh.scale.x = .5;
-				this.mesh.scale.y = .5;
-				this.mesh.scale.z = .5;
-				this.mesh.position.y = -130;
-				this.mesh.position.z = 0;
+				mesh.scale.x = 0.8;
+				mesh.scale.y = 0.8;
+				mesh.scale.z = 0.8;
+				mesh.position.y = -100;
+				mesh.position.z = 0;
+				mesh.rotation.y = Math.PI;
+				// mesh.rotation.z = Math.PI / 2;
 
-				this.scene.add(this.mesh);
+				this.meshes.push(mesh);
 
-				var resUniformsVoices = {};
-				resUniformsVoices.u_res = { value: new THREE.Vector2(window.innerWidth, window.innerHeight) };
-
-				var interactiveUniformsVoices = {};
-				interactiveUniformsVoices.u_mouse = { value: this.lastMousePos };
-				interactiveUniformsVoices.u_time = { value: Date.now() - this.timestamp };
-				interactiveUniformsVoices.audioVal = { value: 0 };
-				interactiveUniformsVoices.color = { value: new THREE.Vector3(0.0, 0.0, 1.0) };
-				interactiveUniformsVoices.noiseOffset = { value: new THREE.Vector2(200.0, 100.0) };
-				// interactiveUniforms.drumsVal = {value: 0};
-				// interactiveUniforms.voicesVal = {value: 0};
-
-				var textureUniformsVoices = {};
-
-				var uniformsObjVoices = Object.assign({}, interactiveUniformsVoices, resUniformsVoices, textureUniformsVoices);
-
-				var materialVoices = new THREE.ShaderMaterial({
-					uniforms: uniformsObjVoices,
-					vertexShader: __webpack_require__(31),
-					fragmentShader: __webpack_require__(32)
-				});
-
-				this.meshVoices = new THREE.Mesh(geometry, materialVoices);
-
-				this.meshVoices.scale.x = .5;
-				this.meshVoices.scale.y = .2;
-				this.meshVoices.scale.z = .5;
-				this.meshVoices.position.y = -130;
-				this.meshVoices.position.z = 0;
-
-				this.scene.add(this.meshVoices);
-
-				// this.mesh.visible = false;
-
-
-				// var plane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 200, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffff00, opacity: 0.25 } ) );
-				// plane.visible = true;
-				// plane.position.z = this.totDepth - 500;
-				// this.scene.add( plane );
+				this.scene.add(mesh);
 
 				this.render = true;
 			}
 		}, {
-			key: "onMouseMove",
+			key: 'onMouseMove',
 			value: function onMouseMove(e) {
 
 				this.lastMousePos.x = e.clientX;
 				this.lastMousePos.y = e.clientY;
 			}
 		}, {
-			key: "update",
+			key: 'update',
 			value: function update(audioDataBass, audioDataDrums, audioDataVoices) {
+				var _this2 = this;
 
 				var bass = audioDataBass[5];
 				var drums = audioDataDrums[5];
 				var voices = audioDataVoices[3];
+
+				var audioVals = [bass, drums, voices];
 				// console.log(audioDataBass);
 				// this.quad.material.uniforms.u_mouse.value = this.lastMousePos;
 				var time = (Date.now() - this.timestamp) / 1000;
-				if (this.mesh) {
-					this.mesh.material.uniforms.u_time.value = time;
-					this.mesh.material.uniforms.audioVal.value = drums;
 
-					this.meshVoices.material.uniforms.u_time.value = time * 10.0;
-					this.meshVoices.material.uniforms.audioVal.value = voices;
-				}
-				// this.quad.material.uniforms.u_res.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+				this.meshes.forEach(function (t, i) {
 
-				// for (const key in this.gui) {
-				// 	this.quad.material.uniforms[key].value = this.gui[key];
+					t.material.uniforms.u_time.value = time / (i + 1);
+					t.material.uniforms.audioVal.value = audioVals[i];
+					t.material.uniforms.u_mouse.value = _this2.lastMousePos;
+				});
+				// if (this.mesh){
+				// 	this.mesh.material.uniforms.u_time.value = time;
+				// 	this.mesh.material.uniforms.audioVal.value = drums;
+
+
+				// 	this.meshVoices.material.uniforms.u_time.value = time * 10.0;
+				// 	this.meshVoices.material.uniforms.audioVal.value = voices;
 				// }
 
 			}
@@ -3521,13 +3597,13 @@
 /* 31 */
 /***/ function(module, exports) {
 
-	module.exports = "#define GLSLIFY 1\nuniform float u_time;\nuniform float audioVal;\nuniform vec3 color;\nuniform vec3 noiseOffset;\n\nvarying vec3 vColor;\n\n// 2D Random\nfloat random (in vec2 st) { \n    return fract(sin(dot(st.xy,\n                         vec2(12.9898,78.233)))\n                 * 43758.5453123);\n}\n\n// 2D Noise based on Morgan McGuire @morgan3d\n// https://www.shadertoy.com/view/4dS3Wd\nfloat noise (in vec2 st) {\n    vec2 i = floor(st);\n    vec2 f = fract(st);\n\n    // Four corners in 2D of a tile\n    float a = random(i);\n    float b = random(i + vec2(1.0, 0.0));\n    float c = random(i + vec2(0.0, 1.0));\n    float d = random(i + vec2(1.0, 1.0));\n\n    // Smooth Interpolation\n\n    // Cubic Hermine Curve.  Same as SmoothStep()\n    vec2 u = f*f*(3.0-2.0*f);\n    // u = smoothstep(0.,1.,f);\n\n    // Mix 4 coorners porcentages\n    return mix(a, b, u.x) + \n            (c - a)* u.y * (1.0 - u.x) + \n            (d - b) * u.x * u.y;\n}\n\nvoid main() {\n\n\t// transform normal to camera space and normalize it\n    vec3 n = normalize(normalMatrix * normal);\n\n    vec3 l_dir = vec3(0.0, 2.0, 0.0);\n \n    // compute the intensity as the dot product\n    // the max prevents negative intensity values\n    float intensity = max(dot(n, l_dir), 0.0);\n \n    // Compute the color per vertex\n    // DataOut.color = intensity * diffuse;\n    vColor = intensity * color;\n\n    float noiseData = noise(vec2(audioVal, audioVal));\n\n    float noiseVal = noise(vec2(u_time));\n\n    vec3 pos = position;\n    pos.xyz *= noiseData + .5;\n    pos.x -= noiseVal * noiseOffset.x;\n    pos.y += noiseVal * noiseOffset.y;\n    // pos.z += sin(u_time) * 50.0;\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n\n}"
+	module.exports = "#define GLSLIFY 1\nattribute float extra;\n\nuniform float u_time;\nuniform float audioVal;\nuniform vec3 color;\nuniform vec3 noiseOffset;\nuniform vec2 u_mouse;\nuniform vec2 u_res;\n\nvarying vec3 vColor;\nvarying float v_time;\nvarying vec3 vPos;\nvarying float vAudioVal;\nvarying vec2 v_res;\n\n// 2D Random\nfloat random (in vec2 st) { \n    return fract(sin(dot(st.xy,\n                         vec2(12.9898,78.233)))\n                 * 43758.5453123);\n}\n\n// 2D Noise based on Morgan McGuire @morgan3d\n// https://www.shadertoy.com/view/4dS3Wd\nfloat noise (in vec2 st) {\n    vec2 i = floor(st);\n    vec2 f = fract(st);\n\n    // Four corners in 2D of a tile\n    float a = random(i);\n    float b = random(i + vec2(1.0, 0.0));\n    float c = random(i + vec2(0.0, 1.0));\n    float d = random(i + vec2(1.0, 1.0));\n\n    // Smooth Interpolation\n\n    // Cubic Hermine Curve.  Same as SmoothStep()\n    vec2 u = f*f*(3.0-2.0*f);\n    // u = smoothstep(0.,1.,f);\n\n    // Mix 4 coorners porcentages\n    return mix(a, b, u.x) + \n            (c - a)* u.y * (1.0 - u.x) + \n            (d - b) * u.x * u.y;\n}\n\n\nvoid main() {\n\n\tvec2 midPos = u_res / 2.0;\n\n\tvec2 invMouse = abs(u_mouse - u_res);\n\n\tvec2 mousePos = (invMouse - midPos) / midPos;\n\tvec2 normalizedMousePos = 600.0 * vec2(mousePos.x, mousePos.y);\n\n\t// transform normal to camera space and normalize it\n    vec3 n = normalize(normalMatrix * normal);\n\n    vec3 l_dir = vec3(0.0, 2.0, 0.0);\n \n    // compute the intensity as the dot product\n    // the max prevents negative intensity values\n    float intensity = max(dot(n, l_dir), 0.0);\n \n    // Compute the color per vertex\n    // DataOut.color = intensity * diffuse;\n    vColor = intensity * color;\n\n    float noiseData = noise(vec2(audioVal, audioVal));\n\n    float noiseVal = noise(vec2(u_time));\n\n    vec3 pos = position;\n    if (distance(pos.xy, normalizedMousePos) < 200.0) {\n    \tpos.xz += extra * distance(pos.xy, normalizedMousePos);\n\t}\n    \n    \n\n    v_time = u_time;\n    vPos = pos;\n    vAudioVal = audioVal;\n\n    v_res = u_res;\n\t\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );\n\n}"
 
 /***/ },
 /* 32 */
 /***/ function(module, exports) {
 
-	module.exports = "#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\n#define PI 3.14159265359\n#define TWO_PI 6.28318530718\n\nuniform vec2 u_res;\nuniform vec2 u_mouse;\n// uniform float u_time;\nuniform sampler2D uTexture;\n\nvarying vec3 vColor;\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy/u_res.xy;\n    vec2 origSt = st;\n    \n    gl_FragColor = vec4(vColor, 1.0);\n}"
+	module.exports = "#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\n#define PI 3.14159265359\n#define TWO_PI 6.28318530718\n\n// uniform vec2 u_res;\n// uniform float u_time;\nuniform sampler2D refl_texture;\n\nvarying vec3 vColor;\nvarying float v_time;\nvarying vec3 vPos;\nvarying float vAudioVal;\nvarying vec2 v_res;\n\nvoid main() {\n\tvec2 st = gl_FragCoord.xy/v_res.xy;\n    vec2 origSt = st;\n\n    vec3 reflColor = texture2D(refl_texture, st).rgb;\n    vec3 reflColorInv = texture2D(refl_texture, vec2(st.x, 1.0 - st.y)).rgb;\n\n    // vec3 finalColor = mix(reflColorInv, reflColor, vAudioVal);\n    vec3 finalColor = mix(vColor, reflColor, .2);\n    \n    gl_FragColor = vec4(finalColor, .75);\n}"
 
 /***/ },
 /* 33 */

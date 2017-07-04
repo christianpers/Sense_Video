@@ -12,6 +12,7 @@ import SceneCube from './scenes/SceneCube';
 import SceneSphere from './scenes/SceneSphere';
 import SceneRefract from './scenes/SceneRefract';
 import SceneHero from './scenes/SceneHero';
+import ScenePng from './scenes/ScenePng';
 
 export default class SceneMain {
 	constructor(container, sceneSelector) {
@@ -182,7 +183,13 @@ export default class SceneMain {
 
 		this.sceneTwitter = new SceneTwitter();
 		this.sceneNoise = new SceneNoise(this.FBO, this.FBOReverse, this.sceneSelector.initObj);
-		this.sceneGif = new SceneGif();
+
+
+		this.scenePngs = [];
+		for (let i=1 ; i < 21; i++) {
+			const scenePng = new ScenePng('pngs/Image' + i + '.png');
+			this.scenePngs.push(scenePng);
+		}
 		this.start_time = Date.now();
 
 		this.sceneCubeTest = new SceneCube();
@@ -236,6 +243,7 @@ export default class SceneMain {
 		// this.renderer.sortObjects = false;
 		// this.renderer.setClearColor('#6fd271');
 		this.renderer.setClearColor( 0x000000, 1 );
+		this.renderer.setPixelRatio(2);
 		this.container.appendChild( this.renderer.domElement );
 
 
@@ -286,7 +294,7 @@ export default class SceneMain {
 
 	initAudio() {
 
-		this.mainAudioPlayer.play(undefined, .5);
+		this.mainAudioPlayer.play(undefined, 0);
 		this.bassAudioPlayer.play(undefined, 0);
 		this.drumsAudioPlayer.play(undefined, 0);
 		this.voicesAudioPlayer.play(undefined, 0);
@@ -511,6 +519,11 @@ export default class SceneMain {
 		if (this.sceneHero.render){
 			this.renderer.render( this.sceneHero.scene, this.staticCamera );
 		}
+
+		for (let i=0; i < this.scenePngs.length; i++) {
+			this.renderer.render( this.scenePngs[i].scene, this.staticCamera );
+		}
+		
 
 
 

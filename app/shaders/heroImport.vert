@@ -1,9 +1,17 @@
+attribute float extra;
+
 uniform float u_time;
 uniform float audioVal;
 uniform vec3 color;
 uniform vec3 noiseOffset;
+uniform vec2 u_mouse;
+uniform vec2 u_res;
 
 varying vec3 vColor;
+varying float v_time;
+varying vec3 vPos;
+varying float vAudioVal;
+varying vec2 v_res;
 
 // 2D Random
 float random (in vec2 st) { 
@@ -36,7 +44,15 @@ float noise (in vec2 st) {
             (d - b) * u.x * u.y;
 }
 
+
 void main() {
+
+	vec2 midPos = u_res / 2.0;
+
+	vec2 invMouse = abs(u_mouse - u_res);
+
+	vec2 mousePos = (invMouse - midPos) / midPos;
+	vec2 normalizedMousePos = 600.0 * vec2(mousePos.x, mousePos.y);
 
 	// transform normal to camera space and normalize it
     vec3 n = normalize(normalMatrix * normal);
@@ -56,10 +72,17 @@ void main() {
     float noiseVal = noise(vec2(u_time));
 
     vec3 pos = position;
-    pos.xyz *= noiseData + .5;
-    pos.x -= noiseVal * noiseOffset.x;
-    pos.y += noiseVal * noiseOffset.y;
-    // pos.z += sin(u_time) * 50.0;
+    if (distance(pos.xy, normalizedMousePos) < 200.0) {
+    	pos.xz += extra * distance(pos.xy, normalizedMousePos);
+	}
+    
+    
+
+    v_time = u_time;
+    vPos = pos;
+    vAudioVal = audioVal;
+
+    v_res = u_res;
 	
 	gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
 
